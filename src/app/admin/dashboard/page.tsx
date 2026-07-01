@@ -5,6 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useApp } from "@/context/AppContext";
+import SupportChat from "@/components/SupportChat";
 
 export default function AdminDashboard() {
   const { 
@@ -22,7 +23,7 @@ export default function AdminDashboard() {
     investments
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<"overview" | "campaigns" | "expenses" | "schools" | "users">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "campaigns" | "expenses" | "schools" | "users" | "messages">("overview");
 
   if (!isLoggedIn || role !== "admin") {
     return (
@@ -93,6 +94,10 @@ export default function AdminDashboard() {
             {kycStatus === 'pending' && (
               <span className="badge badge-warning" style={{ marginLeft: 'auto', fontSize: '0.7rem', padding: '2px 6px' }}>1</span>
             )}
+          </button>
+
+          <button onClick={() => setActiveTab("messages")} className={`sidebar-link ${activeTab === "messages" ? "active" : ""}`}>
+            💬 Investor Chats
           </button>
         </aside>
 
@@ -351,6 +356,16 @@ export default function AdminDashboard() {
                   <p style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>There are no investor compliance documents pending audit.</p>
                 </div>
               )}
+            </div>
+          )}
+
+          {activeTab === "messages" && (
+            <div>
+              <div style={{ marginBottom: '30px' }}>
+                <h1 style={{ fontSize: '2rem' }}>Investor Helpdesk Messaging</h1>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Respond to direct compliance and operational inquiries from registered investors.</p>
+              </div>
+              <SupportChat mode="admin" />
             </div>
           )}
 

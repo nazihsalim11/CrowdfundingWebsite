@@ -70,6 +70,14 @@ export interface WithdrawalRequest {
   status: 'pending' | 'completed' | 'rejected';
 }
 
+export interface ChatMessage {
+  id: string;
+  investorEmail: string;
+  senderRole: 'investor' | 'admin';
+  content: string;
+  timestamp: string;
+}
+
 interface AppContextType {
   role: UserRole;
   isLoggedIn: boolean;
@@ -113,6 +121,10 @@ interface AppContextType {
   addNotification: (message: string) => void;
   markNotificationsAsRead: () => void;
   requestWithdrawal: (amount: number) => void;
+
+  // Messaging System Actions
+  chatMessages: ChatMessage[];
+  sendChatMessage: (investorEmail: string, senderRole: 'investor' | 'admin', content: string) => void;
 }
 
 const initialCampaigns: Campaign[] = [
@@ -274,6 +286,37 @@ const initialTickets: SupportTicket[] = [
   }
 ];
 
+const initialChatMessages: ChatMessage[] = [
+  {
+    id: "msg1",
+    investorEmail: "investor@seedglobal.com",
+    senderRole: "investor",
+    content: "Hello, I am interested in investing in the school bus campaign but wanted to ask how the ROI is calculated.",
+    timestamp: "2026-06-28 10:00"
+  },
+  {
+    id: "msg2",
+    investorEmail: "investor@seedglobal.com",
+    senderRole: "admin",
+    content: "Hello! The EV school bus ROI is calculated based on the operational savings in fuel costs that the school achieves. We track these savings transparently and distribute 5% annually.",
+    timestamp: "2026-06-28 10:15"
+  },
+  {
+    id: "msg3",
+    investorEmail: "investor@seedglobal.com",
+    senderRole: "investor",
+    content: "That makes sense, thank you! I will proceed with the investment.",
+    timestamp: "2026-06-28 10:20"
+  },
+  {
+    id: "msg4",
+    investorEmail: "john@example.com",
+    senderRole: "investor",
+    content: "Hi support team, I submitted my KYC document Aadhaar card yesterday. Could you please approve it?",
+    timestamp: "2026-06-30 14:02"
+  }
+];
+
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
@@ -300,6 +343,26 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     { id: "wd1", investorEmail: "investor@seedglobal.com", amount: 25000, date: "2026-06-25", status: "completed" },
     { id: "wd2", investorEmail: "investor@seedglobal.com", amount: 12000, date: "2026-06-29", status: "pending" }
   ]);
+
+  // Messaging System state & action
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>(initialChatMessages);
+
+  const sendChatMessage = (investorEmail: string, senderRole: 'investor' | 'admin', content: string) => {
+    const newMsg: ChatMessage = {
+      id: `msg_${Date.now()}`,
+      investorEmail,
+      senderRole,
+      content,
+      timestamp: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString().substring(0, 5)
+    };
+    setChatMessages(prev => [...prev, newMsg]);
+
+    if (senderRole === 'investor') {
+      addNotification(`New message from investor: ${investorEmail}`);
+    } else {
+      addNotification(`Admin replied to investor: ${investorEmail}`);
+    }
+  };
 
   const addNotification = (message: string) => {
     const newNotif: AppNotification = {
@@ -594,7 +657,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       auditExpense,
       addNotification,
       markNotificationsAsRead,
-      requestWithdrawal
+      requestWithdrawal,
+      chatMessages,
+      sendChatMessage
     }}>
       {children}
     </AppContext.Provider>

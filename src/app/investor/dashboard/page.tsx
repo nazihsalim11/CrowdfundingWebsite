@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useApp } from "@/context/AppContext";
 import CustomSelect from "@/components/ui/select";
+import SupportChat from "@/components/SupportChat";
 
 function DashboardCalculator() {
   const [amount, setAmount] = useState(50000); // default ₹50,000
@@ -134,7 +135,7 @@ export default function InvestorDashboard() {
     requestWithdrawal
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<"overview" | "portfolio" | "kyc" | "withdraw" | "calculator">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "portfolio" | "kyc" | "withdraw" | "calculator" | "messages">("overview");
   const [chartType, setChartType] = useState<"line" | "bar">("line");
   const [hoveredData, setHoveredData] = useState<{ label: string; value: string } | null>(null);
 
@@ -242,6 +243,13 @@ export default function InvestorDashboard() {
             className={`sidebar-link ${activeTab === "withdraw" ? "active" : ""}`}
           >
             💰 Withdrawal Requests
+          </button>
+
+          <button 
+            onClick={() => setActiveTab("messages")} 
+            className={`sidebar-link ${activeTab === "messages" ? "active" : ""}`}
+          >
+            💬 Support Chat
           </button>
 
           <div style={{ marginTop: 'auto', padding: '16px' }}>
@@ -766,6 +774,16 @@ export default function InvestorDashboard() {
                   </table>
                 </div>
               </div>
+            </div>
+          )}
+
+          {activeTab === "messages" && (
+            <div>
+              <div style={{ marginBottom: '30px' }}>
+                <h1 style={{ fontSize: '2rem' }}>Helpdesk Support Chat</h1>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Direct messaging channel with Seed Global Super Admins.</p>
+              </div>
+              <SupportChat mode="investor" />
             </div>
           )}
 
