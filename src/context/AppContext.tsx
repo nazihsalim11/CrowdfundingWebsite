@@ -160,7 +160,7 @@ interface AppContextType {
   logout: () => void;
   submitKyc: (data: any) => void;
   submitSchoolVerification: (data: any) => void;
-  createCampaign: (campaign: Omit<Campaign, 'id' | 'raisedAmount' | 'status' | 'updates'>) => void;
+  createCampaign: (campaign: Omit<Campaign, 'id' | 'raisedAmount' | 'status' | 'updates' | 'escrowLockedAmount' | 'escrowDisbursedAmount'>) => void;
   investInCampaign: (campaignId: string, amount: number, paymentMethod: string, proof?: any) => void;
   addExpense: (expense: Omit<Expense, 'id' | 'status'>) => void;
   approveCampaign: (campaignId: string) => void;
@@ -744,7 +744,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     addNotification("School Board submitted official registry credentials.");
   };
 
-  const createCampaign = (newCamp: Omit<Campaign, 'id' | 'raisedAmount' | 'status' | 'updates'>) => {
+  const createCampaign = (newCamp: Omit<Campaign, 'id' | 'raisedAmount' | 'status' | 'updates' | 'escrowLockedAmount' | 'escrowDisbursedAmount'>) => {
     const campaign: Campaign = {
       ...newCamp,
       id: `c${campaigns.length + 1}`,

@@ -1314,7 +1314,6 @@ Date: ${new Date().toLocaleDateString()}`;
 
                     <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: '1.6' }}>{report.summary}</p>
                   </div>
-                            </div>
                 ))}
 
                 {impactReports.filter(r => investments.some(inv => inv.campaignId === r.campaignId && inv.status === 'completed')).length === 0 && (
