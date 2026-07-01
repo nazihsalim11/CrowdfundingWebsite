@@ -4,16 +4,12 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useApp } from "@/context/AppContext";
 
 function CalculatorWidget() {
   const [amount, setAmount] = useState(50000); // default ₹50,000
   const [projectType, setProjectType] = useState<'labs' | 'digital' | 'buses'>('labs');
-
-  const roiRates = {
-    labs: 0.10,   // 10%
-    digital: 0.08, // 8%
-    buses: 0.05    // 5%
-  };
+  const { roiRates } = useApp();
 
   const selectedRate = roiRates[projectType];
   const annualReturn = amount * selectedRate;
@@ -65,7 +61,7 @@ function CalculatorWidget() {
                 border: 'none'
               }}
             >
-              🖥️ Computer Labs (10%)
+              🖥️ Computer Labs ({Math.round(roiRates.labs * 100)}%)
             </button>
             <button 
               onClick={() => setProjectType('digital')} 
@@ -78,7 +74,7 @@ function CalculatorWidget() {
                 border: 'none'
               }}
             >
-              💻 Smart Classrooms (8%)
+              💻 Smart Classrooms ({Math.round(roiRates.digital * 100)}%)
             </button>
             <button 
               onClick={() => setProjectType('buses')} 
@@ -91,7 +87,7 @@ function CalculatorWidget() {
                 border: 'none'
               }}
             >
-              🚌 EV School Buses (5%)
+              🚌 EV School Buses ({Math.round(roiRates.buses * 100)}%)
             </button>
           </div>
         </div>

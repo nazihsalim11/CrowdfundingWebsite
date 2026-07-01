@@ -20,10 +20,17 @@ export default function AdminDashboard() {
     approveSchool,
     approveKyc,
     approveExpense,
-    investments
+    investments,
+    roiRates,
+    updateRoiRates
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<"overview" | "campaigns" | "expenses" | "schools" | "users" | "messages">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "campaigns" | "expenses" | "schools" | "users" | "messages" | "calculator">("overview");
+
+  // Calculator config state
+  const [labsRate, setLabsRate] = useState<number>(Math.round(roiRates.labs * 100));
+  const [digitalRate, setDigitalRate] = useState<number>(Math.round(roiRates.digital * 100));
+  const [busesRate, setBusesRate] = useState<number>(Math.round(roiRates.buses * 100));
 
   if (!isLoggedIn || role !== "admin") {
     return (
@@ -38,6 +45,20 @@ export default function AdminDashboard() {
       </>
     );
   }
+
+  const handleSaveCalculatorConfig = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (labsRate < 0 || digitalRate < 0 || busesRate < 0) {
+      alert("Rates cannot be negative.");
+      return;
+    }
+    updateRoiRates({
+      labs: labsRate / 100,
+      digital: digitalRate / 100,
+      buses: busesRate / 100
+    });
+    alert("ROI Calculator configurations updated successfully! All investor metrics are updated in real-time.");
+  };
 
   // Count items
   const pendingCampaigns = campaigns.filter(c => c.status === 'pending');
@@ -94,6 +115,10 @@ export default function AdminDashboard() {
             {kycStatus === 'pending' && (
               <span className="badge badge-warning" style={{ marginLeft: 'auto', fontSize: '0.7rem', padding: '2px 6px' }}>1</span>
             )}
+          </button>
+
+          <button onClick={() => setActiveTab("calculator")} className={`sidebar-link ${activeTab === "calculator" ? "active" : ""}`}>
+            🧮 ROI Calculator Config
           </button>
 
           <button onClick={() => setActiveTab("messages")} className={`sidebar-link ${activeTab === "messages" ? "active" : ""}`}>
@@ -366,6 +391,67 @@ export default function AdminDashboard() {
                 <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Respond to direct compliance and operational inquiries from registered investors.</p>
               </div>
               <SupportChat mode="admin" />
+            </div>
+          )}
+
+          {activeTab === "calculator" && (
+            <div style={{ maxWidth: '600px' }}>
+              <div style={{ marginBottom: '30px' }}>
+                <h1 style={{ fontSize: '2rem' }}>ROI Calculator Config</h1>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Configure target returns for the primary investment project classes.</p>
+              </div>
+
+              <div className="card" style={{ border: '1px solid var(--border-color)' }}>
+                <h3 style={{ marginBottom: '16px' }}>Update Yield Percentages</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', marginBottom: '24px' }}>
+                  Updating these percentages modifies the return projections shown on the investor-facing dashboard immediately.
+                </p>
+
+                <form onSubmit={handleSaveCalculatorConfig}>
+                  <div className="form-group" style={{ marginBottom: '20px' }}>
+                    <label className="label">🖥️ Computer Labs ROI Rate (%)</label>
+                    <input 
+                      type="number"
+                      value={labsRate}
+                      onChange={(e) => setLabsRate(Number(e.target.value))}
+                      className="input"
+                      min="0"
+                      max="100"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: '20px' }}>
+                    <label className="label">💻 Smart Classrooms ROI Rate (%)</label>
+                    <input 
+                      type="number"
+                      value={digitalRate}
+                      onChange={(e) => setDigitalRate(Number(e.target.value))}
+                      className="input"
+                      min="0"
+                      max="100"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: '24px' }}>
+                    <label className="label">🚌 EV School Buses ROI Rate (%)</label>
+                    <input 
+                      type="number"
+                      value={busesRate}
+                      onChange={(e) => setBusesRate(Number(e.target.value))}
+                      className="input"
+                      min="0"
+                      max="100"
+                      required
+                    />
+                  </div>
+
+                  <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
+                    Save Calculator Configuration
+                  </button>
+                </form>
+              </div>
             </div>
           )}
 

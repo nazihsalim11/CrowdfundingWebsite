@@ -92,10 +92,19 @@ export interface Announcement {
   totalContributions: number;
 }
 
+export interface RoiRates {
+  labs: number;
+  digital: number;
+  buses: number;
+}
+
 interface AppContextType {
   role: UserRole;
   isLoggedIn: boolean;
   userEmail: string;
+  username: string;
+  password: string;
+  updateProfile: (username: string, email: string, password?: string) => void;
   kycStatus: 'not_submitted' | 'pending' | 'verified';
   schoolVerificationStatus: 'not_submitted' | 'pending' | 'verified';
   campaigns: Campaign[];
@@ -143,6 +152,10 @@ interface AppContextType {
   // Announcement Actions
   announcements: Announcement[];
   createAnnouncement: (announcement: Omit<Announcement, 'id' | 'date' | 'schoolName' | 'schoolId' | 'investorsCount' | 'totalContributions' | 'campaignTitle'>) => void;
+
+  // ROI Calculator configuration
+  roiRates: RoiRates;
+  updateRoiRates: (rates: RoiRates) => void;
 }
 
 const initialCampaigns: Campaign[] = [
@@ -370,6 +383,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [role, setRoleState] = useState<UserRole>('visitor');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState('');
+  const [username, setUsername] = useState('Investor User');
+  const [password, setPassword] = useState('password123');
   const [kycStatus, setKycStatus] = useState<'not_submitted' | 'pending' | 'verified'>('verified');
   const [schoolVerificationStatus, setSchoolVerificationStatus] = useState<'not_submitted' | 'pending' | 'verified'>('verified');
   const [campaigns, setCampaigns] = useState<Campaign[]>(initialCampaigns);
@@ -439,6 +454,27 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
     setAnnouncements(prev => [announcement, ...prev]);
     addNotification(`School posted announcement: "${newAnn.title}"`);
+  };
+
+  // ROI Calculator state & action
+  const [roiRates, setRoiRates] = useState<RoiRates>({
+    labs: 0.10,
+    digital: 0.08,
+    buses: 0.05
+  });
+
+  const updateRoiRates = (newRates: RoiRates) => {
+    setRoiRates(newRates);
+    addNotification(`Super Admin updated ROI Calculator rates: Labs: ${Math.round(newRates.labs * 100)}%, Digital: ${Math.round(newRates.digital * 100)}%, Buses: ${Math.round(newRates.buses * 100)}%`);
+  };
+
+  const updateProfile = (newUsername: string, newEmail: string, newPassword?: string) => {
+    setUsername(newUsername);
+    setUserEmail(newEmail);
+    if (newPassword) {
+      setPassword(newPassword);
+    }
+    addNotification(`User updated profile settings: Username: ${newUsername}, Email: ${newEmail}`);
   };
 
   const addNotification = (message: string) => {
@@ -738,7 +774,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       chatMessages,
       sendChatMessage,
       announcements,
-      createAnnouncement
+      createAnnouncement,
+      roiRates,
+      updateRoiRates,
+      username,
+      password,
+      updateProfile
     }}>
       {children}
     </AppContext.Provider>

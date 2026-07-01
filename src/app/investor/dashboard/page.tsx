@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -11,12 +11,7 @@ import SupportChat from "@/components/SupportChat";
 function DashboardCalculator() {
   const [amount, setAmount] = useState(50000); // default ₹50,000
   const [projectType, setProjectType] = useState<'labs' | 'digital' | 'buses'>('labs');
-
-  const roiRates = {
-    labs: 0.10,   // 10%
-    digital: 0.08, // 8%
-    buses: 0.05    // 5%
-  };
+  const { roiRates } = useApp();
 
   const selectedRate = roiRates[projectType];
   const annualReturn = amount * selectedRate;
@@ -68,7 +63,7 @@ function DashboardCalculator() {
                 border: 'none'
               }}
             >
-              🖥️ Computer Labs (10%)
+              🖥️ Computer Labs ({Math.round(roiRates.labs * 100)}%)
             </button>
             <button 
               onClick={() => setProjectType('digital')} 
@@ -81,7 +76,7 @@ function DashboardCalculator() {
                 border: 'none'
               }}
             >
-              💻 Smart Classrooms (8%)
+              💻 Smart Classrooms ({Math.round(roiRates.digital * 100)}%)
             </button>
             <button 
               onClick={() => setProjectType('buses')} 
@@ -94,7 +89,7 @@ function DashboardCalculator() {
                 border: 'none'
               }}
             >
-              🚌 EV School Buses (5%)
+              🚌 EV School Buses ({Math.round(roiRates.buses * 100)}%)
             </button>
           </div>
         </div>
@@ -133,10 +128,13 @@ export default function InvestorDashboard() {
     campaigns,
     withdrawals,
     requestWithdrawal,
-    announcements
+    announcements,
+    username,
+    password,
+    updateProfile
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<"overview" | "portfolio" | "kyc" | "withdraw" | "calculator" | "messages" | "announcements">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "portfolio" | "kyc" | "withdraw" | "calculator" | "messages" | "announcements" | "profile">("overview");
   const [chartType, setChartType] = useState<"line" | "bar">("line");
   const [hoveredData, setHoveredData] = useState<{ label: string; value: string } | null>(null);
 
@@ -153,6 +151,37 @@ export default function InvestorDashboard() {
 
   // Withdrawal State
   const [withdrawAmount, setWithdrawAmount] = useState<number>(10000);
+
+  // Profile Form State
+  const [editUsername, setEditUsername] = useState(username);
+  const [editEmail, setEditEmail] = useState(userEmail || "investor@seedglobal.com");
+  const [editPassword, setEditPassword] = useState(password);
+  const [editConfirmPassword, setEditConfirmPassword] = useState(password);
+
+  useEffect(() => {
+    setEditUsername(username);
+    setEditEmail(userEmail || "investor@seedglobal.com");
+    setEditPassword(password);
+    setEditConfirmPassword(password);
+  }, [username, userEmail, password]);
+
+  const handleUpdateProfile = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editUsername.trim()) {
+      alert("Username cannot be empty.");
+      return;
+    }
+    if (!editEmail.trim()) {
+      alert("Email cannot be empty.");
+      return;
+    }
+    if (editPassword !== editConfirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+    updateProfile(editUsername, editEmail, editPassword);
+    alert("Profile updated successfully!");
+  };
 
   if (!isLoggedIn || role !== "investor") {
     return (
@@ -208,7 +237,8 @@ export default function InvestorDashboard() {
         <aside className="sidebar">
           <div style={{ padding: '0 16px 20px 16px', borderBottom: '1px solid var(--border-color)', marginBottom: '16px' }}>
             <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Investor Portal</span>
-            <h4 style={{ fontSize: '0.98rem', marginTop: '4px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{userEmail || "investor@seedglobal.com"}</h4>
+            <h4 style={{ fontSize: '1.05rem', fontWeight: 700, marginTop: '4px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{username}</h4>
+            <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis' }}>{userEmail || "investor@seedglobal.com"}</span>
           </div>
 
           <button 
@@ -258,6 +288,13 @@ export default function InvestorDashboard() {
             className={`sidebar-link ${activeTab === "messages" ? "active" : ""}`}
           >
             💬 Support Chat
+          </button>
+
+          <button 
+            onClick={() => setActiveTab("profile")} 
+            className={`sidebar-link ${activeTab === "profile" ? "active" : ""}`}
+          >
+            👤 Customize Profile
           </button>
 
           <div style={{ marginTop: 'auto', padding: '16px' }}>
@@ -864,6 +901,74 @@ export default function InvestorDashboard() {
                     <p style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>There are no school announcements to display.</p>
                   </div>
                 )}
+              </div>
+            </div>
+          )}
+
+          {activeTab === "profile" && (
+            <div style={{ maxWidth: '600px' }}>
+              <div style={{ marginBottom: '30px' }}>
+                <h1 style={{ fontSize: '2rem' }}>Customize Profile</h1>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Manage and update your personal details, email address, and security credentials.</p>
+              </div>
+
+              <div className="card" style={{ border: '1px solid var(--border-color)' }}>
+                <h3 style={{ marginBottom: '16px' }}>Profile Information</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', marginBottom: '24px' }}>
+                  Keep your credentials secure. Your username is used for personalized displays, and your email is used for transaction receipts.
+                </p>
+
+                <form onSubmit={handleUpdateProfile}>
+                  <div className="form-group" style={{ marginBottom: '20px' }}>
+                    <label className="label">👤 Username</label>
+                    <input 
+                      type="text"
+                      value={editUsername}
+                      onChange={(e) => setEditUsername(e.target.value)}
+                      className="input"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: '20px' }}>
+                    <label className="label">📧 Email Address</label>
+                    <input 
+                      type="email"
+                      value={editEmail}
+                      onChange={(e) => setEditEmail(e.target.value)}
+                      className="input"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: '20px' }}>
+                    <label className="label">🔒 New Password</label>
+                    <input 
+                      type="password"
+                      value={editPassword}
+                      onChange={(e) => setEditPassword(e.target.value)}
+                      className="input"
+                      placeholder="Enter new password"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: '24px' }}>
+                    <label className="label">🔒 Confirm New Password</label>
+                    <input 
+                      type="password"
+                      value={editConfirmPassword}
+                      onChange={(e) => setEditConfirmPassword(e.target.value)}
+                      className="input"
+                      placeholder="Confirm new password"
+                      required
+                    />
+                  </div>
+
+                  <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
+                    Save Profile Changes
+                  </button>
+                </form>
               </div>
             </div>
           )}
