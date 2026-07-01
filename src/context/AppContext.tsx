@@ -98,6 +98,14 @@ export interface RoiRates {
   buses: number;
 }
 
+export interface PasswordResetRequest {
+  id: string;
+  email: string;
+  username: string;
+  status: 'pending' | 'approved' | 'rejected';
+  date: string;
+}
+
 interface AppContextType {
   role: UserRole;
   isLoggedIn: boolean;
@@ -105,6 +113,10 @@ interface AppContextType {
   username: string;
   password: string;
   updateProfile: (username: string, email: string, password?: string) => void;
+  passwordResetRequests: PasswordResetRequest[];
+  requestPasswordReset: (email: string, username: string) => void;
+  approvePasswordReset: (requestId: string) => void;
+  rejectPasswordReset: (requestId: string) => void;
   kycStatus: 'not_submitted' | 'pending' | 'verified';
   schoolVerificationStatus: 'not_submitted' | 'pending' | 'verified';
   campaigns: Campaign[];
@@ -406,6 +418,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     { id: "wd2", investorEmail: "investor@seedglobal.com", amount: 12000, date: "2026-06-29", status: "pending" }
   ]);
 
+  const [passwordResetRequests, setPasswordResetRequests] = useState<PasswordResetRequest[]>([]);
+
   // Messaging System state & action
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>(initialChatMessages);
 
@@ -475,6 +489,40 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       setPassword(newPassword);
     }
     addNotification(`User updated profile settings: Username: ${newUsername}, Email: ${newEmail}`);
+  };
+
+  const requestPasswordReset = (email: string, username: string) => {
+    const newRequest: PasswordResetRequest = {
+      id: `pr_${passwordResetRequests.length + 1}`,
+      email,
+      username,
+      status: 'pending',
+      date: new Date().toISOString().split('T')[0]
+    };
+    setPasswordResetRequests(prev => [newRequest, ...prev]);
+    addNotification(`Password reset request submitted by ${username} (${email}).`);
+  };
+
+  const approvePasswordReset = (requestId: string) => {
+    setPasswordResetRequests(prev => prev.map(req => {
+      if (req.id === requestId) {
+        // Reset password to 'reset123'
+        setPassword('reset123');
+        addNotification(`Super Admin approved password reset for ${req.email}. Temporary password set to 'reset123'.`);
+        return { ...req, status: 'approved' };
+      }
+      return req;
+    }));
+  };
+
+  const rejectPasswordReset = (requestId: string) => {
+    setPasswordResetRequests(prev => prev.map(req => {
+      if (req.id === requestId) {
+        addNotification(`Super Admin rejected password reset request for ${req.email}.`);
+        return { ...req, status: 'rejected' };
+      }
+      return req;
+    }));
   };
 
   const addNotification = (message: string) => {
@@ -779,7 +827,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       updateRoiRates,
       username,
       password,
-      updateProfile
+      updateProfile,
+      passwordResetRequests,
+      requestPasswordReset,
+      approvePasswordReset,
+      rejectPasswordReset
     }}>
       {children}
     </AppContext.Provider>

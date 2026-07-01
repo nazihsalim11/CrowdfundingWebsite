@@ -131,7 +131,8 @@ export default function InvestorDashboard() {
     announcements,
     username,
     password,
-    updateProfile
+    updateProfile,
+    requestPasswordReset
   } = useApp();
 
   const [activeTab, setActiveTab] = useState<"overview" | "portfolio" | "kyc" | "withdraw" | "calculator" | "messages" | "announcements" | "profile">("overview");
@@ -155,15 +156,17 @@ export default function InvestorDashboard() {
   // Profile Form State
   const [editUsername, setEditUsername] = useState(username);
   const [editEmail, setEditEmail] = useState(userEmail || "investor@seedglobal.com");
-  const [editPassword, setEditPassword] = useState(password);
-  const [editConfirmPassword, setEditConfirmPassword] = useState(password);
+
+  // Password Modal State
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [prevPasswordInput, setPrevPasswordInput] = useState("");
+  const [newPasswordInput, setNewPasswordInput] = useState("");
+  const [confirmPasswordInput, setConfirmPasswordInput] = useState("");
 
   useEffect(() => {
     setEditUsername(username);
     setEditEmail(userEmail || "investor@seedglobal.com");
-    setEditPassword(password);
-    setEditConfirmPassword(password);
-  }, [username, userEmail, password]);
+  }, [username, userEmail]);
 
   const handleUpdateProfile = (e: React.FormEvent) => {
     e.preventDefault();
@@ -175,12 +178,39 @@ export default function InvestorDashboard() {
       alert("Email cannot be empty.");
       return;
     }
-    if (editPassword !== editConfirmPassword) {
-      alert("Passwords do not match.");
+    updateProfile(editUsername, editEmail);
+    alert("Profile updated successfully!");
+  };
+
+  const handleChangePasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (prevPasswordInput !== password) {
+      alert("Previous password does not match your current password.");
       return;
     }
-    updateProfile(editUsername, editEmail, editPassword);
-    alert("Profile updated successfully!");
+    if (!newPasswordInput.trim()) {
+      alert("New password cannot be empty.");
+      return;
+    }
+    if (newPasswordInput !== confirmPasswordInput) {
+      alert("New passwords do not match.");
+      return;
+    }
+    updateProfile(username, userEmail, newPasswordInput);
+    alert("Password changed successfully!");
+    setPrevPasswordInput("");
+    setNewPasswordInput("");
+    setConfirmPasswordInput("");
+    setIsPasswordModalOpen(false);
+  };
+
+  const handleForgotPasswordRequest = () => {
+    requestPasswordReset(userEmail || "investor@seedglobal.com", username);
+    alert("Your forgot password request has been sent to the Admin. Please wait for verification and approval.");
+    setPrevPasswordInput("");
+    setNewPasswordInput("");
+    setConfirmPasswordInput("");
+    setIsPasswordModalOpen(false);
   };
 
   if (!isLoggedIn || role !== "investor") {
@@ -295,6 +325,14 @@ export default function InvestorDashboard() {
             className={`sidebar-link ${activeTab === "profile" ? "active" : ""}`}
           >
             👤 Customize Profile
+          </button>
+
+          <button 
+            type="button"
+            onClick={() => setIsPasswordModalOpen(true)} 
+            className="sidebar-link"
+          >
+            🔒 Change Password
           </button>
 
           <div style={{ marginTop: 'auto', padding: '16px' }}>
@@ -909,13 +947,13 @@ export default function InvestorDashboard() {
             <div style={{ maxWidth: '600px' }}>
               <div style={{ marginBottom: '30px' }}>
                 <h1 style={{ fontSize: '2rem' }}>Customize Profile</h1>
-                <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Manage and update your personal details, email address, and security credentials.</p>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Manage and update your personal details and email address.</p>
               </div>
 
               <div className="card" style={{ border: '1px solid var(--border-color)' }}>
                 <h3 style={{ marginBottom: '16px' }}>Profile Information</h3>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', marginBottom: '24px' }}>
-                  Keep your credentials secure. Your username is used for personalized displays, and your email is used for transaction receipts.
+                  Keep your personal profile up to date. Your username is used for personalized displays, and your email is used for transaction receipts.
                 </p>
 
                 <form onSubmit={handleUpdateProfile}>
@@ -930,7 +968,7 @@ export default function InvestorDashboard() {
                     />
                   </div>
 
-                  <div className="form-group" style={{ marginBottom: '20px' }}>
+                  <div className="form-group" style={{ marginBottom: '24px' }}>
                     <label className="label">📧 Email Address</label>
                     <input 
                       type="email"
@@ -941,33 +979,108 @@ export default function InvestorDashboard() {
                     />
                   </div>
 
-                  <div className="form-group" style={{ marginBottom: '20px' }}>
-                    <label className="label">🔒 New Password</label>
+                  <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
+                    Save Profile Changes
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {isPasswordModalOpen && (
+            <div style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(4, 45, 26, 0.6)',
+              backdropFilter: 'blur(8px)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 1000,
+              animation: 'fadeIn 0.2s ease-out'
+            }}>
+              <div className="card" style={{
+                width: '100%',
+                maxWidth: '450px',
+                backgroundColor: 'var(--bg-secondary)',
+                borderRadius: 'var(--radius-lg)',
+                border: '1.5px solid var(--border-color)',
+                boxShadow: 'var(--shadow-lg)',
+                padding: '30px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '20px'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h3 style={{ fontSize: '1.4rem' }}>🔒 Change Password</h3>
+                  <button 
+                    type="button" 
+                    onClick={() => {
+                      setIsPasswordModalOpen(false);
+                      setPrevPasswordInput("");
+                      setNewPasswordInput("");
+                      setConfirmPasswordInput("");
+                    }} 
+                    style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: 'var(--text-secondary)' }}
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <form onSubmit={handleChangePasswordSubmit}>
+                  <div className="form-group" style={{ marginBottom: '16px' }}>
+                    <label className="label">Previous Password</label>
                     <input 
                       type="password"
-                      value={editPassword}
-                      onChange={(e) => setEditPassword(e.target.value)}
+                      value={prevPasswordInput}
+                      onChange={(e) => setPrevPasswordInput(e.target.value)}
+                      className="input"
+                      placeholder="Enter previous password"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: '16px' }}>
+                    <label className="label">New Password</label>
+                    <input 
+                      type="password"
+                      value={newPasswordInput}
+                      onChange={(e) => setNewPasswordInput(e.target.value)}
                       className="input"
                       placeholder="Enter new password"
                       required
                     />
                   </div>
 
-                  <div className="form-group" style={{ marginBottom: '24px' }}>
-                    <label className="label">🔒 Confirm New Password</label>
+                  <div className="form-group" style={{ marginBottom: '20px' }}>
+                    <label className="label">Confirm New Password</label>
                     <input 
                       type="password"
-                      value={editConfirmPassword}
-                      onChange={(e) => setEditConfirmPassword(e.target.value)}
+                      value={confirmPasswordInput}
+                      onChange={(e) => setConfirmPasswordInput(e.target.value)}
                       className="input"
                       placeholder="Confirm new password"
                       required
                     />
                   </div>
 
-                  <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
-                    Save Profile Changes
+                  <button type="submit" className="btn btn-primary" style={{ width: '100%', marginBottom: '12px' }}>
+                    Confirm & Update Password
                   </button>
+
+                  <div style={{ textAlign: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
+                    <button 
+                      type="button" 
+                      onClick={handleForgotPasswordRequest} 
+                      className="btn btn-outline" 
+                      style={{ width: '100%', borderColor: 'var(--text-tertiary)', color: 'var(--text-tertiary)' }}
+                    >
+                      ❓ Forget Password
+                    </button>
+                  </div>
                 </form>
               </div>
             </div>

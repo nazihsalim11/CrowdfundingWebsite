@@ -22,10 +22,13 @@ export default function AdminDashboard() {
     approveExpense,
     investments,
     roiRates,
-    updateRoiRates
+    updateRoiRates,
+    passwordResetRequests,
+    approvePasswordReset,
+    rejectPasswordReset
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<"overview" | "campaigns" | "expenses" | "schools" | "users" | "messages" | "calculator">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "campaigns" | "expenses" | "schools" | "users" | "messages" | "calculator" | "passwordResets">("overview");
 
   // Calculator config state
   const [labsRate, setLabsRate] = useState<number>(Math.round(roiRates.labs * 100));
@@ -117,6 +120,15 @@ export default function AdminDashboard() {
             )}
           </button>
 
+          <button onClick={() => setActiveTab("passwordResets")} className={`sidebar-link ${activeTab === "passwordResets" ? "active" : ""}`}>
+            🔑 Password Reset Requests
+            {passwordResetRequests.filter(r => r.status === 'pending').length > 0 && (
+              <span className="badge badge-warning" style={{ marginLeft: 'auto', fontSize: '0.7rem', padding: '2px 6px' }}>
+                {passwordResetRequests.filter(r => r.status === 'pending').length}
+              </span>
+            )}
+          </button>
+
           <button onClick={() => setActiveTab("calculator")} className={`sidebar-link ${activeTab === "calculator" ? "active" : ""}`}>
             🧮 ROI Calculator Config
           </button>
@@ -153,7 +165,7 @@ export default function AdminDashboard() {
                 <div className="stat-card">
                   <span className="stat-lbl">Pending Tasks</span>
                   <span className="stat-val" style={{ color: 'var(--warning)' }}>
-                    {pendingCampaigns.length + pendingExpenses.length + (kycStatus === 'pending' ? 1 : 0) + (schoolVerificationStatus === 'pending' ? 1 : 0)}
+                    {pendingCampaigns.length + pendingExpenses.length + (kycStatus === 'pending' ? 1 : 0) + (schoolVerificationStatus === 'pending' ? 1 : 0) + passwordResetRequests.filter(r => r.status === 'pending').length}
                   </span>
                 </div>
               </div>
@@ -452,6 +464,59 @@ export default function AdminDashboard() {
                   </button>
                 </form>
               </div>
+            </div>
+          )}
+
+          {activeTab === "passwordResets" && (
+            <div>
+              <div style={{ marginBottom: '30px' }}>
+                <h1 style={{ fontSize: '2rem' }}>Password Reset Requests</h1>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Approve or reject password reset requests submitted by users who forgot their passwords.</p>
+              </div>
+
+              {passwordResetRequests.length > 0 ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                  {passwordResetRequests.map((req) => (
+                    <div className="card" key={req.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '8px' }}>
+                          <span className={`badge ${req.status === 'pending' ? 'badge-warning' : req.status === 'approved' ? 'badge-success' : 'badge-danger'}`}>
+                            {req.status.toUpperCase()}
+                          </span>
+                          <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Request Date: {req.date}</span>
+                        </div>
+                        <h3>{req.username}</h3>
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Email: <strong>{req.email}</strong></p>
+                      </div>
+                      
+                      {req.status === 'pending' && (
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                          <button 
+                            onClick={() => { approvePasswordReset(req.id); alert(`Approved password reset for ${req.username}. Temporary password 'reset123' has been set.`); }} 
+                            className="btn btn-primary" 
+                            style={{ padding: '8px 16px', fontSize: '0.85rem' }}
+                          >
+                            ✓ Approve
+                          </button>
+                          <button 
+                            onClick={() => { rejectPasswordReset(req.id); alert(`Rejected password reset for ${req.username}.`); }} 
+                            className="btn btn-outline" 
+                            style={{ padding: '8px 16px', fontSize: '0.85rem', color: 'var(--danger)', borderColor: 'var(--danger)' }}
+                          >
+                            Reject
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="card" style={{ textAlign: 'center', padding: '60px' }}>
+                  <span style={{ fontSize: '2.5rem' }}>✓</span>
+                  <h3 style={{ marginTop: '12px' }}>No Pending Requests</h3>
+                  <p style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>There are no password reset requests to display.</p>
+                </div>
+              )}
             </div>
           )}
 
