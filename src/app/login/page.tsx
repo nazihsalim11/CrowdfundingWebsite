@@ -101,7 +101,7 @@ export default function LoginPage() {
           </form>
 
           <div style={{ textAlign: 'center', marginTop: '24px', fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/register" style={{ color: 'var(--primary)', fontWeight: 600 }}>
               Create Account
             </Link>
