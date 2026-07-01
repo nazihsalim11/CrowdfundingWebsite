@@ -16,10 +16,12 @@ export default function SchoolDashboard() {
     schoolVerificationStatus,
     createCampaign,
     addExpense,
-    submitSchoolVerification
+    submitSchoolVerification,
+    announcements,
+    createAnnouncement
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<"overview" | "create" | "expenses" | "verify">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "create" | "expenses" | "verify" | "announcements">("overview");
 
   // Campaign Form State
   const [campTitle, setCampTitle] = useState("");
@@ -40,6 +42,18 @@ export default function SchoolDashboard() {
   const [regCert, setRegCert] = useState("");
   const [govAppr, setGovAppr] = useState("");
   const [principalLetter, setPrincipalLetter] = useState("");
+
+  // Announcement Form State
+  const [annTitle, setAnnTitle] = useState("");
+  const [annContent, setAnnContent] = useState("");
+  const [annCampaignId, setAnnCampaignId] = useState("");
+  const [annType, setAnnType] = useState<"success" | "launch" | "important">("important");
+  const [annBroadcastEmail, setAnnBroadcastEmail] = useState(false);
+
+  // Email Broadcast Simulation State
+  const [isBroadcasting, setIsBroadcasting] = useState(false);
+  const [broadcastProgress, setBroadcastProgress] = useState(0);
+  const [broadcastLog, setBroadcastLog] = useState<string[]>([]);
 
   if (!isLoggedIn || role !== "school") {
     return (
@@ -124,6 +138,98 @@ export default function SchoolDashboard() {
     alert("School verification documents uploaded. Admin will review within 24 hours.");
   };
 
+  const startEmailBroadcast = (campaignId: string, title: string, content: string) => {
+    setIsBroadcasting(true);
+    setBroadcastProgress(0);
+    setBroadcastLog(["Initializing SMTP Secure Connection..."]);
+
+    let baseInvestors = 0;
+    if (campaignId === 'c1') baseInvestors = 24;
+    else if (campaignId === 'c2') baseInvestors = 48;
+    else if (campaignId === 'c3') baseInvestors = 15;
+    else if (campaignId === 'c4') baseInvestors = 8;
+    else {
+      const camp = campaigns.find(c => c.id === campaignId);
+      baseInvestors = Math.max(1, Math.floor((camp?.raisedAmount || 0) / 50000));
+    }
+
+    const totalSteps = 4 + baseInvestors;
+    let currentStep = 0;
+
+    const interval = setInterval(() => {
+      currentStep++;
+      const pct = Math.round((currentStep / totalSteps) * 100);
+      setBroadcastProgress(pct);
+
+      if (currentStep === 1) {
+        setBroadcastLog(prev => [...prev, "SMTP connection established over TLS 1.3 on port 465."]);
+      } else if (currentStep === 2) {
+        setBroadcastLog(prev => [...prev, "Drafting HTML mail templates with digital signatures..."]);
+      } else if (currentStep === 3) {
+        setBroadcastLog(prev => [...prev, `Found ${baseInvestors} active campaign backer(s). Generating mailing list...`]);
+      } else if (currentStep > 3 && currentStep <= 3 + baseInvestors) {
+        const investorIndex = currentStep - 4;
+        let email = `investor${investorIndex + 1}@seedglobal.com`;
+        if (investorIndex === 0) email = "investor@seedglobal.com";
+        else if (investorIndex === 1) email = "john@example.com";
+        setBroadcastLog(prev => [...prev, `Sending email broadcast to ${email}... [SUCCESS]`]);
+      } else {
+        setBroadcastLog(prev => [...prev, "✓ Broadcast Completed! All emails successfully sent and confirmed."]);
+        clearInterval(interval);
+      }
+    }, 400);
+  };
+
+  const handleCreateAnnouncement = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!annCampaignId || !annTitle || !annContent) {
+      alert("Please fill in all announcement fields.");
+      return;
+    }
+
+    createAnnouncement({
+      campaignId: annCampaignId,
+      title: annTitle,
+      content: annContent,
+      broadcastEmail: annBroadcastEmail
+    });
+
+    if (annBroadcastEmail) {
+      startEmailBroadcast(annCampaignId, annTitle, annContent);
+    } else {
+      alert("Announcement published successfully!");
+      resetAnnouncementForm();
+    }
+  };
+
+  const handleTypeChange = (type: "success" | "launch" | "important", selectedCampId: string) => {
+    setAnnType(type);
+    const camp = campaigns.find(c => c.id === selectedCampId);
+    const campName = camp ? camp.title : "[Select Campaign]";
+    
+    if (type === "success") {
+      setAnnTitle(`Campaign Success: ${campName} has successfully raised its goal!`);
+      setAnnContent(`We are incredibly proud to announce that the fundraising goal for "${campName}" has been successfully met! A total of ₹${camp ? camp.goalAmount.toLocaleString() : "0"} has been raised. Development and execution will begin immediately. Thank you to all our generous backers!`);
+    } else if (type === "launch") {
+      setAnnTitle(`New Project Live: Launching ${campName}`);
+      setAnnContent(`We have officially launched our newest crowdfunding campaign: "${campName}"! This project aims to improve our school facilities. We invite you to check it out, view the projected ROIs, and help us reach our target.`);
+    } else {
+      setAnnTitle("Important Project Update");
+      setAnnContent("");
+    }
+  };
+
+  const resetAnnouncementForm = () => {
+    setAnnTitle("");
+    setAnnContent("");
+    setAnnCampaignId("");
+    setAnnType("important");
+    setAnnBroadcastEmail(false);
+    setIsBroadcasting(false);
+    setBroadcastProgress(0);
+    setBroadcastLog([]);
+  };
+
   // Calculate statistics
   const totalRaised = schoolCampaigns.reduce((acc, c) => acc + c.raisedAmount, 0);
   const activeCampaignsCount = schoolCampaigns.filter(c => c.status === 'active').length;
@@ -160,6 +266,10 @@ export default function SchoolDashboard() {
 
           <button onClick={() => setActiveTab("verify")} className={`sidebar-link ${activeTab === "verify" ? "active" : ""}`}>
             🛡️ School Verification
+          </button>
+
+          <button onClick={() => setActiveTab("announcements")} className={`sidebar-link ${activeTab === "announcements" ? "active" : ""}`}>
+            📣 Announcements & Broadcasts
           </button>
         </aside>
 
@@ -514,6 +624,255 @@ export default function SchoolDashboard() {
                   </button>
                 </form>
               )}
+            </div>
+          )}
+
+          {activeTab === "announcements" && (
+            <div>
+              <div style={{ marginBottom: '30px' }}>
+                <h1 style={{ fontSize: '2rem' }}>Announcements & Email Broadcasting</h1>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Notify investors about campaign success, launch new projects, or post important updates.</p>
+              </div>
+
+              {/* Email Broadcast Simulation overlay */}
+              {isBroadcasting && (
+                <div style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  backgroundColor: 'rgba(4, 45, 26, 0.6)',
+                  backdropFilter: 'blur(8px)',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  zIndex: 1000,
+                  animation: 'fadeIn 0.25s ease-out'
+                }}>
+                  <div className="card" style={{
+                    width: '550px',
+                    backgroundColor: 'var(--bg-secondary)',
+                    borderRadius: 'var(--radius-lg)',
+                    border: '1.5px solid var(--border-color)',
+                    boxShadow: 'var(--shadow-lg)',
+                    padding: '30px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '20px'
+                  }}>
+                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      📧 Broadcasting Email Notification...
+                    </h3>
+                    
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.88rem', fontWeight: 600, marginBottom: '8px' }}>
+                        <span>Progress</span>
+                        <span>{broadcastProgress}%</span>
+                      </div>
+                      <div style={{ width: '100%', height: '8px', backgroundColor: 'var(--bg-tertiary)', borderRadius: 'var(--radius-full)', overflow: 'hidden' }}>
+                        <div style={{ width: `${broadcastProgress}%`, height: '100%', backgroundColor: 'var(--primary)', transition: 'width 0.2s ease-out' }}></div>
+                      </div>
+                    </div>
+
+                    <div style={{
+                      backgroundColor: 'var(--bg-primary)',
+                      border: '1px solid var(--border-color)',
+                      borderRadius: 'var(--radius-md)',
+                      padding: '16px',
+                      height: '180px',
+                      overflowY: 'auto',
+                      fontFamily: 'monospace',
+                      fontSize: '0.8rem',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '6px',
+                      color: 'var(--text-primary)'
+                    }}>
+                      {broadcastLog.map((log, idx) => (
+                        <div key={idx}>{log}</div>
+                      ))}
+                    </div>
+
+                    {broadcastProgress === 100 && (
+                      <button 
+                        onClick={resetAnnouncementForm}
+                        className="btn btn-primary" 
+                        style={{ width: '100%', marginTop: '10px' }}
+                      >
+                        Close & Finish
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
+                {/* Form to create announcement */}
+                <div className="card" style={{ border: '1px solid var(--border-color)' }}>
+                  <h3 style={{ marginBottom: '16px' }}>Draft Announcement</h3>
+                  
+                  <form onSubmit={handleCreateAnnouncement}>
+                    <div className="form-group">
+                      <label className="label">Select Target Campaign</label>
+                      <CustomSelect 
+                        value={annCampaignId} 
+                        onChange={(val) => {
+                          setAnnCampaignId(val);
+                          handleTypeChange(annType, val);
+                        }} 
+                        placeholder="-- Choose Campaign --"
+                        options={schoolCampaigns.map(c => ({
+                          label: c.title,
+                          value: c.id
+                        }))}
+                        id="ann-campaign-select"
+                      />
+                    </div>
+
+                    {annCampaignId && (
+                      <div className="card" style={{
+                        backgroundColor: 'var(--primary-light)',
+                        border: '1.5px solid var(--border-color)',
+                        padding: '16px',
+                        marginBottom: '20px',
+                        borderRadius: 'var(--radius-md)'
+                      }}>
+                        <h4 style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+                          Campaign Investor Statistics
+                        </h4>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '20px' }}>
+                          <div>
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', display: 'block' }}>TOTAL INVESTORS</span>
+                            <strong style={{ fontSize: '1.2rem', color: 'var(--text-primary)' }}>
+                              {(() => {
+                                if (annCampaignId === 'c1') return 24;
+                                if (annCampaignId === 'c2') return 48;
+                                if (annCampaignId === 'c3') return 15;
+                                if (annCampaignId === 'c4') return 8;
+                                const camp = campaigns.find(c => c.id === annCampaignId);
+                                return Math.max(1, Math.floor((camp?.raisedAmount || 0) / 50000));
+                              })()} backer(s)
+                            </strong>
+                          </div>
+                          <div style={{ textAlign: 'right' }}>
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', display: 'block' }}>TOTAL CONTRIBUTIONS</span>
+                            <strong style={{ fontSize: '1.2rem', color: 'var(--success)' }}>
+                              ₹{(campaigns.find(c => c.id === annCampaignId)?.raisedAmount || 0).toLocaleString()}
+                            </strong>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="form-group">
+                      <label className="label">Announcement Type / Template</label>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        {(["success", "launch", "important"] as const).map(t => (
+                          <button
+                            key={t}
+                            type="button"
+                            onClick={() => handleTypeChange(t, annCampaignId)}
+                            className="btn"
+                            style={{
+                              flex: 1,
+                              fontSize: '0.8rem',
+                              padding: '8px',
+                              backgroundColor: annType === t ? 'var(--primary)' : 'var(--bg-tertiary)',
+                              color: annType === t ? 'white' : 'var(--text-secondary)',
+                              border: 'none'
+                            }}
+                          >
+                            {t === 'success' ? '🏆 Success' : t === 'launch' ? '🚀 New Launch' : 'ℹ️ General'}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="form-group">
+                      <label className="label">Announcement Title</label>
+                      <input 
+                        type="text" 
+                        placeholder="Enter announcement subject"
+                        value={annTitle}
+                        onChange={(e) => setAnnTitle(e.target.value)}
+                        className="input"
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label className="label">Announcement Details</label>
+                      <textarea 
+                        placeholder="Write the announcement body here..."
+                        value={annContent}
+                        onChange={(e) => setAnnContent(e.target.value)}
+                        className="input"
+                        rows={5}
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
+                      <input 
+                        type="checkbox" 
+                        id="broadcast-email"
+                        checked={annBroadcastEmail}
+                        onChange={(e) => setAnnBroadcastEmail(e.target.checked)}
+                        style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: 'var(--primary)' }}
+                      />
+                      <label htmlFor="broadcast-email" style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', cursor: 'pointer', fontWeight: 600 }}>
+                        📢 Broadcast via Email to all backer investors
+                      </label>
+                    </div>
+
+                    <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
+                      {annBroadcastEmail ? "Publish & Broadcast via Email" : "Publish Announcement"}
+                    </button>
+                  </form>
+                </div>
+
+                {/* History of announcements */}
+                <div className="card" style={{ border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', height: 'fit-content' }}>
+                  <h3 style={{ marginBottom: '16px' }}>Published Announcements</h3>
+                  
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    {announcements.length > 0 ? (
+                      announcements.map((ann) => (
+                        <div key={ann.id} style={{
+                          padding: '16px',
+                          border: '1px solid var(--border-color)',
+                          borderRadius: 'var(--radius-md)',
+                          backgroundColor: 'var(--bg-primary)'
+                        }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '8px' }}>
+                            <span className="badge badge-info" style={{ fontSize: '0.72rem' }}>{ann.campaignTitle}</span>
+                            <span style={{ fontSize: '0.78rem', color: 'var(--text-tertiary)' }}>{ann.date}</span>
+                          </div>
+                          
+                          <h4 style={{ fontSize: '1rem', fontWeight: 800, marginBottom: '6px' }}>{ann.title}</h4>
+                          <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.4', marginBottom: '12px' }}>
+                            {ann.content}
+                          </p>
+
+                          <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid var(--border-color)', paddingTop: '10px', fontSize: '0.8rem', color: 'var(--text-tertiary)' }}>
+                            <span>Backers: <strong>{ann.investorsCount}</strong> (Raised: ₹{ann.totalContributions.toLocaleString()})</span>
+                            {ann.broadcastEmail ? (
+                              <span style={{ color: 'var(--primary)', fontWeight: 600 }}>📧 Email Broadcasted</span>
+                            ) : (
+                              <span>Dashboard Only</span>
+                            )}
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <p style={{ fontStyle: 'italic', color: 'var(--text-tertiary)', textAlign: 'center', padding: '20px' }}>
+                        No announcements posted yet.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 

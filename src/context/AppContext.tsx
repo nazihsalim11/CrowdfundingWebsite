@@ -78,6 +78,20 @@ export interface ChatMessage {
   timestamp: string;
 }
 
+export interface Announcement {
+  id: string;
+  campaignId: string;
+  campaignTitle: string;
+  title: string;
+  content: string;
+  date: string;
+  broadcastEmail: boolean;
+  schoolName: string;
+  schoolId: string;
+  investorsCount: number;
+  totalContributions: number;
+}
+
 interface AppContextType {
   role: UserRole;
   isLoggedIn: boolean;
@@ -125,6 +139,10 @@ interface AppContextType {
   // Messaging System Actions
   chatMessages: ChatMessage[];
   sendChatMessage: (investorEmail: string, senderRole: 'investor' | 'admin', content: string) => void;
+
+  // Announcement Actions
+  announcements: Announcement[];
+  createAnnouncement: (announcement: Omit<Announcement, 'id' | 'date' | 'schoolName' | 'schoolId' | 'investorsCount' | 'totalContributions' | 'campaignTitle'>) => void;
 }
 
 const initialCampaigns: Campaign[] = [
@@ -317,6 +335,35 @@ const initialChatMessages: ChatMessage[] = [
   }
 ];
 
+const initialAnnouncements: Announcement[] = [
+  {
+    id: "ann1",
+    campaignId: "c2",
+    campaignTitle: "Modern Computer Lab & Coding Center",
+    title: "Computer Lab Construction Completed & Coding Center Launched!",
+    content: "We are thrilled to announce that the Computer Lab is fully operational. Python and Javascript classes have commenced for 60 students. A big thank you to all 48 investors for making this possible!",
+    date: "2026-06-12",
+    broadcastEmail: true,
+    schoolName: "Seed Global",
+    schoolId: "s1",
+    investorsCount: 48,
+    totalContributions: 2000000
+  },
+  {
+    id: "ann2",
+    campaignId: "c1",
+    campaignTitle: "Smart Digital Classrooms for Excellence",
+    title: "Wiring and Infrastructure Phase Completed",
+    content: "The electrical wiring and high-speed fiber internet setup for all 10 classrooms are done. Next week, we begin hardware mounting for smart screens.",
+    date: "2026-06-21",
+    broadcastEmail: false,
+    schoolName: "Seed Global",
+    schoolId: "s1",
+    investorsCount: 24,
+    totalContributions: 800000
+  }
+];
+
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
@@ -362,6 +409,36 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     } else {
       addNotification(`Admin replied to investor: ${investorEmail}`);
     }
+  };
+
+  // Announcement state & action
+  const [announcements, setAnnouncements] = useState<Announcement[]>(initialAnnouncements);
+
+  const createAnnouncement = (newAnn: Omit<Announcement, 'id' | 'date' | 'schoolName' | 'schoolId' | 'investorsCount' | 'totalContributions' | 'campaignTitle'>) => {
+    const targetCamp = campaigns.find(c => c.id === newAnn.campaignId);
+    
+    let baseInvestors = 0;
+    if (newAnn.campaignId === 'c1') baseInvestors = 24;
+    else if (newAnn.campaignId === 'c2') baseInvestors = 48;
+    else if (newAnn.campaignId === 'c3') baseInvestors = 15;
+    else if (newAnn.campaignId === 'c4') baseInvestors = 8;
+    else {
+      baseInvestors = Math.max(1, Math.floor((targetCamp?.raisedAmount || 0) / 50000));
+    }
+
+    const announcement: Announcement = {
+      ...newAnn,
+      id: `ann_${Date.now()}`,
+      campaignTitle: targetCamp?.title || "General Update",
+      date: new Date().toISOString().split('T')[0],
+      schoolName: "Seed Global",
+      schoolId: "s1",
+      investorsCount: baseInvestors,
+      totalContributions: targetCamp?.raisedAmount || 0
+    };
+
+    setAnnouncements(prev => [announcement, ...prev]);
+    addNotification(`School posted announcement: "${newAnn.title}"`);
   };
 
   const addNotification = (message: string) => {
@@ -659,7 +736,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       markNotificationsAsRead,
       requestWithdrawal,
       chatMessages,
-      sendChatMessage
+      sendChatMessage,
+      announcements,
+      createAnnouncement
     }}>
       {children}
     </AppContext.Provider>

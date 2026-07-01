@@ -132,10 +132,11 @@ export default function InvestorDashboard() {
     submitKyc,
     campaigns,
     withdrawals,
-    requestWithdrawal
+    requestWithdrawal,
+    announcements
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<"overview" | "portfolio" | "kyc" | "withdraw" | "calculator" | "messages">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "portfolio" | "kyc" | "withdraw" | "calculator" | "messages" | "announcements">("overview");
   const [chartType, setChartType] = useState<"line" | "bar">("line");
   const [hoveredData, setHoveredData] = useState<{ label: string; value: string } | null>(null);
 
@@ -243,6 +244,13 @@ export default function InvestorDashboard() {
             className={`sidebar-link ${activeTab === "withdraw" ? "active" : ""}`}
           >
             💰 Withdrawal Requests
+          </button>
+
+          <button 
+            onClick={() => setActiveTab("announcements")} 
+            className={`sidebar-link ${activeTab === "announcements" ? "active" : ""}`}
+          >
+            📣 School Announcements
           </button>
 
           <button 
@@ -784,6 +792,79 @@ export default function InvestorDashboard() {
                 <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Direct messaging channel with Seed Global Super Admins.</p>
               </div>
               <SupportChat mode="investor" />
+            </div>
+          )}
+
+          {activeTab === "announcements" && (
+            <div>
+              <div style={{ marginBottom: '30px' }}>
+                <h1 style={{ fontSize: '2rem' }}>School Board Announcements</h1>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Official updates from school admins regarding active and completed campaigns.</p>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '800px' }}>
+                {announcements.length > 0 ? (
+                  announcements.map((ann) => {
+                    const hasSupported = investments.some(inv => inv.campaignId === ann.campaignId && inv.status === 'completed');
+                    return (
+                      <div key={ann.id} className="card" style={{
+                        border: '1.5px solid var(--border-color)',
+                        borderLeft: hasSupported ? '5px solid var(--primary)' : '1.5px solid var(--border-color)',
+                        backgroundColor: 'var(--bg-secondary)',
+                        padding: '24px',
+                        position: 'relative'
+                      }}>
+                        {hasSupported && (
+                          <span className="badge badge-success" style={{ position: 'absolute', top: '24px', right: '24px', fontSize: '0.75rem' }}>
+                            ✓ You backed this campaign
+                          </span>
+                        )}
+                        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '12px' }}>
+                          <span style={{ fontSize: '0.78rem', color: 'var(--text-tertiary)', backgroundColor: 'var(--bg-tertiary)', padding: '4px 8px', borderRadius: '4px', fontWeight: 700 }}>
+                            {ann.schoolName}
+                          </span>
+                          <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                            Campaign: <strong>{ann.campaignTitle}</strong>
+                          </span>
+                        </div>
+
+                        <h3 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: '8px', color: 'var(--text-primary)' }}>
+                          {ann.title}
+                        </h3>
+
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.94rem', lineHeight: '1.6', marginBottom: '20px' }}>
+                          {ann.content}
+                        </p>
+
+                        <div style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          borderTop: '1px solid var(--border-color)',
+                          paddingTop: '14px',
+                          fontSize: '0.82rem',
+                          color: 'var(--text-tertiary)'
+                        }}>
+                          <span>Posted on: <strong>{ann.date}</strong></span>
+                          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                            <span>Backers: <strong>{ann.investorsCount}</strong> (Raised: ₹{ann.totalContributions.toLocaleString()})</span>
+                            {ann.broadcastEmail && (
+                              <span style={{ color: 'var(--primary)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                📧 Broadcasted to Inbox
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="card" style={{ textAlign: 'center', padding: '60px' }}>
+                    <h3>No Announcements</h3>
+                    <p style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>There are no school announcements to display.</p>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
