@@ -494,6 +494,12 @@ a {
   font-size: 0.95rem;
   color: var(--text-secondary);
   cursor: pointer;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  white-space: nowrap;
 }
 
 .sidebar-link:hover, .sidebar-link.active {
