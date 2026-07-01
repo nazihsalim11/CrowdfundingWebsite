@@ -115,6 +115,68 @@ function DashboardCalculator() {
   );
 }
 
+function TaxCalculator({ investments, campaigns }: { investments: any[], campaigns: any[] }) {
+  const [donationAmt, setDonationAmt] = useState(50000);
+  const [incomeSlab, setIncomeSlab] = useState<'5' | '20' | '30'>('20');
+  const taxRate = Number(incomeSlab) / 100;
+  const deductible = Math.min(donationAmt, donationAmt); // 50% of donation (50% deduction)
+  const taxSaved = Math.round(deductible * 0.5 * taxRate);
+  const effectiveCost = donationAmt - taxSaved;
+
+  return (
+    <div className="card" style={{ border: '1px solid var(--border-color)' }}>
+      <h3 style={{ marginBottom: '16px' }}>80G Tax Savings Estimator</h3>
+      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '30px', alignItems: 'start' }}>
+        <div>
+          <div className="form-group" style={{ marginBottom: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <label className="label">Donation / Investment Amount</label>
+              <strong style={{ color: 'var(--primary)' }}>₹{donationAmt.toLocaleString()}</strong>
+            </div>
+            <input type="range" min="1000" max="500000" step="1000" value={donationAmt}
+              onChange={(e) => setDonationAmt(Number(e.target.value))}
+              style={{ width: '100%', accentColor: 'var(--primary)', height: '6px' }}/>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-tertiary)', marginTop: '4px' }}>
+              <span>₹1,000</span><span>₹5,00,000</span>
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="label" style={{ marginBottom: '8px' }}>Your Income Tax Slab</label>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              {(['5', '20', '30'] as const).map(slab => (
+                <button key={slab} onClick={() => setIncomeSlab(slab)}
+                  className="btn"
+                  style={{ flex: 1, fontSize: '0.85rem',
+                    backgroundColor: incomeSlab === slab ? 'var(--primary)' : 'var(--bg-tertiary)',
+                    color: incomeSlab === slab ? 'white' : 'var(--text-secondary)', border: 'none' }}
+                >{slab}% Slab</button>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div style={{ backgroundColor: 'var(--bg-tertiary)', padding: '24px', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-color)' }}>
+          <h4 style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px' }}>SAVINGS BREAKDOWN</h4>
+          <div style={{ marginBottom: '12px' }}>
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 600 }}>DONATION AMOUNT</span>
+            <strong style={{ fontSize: '1.4rem' }}>₹{donationAmt.toLocaleString()}</strong>
+          </div>
+          <div style={{ marginBottom: '12px' }}>
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 600 }}>80G DEDUCTIBLE (50%)</span>
+            <strong style={{ fontSize: '1.4rem' }}>₹{Math.round(donationAmt * 0.5).toLocaleString()}</strong>
+          </div>
+          <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 600 }}>TAX SAVED</span>
+            <strong style={{ fontSize: '1.8rem', color: 'var(--success)' }}>₹{taxSaved.toLocaleString()}</strong>
+          </div>
+          <div style={{ marginTop: '12px', padding: '10px', background: 'rgba(16,185,129,0.1)', borderRadius: '8px', fontSize: '0.82rem', color: 'var(--success)', fontWeight: 600 }}>
+            Effective cost after tax: ₹{effectiveCost.toLocaleString()}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function InvestorDashboard() {
   const { 
     isLoggedIn, 
@@ -132,10 +194,15 @@ export default function InvestorDashboard() {
     username,
     password,
     updateProfile,
-    requestPasswordReset
+    requestPasswordReset,
+    watchlist,
+    addToWatchlist,
+    removeFromWatchlist,
+    impactReports
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<"overview" | "portfolio" | "kyc" | "withdraw" | "calculator" | "messages" | "announcements" | "profile">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "portfolio" | "kyc" | "withdraw" | "calculator" | "messages" | "announcements" | "profile" | "watchlist" | "tax" | "impact">("overview");
+  const [expandedWatchCamp, setExpandedWatchCamp] = useState<string | null>(null);
   const [chartType, setChartType] = useState<"line" | "bar">("line");
   const [hoveredData, setHoveredData] = useState<{ label: string; value: string } | null>(null);
 
@@ -310,7 +377,31 @@ export default function InvestorDashboard() {
             onClick={() => setActiveTab("announcements")} 
             className={`sidebar-link ${activeTab === "announcements" ? "active" : ""}`}
           >
-            📣 School Announcements
+            📪 School Announcements
+          </button>
+
+          <button 
+            onClick={() => setActiveTab("watchlist")} 
+            className={`sidebar-link ${activeTab === "watchlist" ? "active" : ""}`}
+          >
+            🔖 Campaign Watchlist
+            {watchlist.length > 0 && (
+              <span className="badge badge-info" style={{ marginLeft: 'auto', fontSize: '0.7rem', padding: '2px 6px' }}>{watchlist.length}</span>
+            )}
+          </button>
+
+          <button 
+            onClick={() => setActiveTab("tax")} 
+            className={`sidebar-link ${activeTab === "tax" ? "active" : ""}`}
+          >
+            💰 Tax Benefit (80G)
+          </button>
+
+          <button 
+            onClick={() => setActiveTab("impact")} 
+            className={`sidebar-link ${activeTab === "impact" ? "active" : ""}`}
+          >
+            🌱 My Impact
           </button>
 
           <button 
@@ -937,6 +1028,298 @@ export default function InvestorDashboard() {
                   <div className="card" style={{ textAlign: 'center', padding: '60px' }}>
                     <h3>No Announcements</h3>
                     <p style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>There are no school announcements to display.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {activeTab === "watchlist" && (
+            <div>
+              <div style={{ marginBottom: '30px' }}>
+                <h1 style={{ fontSize: '2rem' }}>Campaign Watchlist</h1>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Monitor campaigns you are considering before committing capital.</p>
+              </div>
+
+              {/* Browse & Add to watchlist */}
+              <div className="card" style={{ border: '1px solid var(--border-color)', marginBottom: '24px' }}>
+                <h3 style={{ marginBottom: '16px' }}>Browse Active Campaigns</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  {campaigns.filter(c => c.status === 'active').map(camp => {
+                    const inWatchlist = watchlist.includes(camp.id);
+                    const progress = Math.min(100, Math.round((camp.raisedAmount / camp.goalAmount) * 100));
+                    const daysLeft = Math.max(0, Math.round((new Date(camp.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
+                    return (
+                      <div key={camp.id} style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr auto',
+                        gap: '12px',
+                        alignItems: 'center',
+                        padding: '14px',
+                        backgroundColor: 'var(--bg-tertiary)',
+                        borderRadius: '10px',
+                        border: inWatchlist ? '1.5px solid var(--primary)' : '1px solid var(--border-color)'
+                      }}>
+                        <div>
+                          <div style={{ display: 'flex', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
+                            <span className="badge badge-info" style={{ fontSize: '0.7rem' }}>{camp.type}</span>
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)' }}>⏰ {daysLeft} days left</span>
+                            {camp.csrMatchingEnabled && <span className="badge badge-success" style={{ fontSize: '0.7rem' }}>2x CSR Match</span>}
+                          </div>
+                          <div style={{ fontWeight: 700, fontSize: '0.95rem', marginBottom: '6px' }}>{camp.title}</div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <div style={{ flex: 1, height: '5px', background: 'var(--bg-secondary)', borderRadius: '99px', overflow: 'hidden' }}>
+                              <div style={{ height: '100%', width: `${progress}%`, background: 'linear-gradient(90deg, var(--primary), var(--secondary))', borderRadius: '99px' }} />
+                            </div>
+                            <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--primary)', whiteSpace: 'nowrap' }}>{progress}% funded</span>
+                          </div>
+                          <div style={{ fontSize: '0.78rem', color: 'var(--text-tertiary)', marginTop: '4px' }}>
+                            ₹{camp.raisedAmount.toLocaleString()} raised of ₹{camp.goalAmount.toLocaleString()}
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => inWatchlist ? removeFromWatchlist(camp.id) : addToWatchlist(camp.id)}
+                          className={`btn ${inWatchlist ? 'btn-outline' : 'btn-primary'}`}
+                          style={{ padding: '8px 14px', fontSize: '0.82rem', whiteSpace: 'nowrap' }}
+                        >
+                          {inWatchlist ? '✓ Watching' : '+ Watch'}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Watchlist detail */}
+              <h3 style={{ marginBottom: '16px' }}>Your Watchlist ({watchlist.length})</h3>
+              {watchlist.length === 0 ? (
+                <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
+                  <p style={{ color: 'var(--text-tertiary)' }}>No campaigns in your watchlist yet. Browse above to add campaigns.</p>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {watchlist.map(campId => {
+                    const camp = campaigns.find(c => c.id === campId);
+                    if (!camp) return null;
+                    const progress = Math.min(100, Math.round((camp.raisedAmount / camp.goalAmount) * 100));
+                    const isExpanded = expandedWatchCamp === campId;
+                    return (
+                      <div key={campId} className="card" style={{ border: '1.5px solid var(--border-color)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px' }}>
+                          <div style={{ flex: 1 }}>
+                            <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                              <span className="badge badge-info">{camp.type}</span>
+                              <span className={`badge ${camp.status === 'active' ? 'badge-success' : 'badge-warning'}`}>{camp.status}</span>
+                              {camp.csrMatchingEnabled && <span className="badge badge-success">2x CSR Match</span>}
+                            </div>
+                            <h3 style={{ fontSize: '1.1rem', marginBottom: '4px' }}>{camp.title}</h3>
+                            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '12px' }}>{camp.description.substring(0, 120)}...</p>
+                            
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '6px' }}>
+                              <span style={{ color: 'var(--text-tertiary)' }}>Funding Progress</span>
+                              <strong>{progress}%</strong>
+                            </div>
+                            <div style={{ height: '8px', background: 'var(--bg-tertiary)', borderRadius: '99px', overflow: 'hidden', marginBottom: '12px' }}>
+                              <div style={{ height: '100%', width: `${progress}%`, background: 'linear-gradient(90deg, var(--primary), var(--secondary))', borderRadius: '99px' }} />
+                            </div>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '12px' }}>
+                              <div style={{ textAlign: 'center', padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px' }}>
+                                <div style={{ fontWeight: 700, color: 'var(--primary)' }}>₹{camp.raisedAmount.toLocaleString()}</div>
+                                <div style={{ fontSize: '0.68rem', color: 'var(--text-tertiary)' }}>RAISED</div>
+                              </div>
+                              <div style={{ textAlign: 'center', padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px' }}>
+                                <div style={{ fontWeight: 700 }}>₹{camp.goalAmount.toLocaleString()}</div>
+                                <div style={{ fontSize: '0.68rem', color: 'var(--text-tertiary)' }}>GOAL</div>
+                              </div>
+                              <div style={{ textAlign: 'center', padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px' }}>
+                                <div style={{ fontWeight: 700, color: 'var(--secondary)' }}>{camp.roiEstimate.split(' ')[0]}</div>
+                                <div style={{ fontSize: '0.68rem', color: 'var(--text-tertiary)' }}>PROJECTED ROI</div>
+                              </div>
+                            </div>
+
+                            {isExpanded && (
+                              <div style={{ marginTop: '12px', borderTop: '1px solid var(--border-color)', paddingTop: '14px' }}>
+                                <h4 style={{ fontSize: '0.88rem', fontWeight: 700, marginBottom: '10px' }}>Milestone Progress</h4>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                  {camp.milestones.map((ms, mi) => (
+                                    <div key={mi} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.88rem' }}>
+                                      <span style={{ color: ms.completed ? 'var(--success)' : 'var(--text-tertiary)', fontWeight: 700, fontSize: '1rem' }}>
+                                        {ms.completed ? '✓' : '○'}
+                                      </span>
+                                      <span style={{ color: ms.completed ? 'var(--text-primary)' : 'var(--text-tertiary)' }}>{ms.title}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '120px' }}>
+                            <Link href={`/campaigns/${camp.id}`} className="btn btn-primary" style={{ padding: '8px 14px', fontSize: '0.82rem', textAlign: 'center' }}>
+                              Invest Now
+                            </Link>
+                            <button onClick={() => setExpandedWatchCamp(isExpanded ? null : campId)} className="btn btn-outline" style={{ padding: '8px 14px', fontSize: '0.82rem' }}>
+                              {isExpanded ? 'Less ▲' : 'Details ▼'}
+                            </button>
+                            <button onClick={() => removeFromWatchlist(campId)} className="btn" style={{ padding: '8px 14px', fontSize: '0.78rem', color: 'var(--danger)', border: '1px solid var(--danger)', background: 'none' }}>
+                              Remove
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeTab === "tax" && (
+            <div style={{ maxWidth: '750px' }}>
+              <div style={{ marginBottom: '30px' }}>
+                <h1 style={{ fontSize: '2rem' }}>Tax Benefit Calculator (80G)</h1>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Estimate your income tax deductions for donations to 80G certified campaigns.</p>
+              </div>
+
+              {/* 80G Info Banner */}
+              <div className="card glass" style={{ marginBottom: '24px', borderLeft: '5px solid var(--success)', border: '1px solid var(--success)' }}>
+                <h4 style={{ marginBottom: '8px', color: 'var(--success)' }}>What is Section 80G?</h4>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: '1.7' }}>
+                  Under Section 80G of the Income Tax Act, donations to government-approved educational charities are eligible for a 50%–50% tax deduction. Seed Global’s STEM Scholarship Fund is 80G-certified, meaning for every ₹100 donated, you save up to ₹30 in tax.
+                </p>
+              </div>
+
+              {/* Calculator */}
+              <TaxCalculator investments={investments} campaigns={campaigns} />
+
+              {/* 80G Certificate Eligible Campaigns */}
+              <div className="card" style={{ border: '1px solid var(--border-color)', marginTop: '24px' }}>
+                <h3 style={{ marginBottom: '14px' }}>80G Eligible Campaigns You’ve Backed</h3>
+                {investments.filter(inv => {
+                  const camp = campaigns.find(c => c.id === inv.campaignId);
+                  return camp?.roiEstimate.includes('80G') && inv.status === 'completed';
+                }).length === 0 ? (
+                  <p style={{ color: 'var(--text-tertiary)', fontStyle: 'italic' }}>You haven’t invested in any 80G-certified campaigns yet. Look for campaigns with the “80G Certified” badge.</p>
+                ) : (
+                  investments.filter(inv => {
+                    const camp = campaigns.find(c => c.id === inv.campaignId);
+                    return camp?.roiEstimate.includes('80G') && inv.status === 'completed';
+                  }).map(inv => (
+                    <div key={inv.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', backgroundColor: 'var(--bg-tertiary)', borderRadius: '8px', marginBottom: '8px' }}>
+                      <div>
+                        <div style={{ fontWeight: 600 }}>{inv.campaignTitle}</div>
+                        <div style={{ fontSize: '0.82rem', color: 'var(--text-tertiary)' }}>Invested: {inv.date}</div>
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <div style={{ fontWeight: 700, color: 'var(--primary)' }}>₹{inv.amount.toLocaleString()}</div>
+                        <div style={{ fontSize: '0.78rem', color: 'var(--success)' }}>Tax saving: ₹{Math.round(inv.amount * 0.3).toLocaleString()}</div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+
+          {activeTab === "impact" && (
+            <div>
+              <div style={{ marginBottom: '30px' }}>
+                <h1 style={{ fontSize: '2rem' }}>My Investment Impact</h1>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>See the real-world change your contributions have created in students’ lives.</p>
+              </div>
+
+              {/* Total Impact Summary */}
+              <div className="stats-grid" style={{ marginBottom: '30px' }}>
+                <div className="stat-card">
+                  <span className="stat-lbl">Students Impacted</span>
+                  <span className="stat-val" style={{ color: 'var(--primary)' }}>620</span>
+                </div>
+                <div className="stat-card">
+                  <span className="stat-lbl">Teachers Trained</span>
+                  <span className="stat-val" style={{ color: 'var(--secondary)' }}>32</span>
+                </div>
+                <div className="stat-card">
+                  <span className="stat-lbl">Classrooms Upgraded</span>
+                  <span className="stat-val" style={{ color: 'var(--accent)' }}>8</span>
+                </div>
+                <div className="stat-card">
+                  <span className="stat-lbl">Campaigns Supported</span>
+                  <span className="stat-val" style={{ color: 'var(--success)' }}>{investments.filter(i => i.status === 'completed').length}</span>
+                </div>
+              </div>
+
+              {/* Impact Badge */}
+              <div className="card" style={{ border: '1.5px solid var(--primary)', marginBottom: '24px', background: 'linear-gradient(135deg, rgba(16,185,129,0.07), var(--bg-secondary))' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                  <div style={{ 
+                    width: '80px', height: '80px', borderRadius: '50%',
+                    background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '2.2rem', flexShrink: 0,
+                    boxShadow: '0 0 30px rgba(16,185,129,0.3)'
+                  }}>
+                    🏅
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Education Impact Badge</div>
+                    <h3 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '4px' }}>Community Champion</h3>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Awarded for supporting 3+ campaigns and impacting 500+ students</p>
+                    <button 
+                      onClick={() => {
+                        const cert = `🎓 SEED GLOBAL IMPACT CERTIFICATE
+
+This certifies that ${username} has contributed to the education of 620+ students across ${investments.filter(i=>i.status==='completed').length} campaigns on Seed Global.
+
+Total Contributed: ₹${investments.filter(i=>i.status==='completed').reduce((s,i)=>s+i.amount,0).toLocaleString()}
+Badge: Community Champion
+Date: ${new Date().toLocaleDateString()}`;
+                        alert(cert);
+                      }}
+                      className="btn btn-primary"
+                      style={{ marginTop: '12px', fontSize: '0.82rem', padding: '8px 16px' }}
+                    >
+                      🏅 View Certificate
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Per-campaign impact reports */}
+              <h3 style={{ marginBottom: '16px' }}>Campaign Impact Reports</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {impactReports.filter(r => investments.some(inv => inv.campaignId === r.campaignId && inv.status === 'completed')).map(report => (
+                  <div key={report.id} className="card" style={{ border: '1px solid var(--border-color)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                      <div>
+                        <span className="badge badge-success" style={{ marginBottom: '8px' }}>✓ You Supported This</span>
+                        <h3 style={{ fontSize: '1.1rem' }}>{report.campaignTitle}</h3>
+                        <span style={{ fontSize: '0.82rem', color: 'var(--text-tertiary)' }}>Published {report.reportDate}</span>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '16px' }}>
+                      <div style={{ textAlign: 'center', padding: '12px', background: 'var(--bg-tertiary)', borderRadius: '8px' }}>
+                        <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--primary)' }}>{report.studentsImpacted}</div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 600 }}>STUDENTS</div>
+                      </div>
+                      <div style={{ textAlign: 'center', padding: '12px', background: 'var(--bg-tertiary)', borderRadius: '8px' }}>
+                        <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--secondary)' }}>{report.teachersTrained}</div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 600 }}>TEACHERS</div>
+                      </div>
+                      <div style={{ textAlign: 'center', padding: '12px', background: 'var(--bg-tertiary)', borderRadius: '8px' }}>
+                        <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--accent)' }}>{report.classroomsUpgraded}</div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 600 }}>CLASSROOMS</div>
+                      </div>
+                    </div>
+
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: '1.6' }}>{report.summary}</p>
+                  </div>
+                            </div>
+                ))}
+
+                {impactReports.filter(r => investments.some(inv => inv.campaignId === r.campaignId && inv.status === 'completed')).length === 0 && (
+                  <div className="card" style={{ textAlign: 'center', padding: '40px', color: 'var(--text-tertiary)' }}>
+                    No impact reports yet. Schools publish these as campaigns reach milestones.
                   </div>
                 )}
               </div>

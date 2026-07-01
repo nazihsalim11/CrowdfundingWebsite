@@ -19,6 +19,11 @@ export interface Campaign {
   roiEstimate: string;
   milestones: { title: string; completed: boolean }[];
   updates: { date: string; title: string; content: string; image?: string }[];
+  escrowLockedAmount: number;
+  escrowDisbursedAmount: number;
+  csrMatchingEnabled?: boolean;
+  csrMatchedAmount?: number;
+  csrSponsorName?: string;
 }
 
 export interface Investment {
@@ -106,6 +111,29 @@ export interface PasswordResetRequest {
   date: string;
 }
 
+export interface InvestorProfile {
+  email: string;
+  name: string;
+  totalInvested: number;
+  investmentCount: number;
+  joinDate: string;
+  campaigns: { id: string; title: string; amount: number; date: string }[];
+  kycVerified: boolean;
+}
+
+export interface ImpactReport {
+  id: string;
+  campaignId: string;
+  campaignTitle: string;
+  schoolName: string;
+  studentsImpacted: number;
+  teachersTrained: number;
+  classroomsUpgraded: number;
+  reportDate: string;
+  summary: string;
+  photoUrl?: string;
+}
+
 interface AppContextType {
   role: UserRole;
   isLoggedIn: boolean;
@@ -168,6 +196,20 @@ interface AppContextType {
   // ROI Calculator configuration
   roiRates: RoiRates;
   updateRoiRates: (rates: RoiRates) => void;
+  // ROI Revenue Engine Actions
+  distributeCampaignRoi: (campaignId: string, revenueAmount: number) => void;
+
+  // Watchlist Actions
+  watchlist: string[];
+  addToWatchlist: (campaignId: string) => void;
+  removeFromWatchlist: (campaignId: string) => void;
+
+  // Impact Reports
+  impactReports: ImpactReport[];
+  addImpactReport: (report: Omit<ImpactReport, 'id'>) => void;
+
+  // Investor Registry (for admin)
+  investorRegistry: InvestorProfile[];
 }
 
 const initialCampaigns: Campaign[] = [
@@ -192,7 +234,12 @@ const initialCampaigns: Campaign[] = [
     ],
     updates: [
       { date: "2026-06-20", title: "Wiring Setup Completed", content: "Electrical rewiring and internet setup have been completed for all 10 classrooms. Hardware shipment is expected next week." }
-    ]
+    ],
+    escrowLockedAmount: 800000,
+    escrowDisbursedAmount: 0,
+    csrMatchingEnabled: true,
+    csrMatchedAmount: 400000,
+    csrSponsorName: "Tata CSR Trust"
   },
   {
     id: "c2",
@@ -215,7 +262,10 @@ const initialCampaigns: Campaign[] = [
     ],
     updates: [
       { date: "2026-06-10", title: "Lab Fully Operational!", content: "The computers have been set up and students have begun taking Python and Javascript programming classes. Thank you to all investors!" }
-    ]
+    ],
+    escrowLockedAmount: 800000,
+    escrowDisbursedAmount: 1200000,
+    csrMatchingEnabled: false
   },
   {
     id: "c3",
@@ -235,7 +285,12 @@ const initialCampaigns: Campaign[] = [
       { title: "EV Charging Infrastructure Setup", completed: false },
       { title: "Vehicle Delivery", completed: false }
     ],
-    updates: []
+    updates: [],
+    escrowLockedAmount: 1400000,
+    escrowDisbursedAmount: 0,
+    csrMatchingEnabled: true,
+    csrMatchedAmount: 700000,
+    csrSponsorName: "Infosys Foundation"
   },
   {
     id: "c4",
@@ -255,7 +310,10 @@ const initialCampaigns: Campaign[] = [
       { title: "First Semester Disbursement", completed: false },
       { title: "Second Semester Disbursement", completed: false }
     ],
-    updates: []
+    updates: [],
+    escrowLockedAmount: 400000,
+    escrowDisbursedAmount: 0,
+    csrMatchingEnabled: false
   }
 ];
 
@@ -389,6 +447,97 @@ const initialAnnouncements: Announcement[] = [
   }
 ];
 
+const initialInvestorRegistry: InvestorProfile[] = [
+  {
+    email: "investor@seedglobal.com",
+    name: "Investor User",
+    totalInvested: 550000,
+    investmentCount: 3,
+    joinDate: "2026-05-01",
+    kycVerified: true,
+    campaigns: [
+      { id: "c1", title: "Smart Digital Classrooms for Excellence", amount: 150000, date: "2026-06-15" },
+      { id: "c2", title: "Modern Computer Lab & Coding Center", amount: 300000, date: "2026-05-10" },
+      { id: "c3", title: "Eco-Friendly Electric School Bus", amount: 100000, date: "2026-06-20" }
+    ]
+  },
+  {
+    email: "john@example.com",
+    name: "John Mathew",
+    totalInvested: 250000,
+    investmentCount: 2,
+    joinDate: "2026-05-15",
+    kycVerified: true,
+    campaigns: [
+      { id: "c2", title: "Modern Computer Lab & Coding Center", amount: 200000, date: "2026-05-20" },
+      { id: "c4", title: "STEM Merit Scholarship Fund 2026", amount: 50000, date: "2026-06-01" }
+    ]
+  },
+  {
+    email: "priya@invest.com",
+    name: "Priya Sharma",
+    totalInvested: 180000,
+    investmentCount: 2,
+    joinDate: "2026-06-01",
+    kycVerified: true,
+    campaigns: [
+      { id: "c1", title: "Smart Digital Classrooms for Excellence", amount: 120000, date: "2026-06-10" },
+      { id: "c3", title: "Eco-Friendly Electric School Bus", amount: 60000, date: "2026-06-18" }
+    ]
+  },
+  {
+    email: "rahul.invest@gmail.com",
+    name: "Rahul Nair",
+    totalInvested: 300000,
+    investmentCount: 1,
+    joinDate: "2026-04-20",
+    kycVerified: false,
+    campaigns: [
+      { id: "c2", title: "Modern Computer Lab & Coding Center", amount: 300000, date: "2026-04-25" }
+    ]
+  },
+  {
+    email: "meera@corp.co",
+    name: "Meera Pillai",
+    totalInvested: 75000,
+    investmentCount: 3,
+    joinDate: "2026-06-10",
+    kycVerified: true,
+    campaigns: [
+      { id: "c3", title: "Eco-Friendly Electric School Bus", amount: 30000, date: "2026-06-12" },
+      { id: "c4", title: "STEM Merit Scholarship Fund 2026", amount: 25000, date: "2026-06-14" },
+      { id: "c1", title: "Smart Digital Classrooms for Excellence", amount: 20000, date: "2026-06-16" }
+    ]
+  }
+];
+
+const initialImpactReports: ImpactReport[] = [
+  {
+    id: "ir1",
+    campaignId: "c2",
+    campaignTitle: "Modern Computer Lab & Coding Center",
+    schoolName: "Seed Global",
+    studentsImpacted: 240,
+    teachersTrained: 12,
+    classroomsUpgraded: 1,
+    reportDate: "2026-06-15",
+    summary: "The computer lab is now fully operational. 240 students are enrolled in weekly coding sessions. 12 teachers completed certification training. First batch of students built their own websites!",
+    photoUrl: "/images/computer-lab.jpg"
+  },
+  {
+    id: "ir2",
+    campaignId: "c1",
+    campaignTitle: "Smart Digital Classrooms for Excellence",
+    schoolName: "Seed Global",
+    studentsImpacted: 380,
+    teachersTrained: 20,
+    classroomsUpgraded: 7,
+    reportDate: "2026-06-25",
+    summary: "7 out of 10 classrooms are now equipped with smartboards. 380 students are experiencing interactive digital lessons. Teacher engagement scores rose by 42%.",
+    photoUrl: "/images/smart-classroom.jpg"
+  }
+];
+
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
@@ -406,19 +555,46 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [walletBalance, setWalletBalance] = useState(1500000); // ₹15,00,000
   const [totalEarnings, setTotalEarnings] = useState(42000); // ₹42,000 ROI profits
 
-  // Suggestions 5: Notification feed
+  // Notification feed
   const [notifications, setNotifications] = useState<AppNotification[]>([
     { id: "n1", message: "Seed Global Computer Lab & Coding Center successfully completed!", timestamp: "2026-06-10 14:00", read: false },
     { id: "n2", message: "Welcome to Seed Global transparent management system.", timestamp: "2026-06-01 09:00", read: true }
   ]);
 
-  // Suggestion 5: Withdrawal request tracking
+  // Withdrawal request tracking
   const [withdrawals, setWithdrawals] = useState<WithdrawalRequest[]>([
     { id: "wd1", investorEmail: "investor@seedglobal.com", amount: 25000, date: "2026-06-25", status: "completed" },
     { id: "wd2", investorEmail: "investor@seedglobal.com", amount: 12000, date: "2026-06-29", status: "pending" }
   ]);
 
   const [passwordResetRequests, setPasswordResetRequests] = useState<PasswordResetRequest[]>([]);
+
+  // Watchlist state
+  const [watchlist, setWatchlist] = useState<string[]>(["c3", "c4"]);
+
+  // Impact Reports state
+  const [impactReports, setImpactReports] = useState<ImpactReport[]>(initialImpactReports);
+
+  // Investor Registry state
+  const [investorRegistry] = useState<InvestorProfile[]>(initialInvestorRegistry);
+
+  const addToWatchlist = (campaignId: string) => {
+    setWatchlist(prev => prev.includes(campaignId) ? prev : [...prev, campaignId]);
+    addNotification(`Campaign added to your watchlist.`);
+  };
+
+  const removeFromWatchlist = (campaignId: string) => {
+    setWatchlist(prev => prev.filter(id => id !== campaignId));
+  };
+
+  const addImpactReport = (report: Omit<ImpactReport, 'id'>) => {
+    const newReport: ImpactReport = {
+      ...report,
+      id: `ir_${Date.now()}`
+    };
+    setImpactReports(prev => [newReport, ...prev]);
+    addNotification(`School published a new Impact Report for "${report.campaignTitle}".`);
+  };
 
   // Messaging System state & action
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>(initialChatMessages);
@@ -573,6 +749,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       ...newCamp,
       id: `c${campaigns.length + 1}`,
       raisedAmount: 0,
+      escrowLockedAmount: 0,
+      escrowDisbursedAmount: 0,
+      csrMatchingEnabled: false,
       status: 'pending',
       updates: []
     };
@@ -584,7 +763,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     const target = campaigns.find(c => c.id === campaignId);
     if (!target) return;
 
-    const isUPI = paymentMethod === 'UPI (Razorpay)';
+    const isUPI = paymentMethod === 'UPI (Razorpay)' || paymentMethod === 'Card (Razorpay)';
+    const isMatched = target.csrMatchingEnabled && !!target.csrSponsorName;
+    const finalRaisedAdded = isMatched ? amount * 2 : amount;
 
     const newInvestment: Investment = {
       id: `inv${investments.length + 1}`,
@@ -602,17 +783,25 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     if (isUPI) {
       setCampaigns(prev => prev.map(c => {
         if (c.id === campaignId) {
-          const updatedRaised = c.raisedAmount + amount;
+          const updatedRaised = c.raisedAmount + finalRaisedAdded;
+          const currentLocked = c.escrowLockedAmount || 0;
+          const matchedAmt = c.csrMatchedAmount || 0;
           return {
             ...c,
             raisedAmount: updatedRaised,
+            escrowLockedAmount: currentLocked + finalRaisedAdded,
+            csrMatchedAmount: isMatched ? matchedAmt + amount : matchedAmt,
             status: updatedRaised >= c.goalAmount ? 'completed' : c.status
           };
         }
         return c;
       }));
       setWalletBalance(prev => prev - amount);
-      addNotification(`Received contribution: ₹${amount.toLocaleString()} for ${target.title}.`);
+      if (isMatched) {
+        addNotification(`Received contribution: ₹${amount.toLocaleString()} (Matched 1:1 by ${target.csrSponsorName} - Total ₹${(amount * 2).toLocaleString()}) for ${target.title}.`);
+      } else {
+        addNotification(`Received contribution: ₹${amount.toLocaleString()} for ${target.title}.`);
+      }
     } else {
       addNotification(`Offline payment proof (₹${amount.toLocaleString()}) logged for ${target.title}. Pending cashier check.`);
     }
@@ -697,10 +886,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (inv.id === investmentId) {
         setCampaigns(camps => camps.map(c => {
           if (c.id === inv.campaignId) {
-            const updatedRaised = c.raisedAmount + inv.amount;
+            const isMatched = c.csrMatchingEnabled && !!c.csrSponsorName;
+            const finalRaisedAdded = isMatched ? inv.amount * 2 : inv.amount;
+            const updatedRaised = c.raisedAmount + finalRaisedAdded;
+            const currentLocked = c.escrowLockedAmount || 0;
+            const matchedAmt = c.csrMatchedAmount || 0;
             return {
               ...c,
               raisedAmount: updatedRaised,
+              escrowLockedAmount: currentLocked + finalRaisedAdded,
+              csrMatchedAmount: isMatched ? matchedAmt + inv.amount : matchedAmt,
               status: updatedRaised >= c.goalAmount ? 'completed' : c.status
             };
           }
@@ -736,6 +931,18 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const disburseExpense = (expenseId: string) => {
     setExpenses(prev => prev.map(e => {
       if (e.id === expenseId) {
+        setCampaigns(camps => camps.map(c => {
+          if (c.id === e.campaignId) {
+            const currentLocked = c.escrowLockedAmount || 0;
+            const currentDisbursed = c.escrowDisbursedAmount || 0;
+            return {
+              ...c,
+              escrowLockedAmount: Math.max(0, currentLocked - e.amount),
+              escrowDisbursedAmount: currentDisbursed + e.amount
+            };
+          }
+          return c;
+        }));
         addNotification(`Cashier completed disburse checkout of ₹${e.amount.toLocaleString()} to vendor for "${e.description}".`);
         return { ...e, status: 'disbursed' };
       }
@@ -778,6 +985,48 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setWithdrawals(prev => [newWd, ...prev]);
     setTotalEarnings(prev => prev - amount);
     addNotification(`Investor requested ROI withdrawal of ₹${amount.toLocaleString()}. Payout is pending Cashier check.`);
+  };
+
+  const distributeCampaignRoi = (campaignId: string, revenueAmount: number) => {
+    const target = campaigns.find(c => c.id === campaignId);
+    if (!target) return;
+
+    const campaignInvestments = investments.filter(inv => inv.campaignId === campaignId && inv.status === 'completed');
+    const totalInvestedByAll = campaignInvestments.reduce((acc, inv) => acc + inv.amount, 0);
+
+    if (totalInvestedByAll === 0) {
+      addNotification(`School logged ₹${revenueAmount.toLocaleString()} revenue for "${target.title}". No completed investments in the system.`);
+      return;
+    }
+
+    let rate = 0.08;
+    if (target.type.toLowerCase().includes('lab')) rate = roiRates.labs;
+    else if (target.type.toLowerCase().includes('digital')) rate = roiRates.digital;
+    else if (target.type.toLowerCase().includes('bus')) rate = roiRates.buses;
+
+    let distributedCount = 0;
+    let distributedSum = 0;
+
+    // Distribute dividends to all matching investments
+    setInvestments(prev => prev.map(inv => {
+      if (inv.campaignId === campaignId && inv.status === 'completed') {
+        const dividend = Math.round((inv.amount / target.raisedAmount) * revenueAmount * rate * 3);
+        if (dividend > 0) {
+          distributedCount++;
+          distributedSum += dividend;
+
+          setWalletBalance(curr => curr + dividend);
+          setTotalEarnings(curr => curr + dividend);
+        }
+        return {
+          ...inv,
+          roiEarned: (inv.roiEarned || 0) + dividend
+        };
+      }
+      return inv;
+    }));
+
+    addNotification(`💰 ROI Payout Distributed: School logged ₹${revenueAmount.toLocaleString()} revenue for "${target.title}". Paid ₹${distributedSum.toLocaleString()} total dividends across ${distributedCount} active investments.`);
   };
 
   return (
@@ -831,7 +1080,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       passwordResetRequests,
       requestPasswordReset,
       approvePasswordReset,
-      rejectPasswordReset
+      rejectPasswordReset,
+      distributeCampaignRoi,
+      watchlist,
+      addToWatchlist,
+      removeFromWatchlist,
+      impactReports,
+      addImpactReport,
+      investorRegistry
     }}>
       {children}
     </AppContext.Provider>
