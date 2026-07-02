@@ -21,7 +21,8 @@ export default function SchoolDashboard() {
     createAnnouncement,
     impactReports,
     addImpactReport,
-    investments
+    investments,
+    hasPermission
   } = useApp();
 
   const [activeTab, setActiveTab] = useState<"overview" | "create" | "expenses" | "verify" | "announcements" | "impact" | "outreach">("overview");
@@ -65,13 +66,13 @@ export default function SchoolDashboard() {
   const [broadcastProgress, setBroadcastProgress] = useState(0);
   const [broadcastLog, setBroadcastLog] = useState<string[]>([]);
 
-  if (!isLoggedIn || role !== "school") {
+  if (!isLoggedIn || (role !== "school" && role !== "admin" && !hasPermission("view_school_dashboard"))) {
     return (
       <>
         <Navbar />
         <div className="container" style={{ padding: '80px 24px', textAlign: 'center' }}>
           <h2>Access Denied</h2>
-          <p style={{ margin: '16px 0 24px 0', color: 'var(--text-secondary)' }}>You must be logged in as a **School Admin** to view this portal.</p>
+          <p style={{ margin: '16px 0 24px 0', color: 'var(--text-secondary)' }}>You must be logged in as a **School Admin** or have appropriate permissions to view this portal.</p>
           <Link href="/login" className="btn btn-primary">Go to Login</Link>
         </div>
         <Footer />

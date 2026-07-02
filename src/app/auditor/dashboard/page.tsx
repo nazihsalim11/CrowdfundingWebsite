@@ -11,7 +11,8 @@ export default function AuditorDashboard() {
     role, 
     expenses, 
     auditExpense,
-    campaigns
+    campaigns,
+    hasPermission
   } = useApp();
 
   const [activeTab, setActiveTab] = useState<"expenses" | "contracts" | "schools">("expenses");
@@ -30,14 +31,14 @@ export default function AuditorDashboard() {
     setAuditNotesInput(prev => ({ ...prev, [expenseId]: val }));
   };
 
-  if (role !== 'auditor') {
+  if (role !== 'auditor' && role !== 'admin' && !hasPermission('audit_expenses')) {
     return (
       <>
         <Navbar />
         <div style={{ padding: '80px 20px', textAlign: 'center' }}>
           <span style={{ fontSize: '3rem' }}>🔒</span>
           <h2 style={{ fontSize: '1.8rem', marginTop: '16px' }}>Access Restricted</h2>
-          <p style={{ color: 'var(--text-secondary)', marginTop: '8px', marginBottom: '24px' }}>Please switch to the Auditor Role in the Sandbox dropdown to view this portal.</p>
+          <p style={{ color: 'var(--text-secondary)', marginTop: '8px', marginBottom: '24px' }}>Please switch to the Auditor Role or contact admin for permissions to view this portal.</p>
           <Link href="/login" className="btn btn-primary">Go to Login</Link>
         </div>
         <Footer />

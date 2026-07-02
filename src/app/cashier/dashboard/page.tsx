@@ -15,7 +15,8 @@ export default function CashierDashboard() {
     approveWithdrawal,
     rejectWithdrawal,
     expenses,
-    disburseExpense
+    disburseExpense,
+    hasPermission
   } = useApp();
 
   const [activeTab, setActiveTab] = useState<"deposits" | "withdrawals" | "payouts" | "reserve">("deposits");
@@ -31,14 +32,14 @@ export default function CashierDashboard() {
     .reduce((sum, inv) => sum + inv.amount, 0) - 
     expenses.filter(e => e.status === 'disbursed').reduce((sum, e) => sum + e.amount, 0);
 
-  if (role !== 'cashier') {
+  if (role !== 'cashier' && role !== 'admin' && !hasPermission('disburse_funds') && !hasPermission('approve_withdrawals') && !hasPermission('verify_payments')) {
     return (
       <>
         <Navbar />
         <div style={{ padding: '80px 20px', textAlign: 'center' }}>
           <span style={{ fontSize: '3rem' }}>🔒</span>
           <h2 style={{ fontSize: '1.8rem', marginTop: '16px' }}>Access Restricted</h2>
-          <p style={{ color: 'var(--text-secondary)', marginTop: '8px', marginBottom: '24px' }}>Please switch to the Cashier Role in the Sandbox dropdown to view this portal.</p>
+          <p style={{ color: 'var(--text-secondary)', marginTop: '8px', marginBottom: '24px' }}>Please switch to the Cashier Role or contact admin for permissions to view this portal.</p>
           <Link href="/login" className="btn btn-primary">Go to Login</Link>
         </div>
         <Footer />
