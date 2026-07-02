@@ -14,10 +14,8 @@ export default function AdminDashboard() {
     campaigns, 
     expenses, 
     kycStatus, 
-    schoolVerificationStatus,
     approveCampaign,
     suspendCampaign,
-    approveSchool,
     approveKyc,
     approveExpense,
     investments,
@@ -32,7 +30,7 @@ export default function AdminDashboard() {
     updateRolePermissions
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<"overview" | "campaigns" | "expenses" | "schools" | "users" | "messages" | "calculator" | "passwordResets" | "investors" | "impact" | "permissions">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "campaigns" | "expenses" | "users" | "messages" | "calculator" | "passwordResets" | "investors" | "impact" | "permissions">("overview");
   const [expandedInvestor, setExpandedInvestor] = useState<string | null>(null);
   const [investorSearch, setInvestorSearch] = useState('');
   const [investorFilter, setInvestorFilter] = useState<'all' | 'verified' | 'pending'>('all');
@@ -144,12 +142,7 @@ export default function AdminDashboard() {
             )}
           </button>
 
-          <button onClick={() => setActiveTab("schools")} className={`sidebar-link ${activeTab === "schools" ? "active" : ""}`}>
-            🏫 School verifications
-            {schoolVerificationStatus === 'pending' && (
-              <span className="badge badge-warning" style={{ marginLeft: 'auto', fontSize: '0.7rem', padding: '2px 6px' }}>1</span>
-            )}
-          </button>
+
 
           <button onClick={() => setActiveTab("users")} className={`sidebar-link ${activeTab === "users" ? "active" : ""}`}>
             👤 Investor KYC Registry
@@ -226,7 +219,7 @@ export default function AdminDashboard() {
                 <div className="stat-card">
                   <span className="stat-lbl">Pending Tasks</span>
                   <span className="stat-val" style={{ color: 'var(--danger, #ef4444)' }}>
-                    {pendingCampaigns.length + pendingExpenses.length + (kycStatus === 'pending' ? 1 : 0) + (schoolVerificationStatus === 'pending' ? 1 : 0) + passwordResetRequests.filter(r => r.status === 'pending').length}
+                    {pendingCampaigns.length + pendingExpenses.length + (kycStatus === 'pending' ? 1 : 0) + passwordResetRequests.filter(r => r.status === 'pending').length}
                   </span>
                 </div>
               </div>
@@ -544,51 +537,7 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          {activeTab === "schools" && (
-            <div>
-              <div style={{ marginBottom: '30px' }}>
-                <h1 style={{ fontSize: '2rem' }}>Verify School Registrations</h1>
-                <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Review government approval licenses, taxation forms, and principal authorizations.</p>
-              </div>
 
-              {schoolVerificationStatus === 'pending' ? (
-                <div className="card">
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-                    <div>
-                      <span className="badge badge-warning" style={{ marginBottom: '8px' }}>Verification Required</span>
-                      <h3>Seed Global</h3>
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem' }}>Registered school admin ID: s1</p>
-                    </div>
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px', backgroundColor: 'var(--bg-tertiary)', padding: '16px', borderRadius: 'var(--radius-md)' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
-                      <span>1. Government School registration Certificate</span>
-                      <a href="#" onClick={(e) => {e.preventDefault(); alert("Viewing certificate_reg.pdf");}} style={{ color: 'var(--primary)', fontWeight: 600 }}>📄 Open doc</a>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
-                      <span>2. Tax Exemption Certificate (80G Status)</span>
-                      <a href="#" onClick={(e) => {e.preventDefault(); alert("Viewing tax_exempt_80g.pdf");}} style={{ color: 'var(--primary)', fontWeight: 600 }}>📄 Open doc</a>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
-                      <span>3. Principal Authorization & ID letter</span>
-                      <a href="#" onClick={(e) => {e.preventDefault(); alert("Viewing auth_principal.pdf");}} style={{ color: 'var(--primary)', fontWeight: 600 }}>📄 Open doc</a>
-                    </div>
-                  </div>
-
-                  <button onClick={() => { approveSchool("s1"); alert("School registry status set to: VERIFIED"); }} className="btn btn-primary" style={{ width: '100%' }}>
-                    Verify & Activate School Credentials
-                  </button>
-                </div>
-              ) : (
-                <div className="card" style={{ textAlign: 'center', padding: '60px' }}>
-                  <span style={{ fontSize: '2.5rem' }}>✓</span>
-                  <h3 style={{ marginTop: '12px' }}>School Registry Up-to-Date</h3>
-                  <p style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>No new school verification credentials are pending audit.</p>
-                </div>
-              )}
-            </div>
-          )}
 
           {activeTab === "users" && (
             <div>

@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useApp, UserRole } from "@/context/AppContext";
-import CustomSelect from "@/components/ui/select";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -56,18 +55,7 @@ export default function RegisterPage() {
           </div>
 
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label className="label">Register As</label>
-              <CustomSelect 
-                value={selectedRole} 
-                onChange={(val) => setSelectedRole(val as UserRole)}
-                options={[
-                  { label: "Investor (Fund campaigns & earn ROI)", value: "investor" },
-                  { label: "School (Launch campaigns & track expenses)", value: "school" }
-                ]}
-                id="register-role"
-              />
-            </div>
+
 
             <div className="form-group">
               <label className="label">Full Name</label>

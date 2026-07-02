@@ -13,10 +13,8 @@ export default function SchoolDashboard() {
     role, 
     campaigns, 
     expenses, 
-    schoolVerificationStatus,
     createCampaign,
     addExpense,
-    submitSchoolVerification,
     announcements,
     createAnnouncement,
     impactReports,
@@ -25,7 +23,7 @@ export default function SchoolDashboard() {
     hasPermission
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<"overview" | "create" | "expenses" | "verify" | "announcements" | "impact" | "outreach">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "create" | "expenses" | "announcements" | "impact" | "outreach">("overview");
 
   // Campaign Form State
   const [campTitle, setCampTitle] = useState("");
@@ -42,10 +40,7 @@ export default function SchoolDashboard() {
   const [expAmount, setExpAmount] = useState<number>(100);
   const [expInvoice, setExpInvoice] = useState("");
 
-  // Verification Form State
-  const [regCert, setRegCert] = useState("");
-  const [govAppr, setGovAppr] = useState("");
-  const [principalLetter, setPrincipalLetter] = useState("");
+
 
   // Announcement Form State
   const [annTitle, setAnnTitle] = useState("");
@@ -139,15 +134,7 @@ export default function SchoolDashboard() {
     setActiveTab("expenses");
   };
 
-  const handleVerifySubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!regCert || !principalLetter) {
-      alert("Please upload School Registration Certificate and Principal Authorization Letter.");
-      return;
-    }
-    submitSchoolVerification({ regCert, govAppr, principalLetter });
-    alert("School verification documents uploaded. Admin will review within 24 hours.");
-  };
+
 
   const startEmailBroadcast = (campaignId: string, title: string, content: string) => {
     setIsBroadcasting(true);
@@ -275,9 +262,7 @@ export default function SchoolDashboard() {
             🧾 Log Expense/Receipts
           </button>
 
-          <button onClick={() => setActiveTab("verify")} className={`sidebar-link ${activeTab === "verify" ? "active" : ""}`}>
-            🛡️ School Verification
-          </button>
+
 
           <button onClick={() => setActiveTab("announcements")} className={`sidebar-link ${activeTab === "announcements" ? "active" : ""}`}>
             📣 Announcements & Broadcasts
@@ -583,68 +568,7 @@ export default function SchoolDashboard() {
             </div>
           )}
 
-          {activeTab === "verify" && (
-            <div className="card" style={{ maxWidth: '600px' }}>
-              <h3 style={{ marginBottom: '16px' }}>School Identity Verification</h3>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', marginBottom: '24px' }}>
-                Upload official credentials to verify the legitimacy of your school. This is required before campaigns can go public.
-              </p>
 
-              {schoolVerificationStatus === 'verified' ? (
-                <div style={{ backgroundColor: 'rgba(16, 185, 129, 0.12)', border: '1px solid #10b981', color: '#10b981', padding: '20px', borderRadius: 'var(--radius-md)' }}>
-                  <h4>✓ Seed Global is fully verified</h4>
-                  <p style={{ fontSize: '0.88rem', marginTop: '6px', color: 'var(--text-secondary)' }}>
-                    Your school registration documents, Tax IDs, and principal approval letters have been audited and verified. All platform features are active.
-                  </p>
-                </div>
-              ) : schoolVerificationStatus === 'pending' ? (
-                <div style={{ backgroundColor: 'rgba(245, 158, 11, 0.12)', border: '1px solid #f59e0b', color: '#f59e0b', padding: '20px', borderRadius: 'var(--radius-md)' }}>
-                  <h4>⌛ Verification Pending</h4>
-                  <p style={{ fontSize: '0.88rem', marginTop: '6px', color: 'var(--text-secondary)' }}>
-                    Our compliance auditors are reviewing your uploaded certificates.
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleVerifySubmit}>
-                  <div className="form-group">
-                    <label className="label">Government School Registration Certificate</label>
-                    <input 
-                      type="file"
-                      onChange={(e) => setRegCert(e.target.value)}
-                      className="input"
-                      required
-                      id="school-cert"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="label">Tax Exemption Certificate (e.g. 80G/12A)</label>
-                    <input 
-                      type="file"
-                      onChange={(e) => setGovAppr(e.target.value)}
-                      className="input"
-                      id="school-tax"
-                    />
-                  </div>
-
-                  <div className="form-group" style={{ marginBottom: '24px' }}>
-                    <label className="label">Principal Authorization & Authority Letter</label>
-                    <input 
-                      type="file"
-                      onChange={(e) => setPrincipalLetter(e.target.value)}
-                      className="input"
-                      required
-                      id="school-principal"
-                    />
-                  </div>
-
-                  <button type="submit" className="btn btn-primary" style={{ width: '100%' }} id="school-verify-btn">
-                    Submit School Verification Documents
-                  </button>
-                </form>
-              )}
-            </div>
-          )}
 
           {activeTab === "announcements" && (
             <div>
