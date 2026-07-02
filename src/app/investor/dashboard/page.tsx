@@ -418,14 +418,6 @@ export default function InvestorDashboard() {
             👤 Customize Profile
           </button>
 
-          <button 
-            type="button"
-            onClick={() => setIsPasswordModalOpen(true)} 
-            className="sidebar-link"
-          >
-            🔒 Change Password
-          </button>
-
           <div style={{ marginTop: 'auto', padding: '16px' }}>
             <Link href="/campaigns" className="btn btn-primary" style={{ width: '100%', padding: '8px 12px', fontSize: '0.85rem' }}>
               + Invest More
@@ -1365,6 +1357,23 @@ Date: ${new Date().toLocaleDateString()}`;
                     Save Profile Changes
                   </button>
                 </form>
+
+                <div style={{ marginTop: '20px', borderTop: '1px dashed var(--border-color)', paddingTop: '20px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                      <h4 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 600 }}>Account Security</h4>
+                      <p style={{ margin: '4px 0 0 0', fontSize: '0.82rem', color: 'var(--text-secondary)' }}>Update your password to secure your account.</p>
+                    </div>
+                    <button 
+                      type="button" 
+                      onClick={() => setIsPasswordModalOpen(true)} 
+                      className="btn btn-outline"
+                      style={{ padding: '8px 16px', fontSize: '0.88rem' }}
+                    >
+                      🔒 Change Password
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           )}

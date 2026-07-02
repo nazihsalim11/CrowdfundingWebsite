@@ -210,6 +210,9 @@ interface AppContextType {
 
   // Investor Registry (for admin)
   investorRegistry: InvestorProfile[];
+  rolePermissions: Record<UserRole, string[]>;
+  updateRolePermissions: (role: UserRole, permissions: string[]) => void;
+  hasPermission: (permission: string) => boolean;
 }
 
 const initialCampaigns: Campaign[] = [
@@ -578,6 +581,28 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   // Investor Registry state
   const [investorRegistry] = useState<InvestorProfile[]>(initialInvestorRegistry);
 
+  // Permissions State
+  const [rolePermissions, setRolePermissions] = useState<Record<UserRole, string[]>>({
+    visitor: ['view_campaigns'],
+    investor: ['view_campaigns', 'invest', 'request_payout', 'view_portfolio', 'view_impact', 'manage_watchlist'],
+    school: ['view_campaigns', 'create_campaigns', 'upload_expenses', 'post_announcements', 'view_school_dashboard'],
+    admin: ['view_campaigns', 'create_campaigns', 'approve_campaigns', 'suspend_campaigns', 'invest', 'request_payout', 'upload_expenses', 'audit_expenses', 'disburse_funds', 'manage_users', 'manage_permissions', 'manage_tickets', 'configure_roi'],
+    cashier: ['view_campaigns', 'disburse_funds', 'approve_withdrawals', 'verify_payments'],
+    auditor: ['view_campaigns', 'audit_expenses', 'view_reports']
+  });
+
+  const updateRolePermissions = (targetRole: UserRole, newPermissions: string[]) => {
+    setRolePermissions(prev => ({
+      ...prev,
+      [targetRole]: newPermissions
+    }));
+    addNotification(`Super Admin updated permissions for role: ${targetRole}`);
+  };
+
+  const hasPermission = (permission: string) => {
+    return rolePermissions[role]?.includes(permission) || false;
+  };
+
   const addToWatchlist = (campaignId: string) => {
     setWatchlist(prev => prev.includes(campaignId) ? prev : [...prev, campaignId]);
     addNotification(`Campaign added to your watchlist.`);
@@ -620,6 +645,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [announcements, setAnnouncements] = useState<Announcement[]>(initialAnnouncements);
 
   const createAnnouncement = (newAnn: Omit<Announcement, 'id' | 'date' | 'schoolName' | 'schoolId' | 'investorsCount' | 'totalContributions' | 'campaignTitle'>) => {
+    if (!hasPermission('post_announcements')) {
+      alert("Permission Denied: You do not have 'post_announcements' permission.");
+      return;
+    }
     const targetCamp = campaigns.find(c => c.id === newAnn.campaignId);
     
     let baseInvestors = 0;
@@ -654,6 +683,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   });
 
   const updateRoiRates = (newRates: RoiRates) => {
+    if (!hasPermission('configure_roi')) {
+      alert("Permission Denied: You do not have 'configure_roi' permission.");
+      return;
+    }
     setRoiRates(newRates);
     addNotification(`Super Admin updated ROI Calculator rates: Labs: ${Math.round(newRates.labs * 100)}%, Digital: ${Math.round(newRates.digital * 100)}%, Buses: ${Math.round(newRates.buses * 100)}%`);
   };
@@ -745,6 +778,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   const createCampaign = (newCamp: Omit<Campaign, 'id' | 'raisedAmount' | 'status' | 'updates' | 'escrowLockedAmount' | 'escrowDisbursedAmount'>) => {
+    if (!hasPermission('create_campaigns')) {
+      alert("Permission Denied: You do not have 'create_campaigns' permission.");
+      return;
+    }
     const campaign: Campaign = {
       ...newCamp,
       id: `c${campaigns.length + 1}`,
@@ -760,6 +797,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   const investInCampaign = (campaignId: string, amount: number, paymentMethod: string, proof?: any) => {
+    if (!hasPermission('invest')) {
+      alert("Permission Denied: You do not have 'invest' permission.");
+      return;
+    }
     const target = campaigns.find(c => c.id === campaignId);
     if (!target) return;
 
@@ -808,6 +849,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   const addExpense = (newExp: Omit<Expense, 'id' | 'status'>) => {
+    if (!hasPermission('upload_expenses')) {
+      alert("Permission Denied: You do not have 'upload_expenses' permission.");
+      return;
+    }
     const expense: Expense = {
       ...newExp,
       id: `e${expenses.length + 1}`,
@@ -818,6 +863,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   const approveCampaign = (campaignId: string) => {
+    if (!hasPermission('approve_campaigns')) {
+      alert("Permission Denied: You do not have 'approve_campaigns' permission.");
+      return;
+    }
     setCampaigns(prev => prev.map(c => {
       if (c.id === campaignId) {
         addNotification(`Campaign approved and live: "${c.title}"`);
@@ -828,6 +877,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   const suspendCampaign = (campaignId: string) => {
+    if (!hasPermission('suspend_campaigns')) {
+      alert("Permission Denied: You do not have 'suspend_campaigns' permission.");
+      return;
+    }
     setCampaigns(prev => prev.map(c => {
       if (c.id === campaignId) {
         addNotification(`Campaign suspended by Board: "${c.title}"`);
@@ -838,16 +891,28 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   const approveSchool = (schoolId: string) => {
+    if (!hasPermission('manage_users')) {
+      alert("Permission Denied: You do not have 'manage_users' permission.");
+      return;
+    }
     setSchoolVerificationStatus('verified');
     addNotification("School verification status set to verified.");
   };
 
   const approveKyc = (userEmail: string) => {
+    if (!hasPermission('manage_users')) {
+      alert("Permission Denied: You do not have 'manage_users' permission.");
+      return;
+    }
     setKycStatus('verified');
     addNotification(`Investor KYC compliance verified for ${userEmail}.`);
   };
 
   const approveExpense = (expenseId: string) => {
+    if (!hasPermission('audit_expenses')) {
+      alert("Permission Denied: You do not have 'audit_expenses' permission.");
+      return;
+    }
     setExpenses(prev => prev.map(e => {
       if (e.id === expenseId) {
         addNotification(`Auditor approved expenditure: ₹${e.amount.toLocaleString()} for "${e.description}".`);
@@ -871,6 +936,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   const respondTicket = (ticketId: string, response: string) => {
+    if (!hasPermission('manage_tickets')) {
+      alert("Permission Denied: You do not have 'manage_tickets' permission.");
+      return;
+    }
     setTickets(prev => prev.map(t => {
       if (t.id === ticketId) {
         addNotification(`Support ticket resolved: "${t.title}".`);
@@ -882,6 +951,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   // Cashier Actions
   const verifyOfflineInvestment = (investmentId: string) => {
+    if (!hasPermission('verify_payments')) {
+      alert("Permission Denied: You do not have 'verify_payments' permission.");
+      return;
+    }
     setInvestments(prev => prev.map(inv => {
       if (inv.id === investmentId) {
         setCampaigns(camps => camps.map(c => {
@@ -909,6 +982,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   const approveWithdrawal = (id: string) => {
+    if (!hasPermission('approve_withdrawals')) {
+      alert("Permission Denied: You do not have 'approve_withdrawals' permission.");
+      return;
+    }
     setWithdrawals(prev => prev.map(wd => {
       if (wd.id === id) {
         addNotification(`Cashier approved investor payout bank transfer: ₹${wd.amount.toLocaleString()} to ${wd.investorEmail}.`);
@@ -919,6 +996,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   const rejectWithdrawal = (id: string) => {
+    if (!hasPermission('approve_withdrawals')) {
+      alert("Permission Denied: You do not have 'approve_withdrawals' permission.");
+      return;
+    }
     setWithdrawals(prev => prev.map(wd => {
       if (wd.id === id) {
         addNotification(`Cashier rejected investor payout bank transfer request of ₹${wd.amount.toLocaleString()}.`);
@@ -929,6 +1010,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   const disburseExpense = (expenseId: string) => {
+    if (!hasPermission('disburse_funds')) {
+      alert("Permission Denied: You do not have 'disburse_funds' permission.");
+      return;
+    }
     setExpenses(prev => prev.map(e => {
       if (e.id === expenseId) {
         setCampaigns(camps => camps.map(c => {
@@ -952,6 +1037,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   // Auditor Actions
   const auditExpense = (expenseId: string, status: 'approved' | 'rejected', notes: string, auditorName: string) => {
+    if (!hasPermission('audit_expenses')) {
+      alert("Permission Denied: You do not have 'audit_expenses' permission.");
+      return;
+    }
     setExpenses(prev => prev.map(e => {
       if (e.id === expenseId) {
         addNotification(`Auditor (${auditorName}) reviewed expense "${e.description}": set status to ${status}.`);
@@ -971,6 +1060,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   };
 
   const requestWithdrawal = (amount: number) => {
+    if (!hasPermission('request_payout')) {
+      alert("Permission Denied: You do not have 'request_payout' permission.");
+      return;
+    }
     if (amount > totalEarnings) {
       alert("Insufficient withdrawable earnings balance.");
       return;
@@ -1087,7 +1180,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       removeFromWatchlist,
       impactReports,
       addImpactReport,
-      investorRegistry
+      investorRegistry,
+      rolePermissions,
+      updateRolePermissions,
+      hasPermission
     }}>
       {children}
     </AppContext.Provider>

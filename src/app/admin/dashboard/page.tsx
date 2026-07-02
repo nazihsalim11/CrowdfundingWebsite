@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useApp } from "@/context/AppContext";
+import { useApp, type UserRole } from "@/context/AppContext";
 import SupportChat from "@/components/SupportChat";
 
 export default function AdminDashboard() {
@@ -27,10 +27,12 @@ export default function AdminDashboard() {
     approvePasswordReset,
     rejectPasswordReset,
     investorRegistry,
-    impactReports
+    impactReports,
+    rolePermissions,
+    updateRolePermissions
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<"overview" | "campaigns" | "expenses" | "schools" | "users" | "messages" | "calculator" | "passwordResets" | "investors" | "impact">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "campaigns" | "expenses" | "schools" | "users" | "messages" | "calculator" | "passwordResets" | "investors" | "impact" | "permissions">("overview");
   const [expandedInvestor, setExpandedInvestor] = useState<string | null>(null);
   const [investorSearch, setInvestorSearch] = useState('');
   const [investorFilter, setInvestorFilter] = useState<'all' | 'verified' | 'pending'>('all');
@@ -179,6 +181,10 @@ export default function AdminDashboard() {
 
           <button onClick={() => setActiveTab("impact")} className={`sidebar-link ${activeTab === "impact" ? "active" : ""}`}>
             🌱 Impact Reports
+          </button>
+
+          <button onClick={() => setActiveTab("permissions")} className={`sidebar-link ${activeTab === "permissions" ? "active" : ""}`}>
+            🛡️ Role Permissions
           </button>
         </aside>
 
@@ -989,6 +995,91 @@ export default function AdminDashboard() {
                     <p style={{ color: 'var(--text-secondary)', fontSize: '0.94rem', lineHeight: '1.6' }}>{report.summary}</p>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {activeTab === "permissions" && (
+            <div>
+              <div style={{ marginBottom: '30px' }}>
+                <h1 style={{ fontSize: '2rem' }}>Role Permissions Manager</h1>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>
+                  Manage access control permissions for all user roles across the platform. Changes apply instantly.
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                {Object.keys(rolePermissions).map((roleKey) => {
+                  const r = roleKey as UserRole;
+                  const currentPermissions = rolePermissions[r] || [];
+                  const allPermissions = [
+                    { id: 'view_campaigns', label: 'View Campaigns', desc: 'Browse and view campaign detail pages' },
+                    { id: 'create_campaigns', label: 'Create Campaigns', desc: 'Submit a new campaign proposal' },
+                    { id: 'approve_campaigns', label: 'Approve Campaigns', desc: 'Approve pending campaign proposals' },
+                    { id: 'suspend_campaigns', label: 'Suspend Campaigns', desc: 'Suspend or archive active campaigns' },
+                    { id: 'invest', label: 'Invest in Campaigns', desc: 'Contribute funds to active campaigns' },
+                    { id: 'request_payout', label: 'Request Payout/Withdrawal', desc: 'Withdraw earnings back to bank account' },
+                    { id: 'upload_expenses', label: 'Upload Expenses', desc: 'Submit invoices, bills & receipts' },
+                    { id: 'audit_expenses', label: 'Audit Expenses', desc: 'Review, approve or reject uploaded expenses' },
+                    { id: 'disburse_funds', label: 'Disburse Funds', desc: 'Release escrow funds to school/vendors' },
+                    { id: 'manage_users', label: 'Manage Users & KYC', desc: 'Approve user KYC and school registrations' },
+                    { id: 'manage_permissions', label: 'Manage Permissions', desc: 'View and edit role permission configurations' },
+                    { id: 'configure_roi', label: 'Configure ROI Rates', desc: 'Adjust global ROI estimation percentages' },
+                    { id: 'post_announcements', label: 'Post Announcements', desc: 'Publish official updates/announcements' },
+                  ];
+
+                  const togglePermission = (permissionId: string) => {
+                    let updated: string[];
+                    if (currentPermissions.includes(permissionId)) {
+                      updated = currentPermissions.filter(p => p !== permissionId);
+                    } else {
+                      updated = [...currentPermissions, permissionId];
+                    }
+                    updateRolePermissions(r, updated);
+                  };
+
+                  return (
+                    <div className="card" key={r} style={{ border: '1.5px solid var(--border-color)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
+                        <h3 style={{ textTransform: 'capitalize', fontSize: '1.25rem', margin: 0 }}>
+                          👤 {r}
+                        </h3>
+                        <span style={{ fontSize: '0.82rem', color: 'var(--text-tertiary)' }}>
+                          {currentPermissions.length} permissions enabled
+                        </span>
+                      </div>
+
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                        {allPermissions.map(p => {
+                          const hasIt = currentPermissions.includes(p.id);
+                          return (
+                            <div key={p.id} style={{
+                              display: 'flex',
+                              alignItems: 'flex-start',
+                              gap: '12px',
+                              padding: '10px',
+                              borderRadius: '8px',
+                              backgroundColor: 'var(--bg-tertiary)',
+                              border: hasIt ? '1px solid rgba(16,185,129,0.3)' : '1px solid transparent'
+                            }}>
+                              <input 
+                                type="checkbox" 
+                                id={`perm-${r}-${p.id}`}
+                                checked={hasIt}
+                                onChange={() => togglePermission(p.id)}
+                                style={{ marginTop: '3px', cursor: 'pointer' }}
+                              />
+                              <label htmlFor={`perm-${r}-${p.id}`} style={{ cursor: 'pointer', display: 'block' }}>
+                                <span style={{ fontWeight: 600, display: 'block', fontSize: '0.9rem', color: hasIt ? 'var(--text-primary)' : 'var(--text-secondary)' }}>{p.label}</span>
+                                <span style={{ fontSize: '0.78rem', color: 'var(--text-tertiary)', display: 'block', marginTop: '2px' }}>{p.desc}</span>
+                              </label>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
