@@ -50,6 +50,9 @@ export default function Navbar() {
           <Link href="/campaigns" className={`nav-link ${pathname.startsWith("/campaigns") ? "active" : ""}`}>
             Campaigns
           </Link>
+          <Link href="/investment-programs" className={`nav-link ${pathname.startsWith("/investment-programs") ? "active" : ""}`}>
+            Investment Programs
+          </Link>
           <Link href="/investor-benefits" className={`nav-link ${pathname === "/investor-benefits" ? "active" : ""}`}>
             Investor Benefits
           </Link>
@@ -63,11 +66,14 @@ export default function Navbar() {
     if (role === 'investor') {
       return (
         <>
-          <Link href="/campaigns" className={`nav-link ${pathname === "/campaigns" ? "active" : ""}`}>
-            🔍 Browse Projects
+          <Link href="/campaigns" className={`nav-link ${pathname.startsWith("/campaigns") ? "active" : ""}`}>
+            🔍 Browse Campaigns
           </Link>
-          <Link href="/investor/dashboard" className={`nav-link ${pathname.includes("/investor/dashboard") ? "active" : ""}`} style={{ fontWeight: 800 }}>
-            💼 Investor Dashboard
+          <Link href="/investment-programs" className={`nav-link ${pathname.startsWith("/investment-programs") ? "active" : ""}`}>
+            💼 Investment Programs
+          </Link>
+          <Link href="/investor/dashboard" className={`nav-link ${pathname.includes("/investor/dashboard") ? "active" : ""}`}>
+            📊 Investor Dashboard
           </Link>
         </>
       );

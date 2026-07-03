@@ -198,7 +198,9 @@ export default function InvestorDashboard() {
     watchlist,
     addToWatchlist,
     removeFromWatchlist,
-    impactReports
+    impactReports,
+    investmentPrograms,
+    programInvestments
   } = useApp();
 
   const [activeTab, setActiveTab] = useState<"overview" | "portfolio" | "kyc" | "withdraw" | "calculator" | "messages" | "announcements" | "profile" | "watchlist" | "tax" | "impact">("overview");
@@ -704,43 +706,114 @@ export default function InvestorDashboard() {
             <div>
               <div style={{ marginBottom: '30px' }}>
                 <h1 style={{ fontSize: '2rem' }}>Portfolio Breakdown</h1>
-                <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Check transparency utilization reports of the campaigns you support.</p>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Check transparency utilization reports of the campaigns and investment programs you support.</p>
               </div>
 
-              <div className="grid-2" style={{ marginTop: 0 }}>
-                {investments.map((inv) => {
-                  const camp = campaigns.find(c => c.id === inv.campaignId);
-                  const progress = camp ? Math.min(100, Math.round((camp.raisedAmount / camp.goalAmount) * 100)) : 100;
-                  return (
-                    <div className="card" key={inv.id} style={{ border: '1px solid var(--border-color)' }}>
-                      <span className="badge badge-info" style={{ position: 'absolute', top: '20px', right: '20px' }}>
-                        {camp ? camp.type : "Education"}
-                      </span>
-                      <h3 style={{ fontSize: '1.25rem', marginBottom: '8px' }}>{inv.campaignTitle}</h3>
-                      <span style={{ fontSize: '0.82rem', color: 'var(--text-tertiary)' }}>Invested: ₹{inv.amount.toLocaleString()} on {inv.date}</span>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 500, marginBottom: '20px' }}>📢 Backed Campaigns</h2>
+              {investments.length > 0 ? (
+                <div className="grid-2" style={{ marginTop: 0, marginBottom: '40px' }}>
+                  {investments.map((inv) => {
+                    const camp = campaigns.find(c => c.id === inv.campaignId);
+                    const progress = camp ? Math.min(100, Math.round((camp.raisedAmount / camp.goalAmount) * 100)) : 100;
+                    return (
+                      <div className="card" key={inv.id} style={{ border: '1px solid var(--border-color)' }}>
+                        <span className="badge badge-info" style={{ position: 'absolute', top: '20px', right: '20px' }}>
+                          {camp ? camp.type : "Education"}
+                        </span>
+                        <h3 style={{ fontSize: '1.25rem', marginBottom: '8px', fontWeight: 500 }}>{inv.campaignTitle}</h3>
+                        <span style={{ fontSize: '0.82rem', color: 'var(--text-tertiary)' }}>Invested: ₹{inv.amount.toLocaleString()} on {inv.date}</span>
 
-                      <div style={{ marginTop: '20px', borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '6px' }}>
-                          <span>Campaign Goal raised</span>
-                          <strong>{progress}%</strong>
+                        <div style={{ marginTop: '20px', borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '6px' }}>
+                            <span>Campaign Goal raised</span>
+                            <strong>{progress}%</strong>
+                          </div>
+                          <div className="progress-track" style={{ height: '6px' }}>
+                            <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+                          </div>
                         </div>
-                        <div className="progress-track" style={{ height: '6px' }}>
-                          <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+
+                        <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+                          <Link href={`/campaigns/${inv.campaignId}`} className="btn btn-outline" style={{ flex: 1, padding: '8px', fontSize: '0.82rem' }}>
+                            🔍 Audit expenses
+                          </Link>
+                          <button onClick={() => alert("Loading legal PDF agreement...")} className="btn btn-outline" style={{ flex: 1, padding: '8px', fontSize: '0.82rem' }}>
+                            📄 Legal contract
+                          </button>
                         </div>
                       </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p style={{ fontStyle: 'italic', color: 'var(--text-tertiary)', marginBottom: '40px' }}>You have not backed any campaigns yet.</p>
+              )}
 
-                      <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-                        <Link href={`/campaigns/${inv.campaignId}`} className="btn btn-outline" style={{ flex: 1, padding: '8px', fontSize: '0.82rem' }}>
-                          🔍 Audit expenses
-                        </Link>
-                        <button onClick={() => alert("Loading legal PDF agreement...")} className="btn btn-outline" style={{ flex: 1, padding: '8px', fontSize: '0.82rem' }}>
-                          📄 Legal contract
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 500, marginBottom: '20px' }}>💼 Backed Investment Programs</h2>
+              {/* Filter programs where this investor has completed investments */}
+              {(() => {
+                const backedProgs = investmentPrograms.filter(prog => 
+                  programInvestments.some(inv => inv.programId === prog.id && inv.investorEmail === userEmail && inv.paymentStatus === 'completed')
+                );
+
+                return backedProgs.length > 0 ? (
+                  <div className="grid-2" style={{ marginTop: 0 }}>
+                    {backedProgs.map(prog => {
+                      const progInvList = programInvestments.filter(inv => inv.programId === prog.id && inv.investorEmail === userEmail && inv.paymentStatus === 'completed');
+                      const unitsOwned = progInvList.reduce((sum, inv) => sum + inv.unitsPurchased, 0);
+                      const amtInvested = progInvList.reduce((sum, inv) => sum + inv.amountInvested, 0);
+                      
+                      const getTier = (units: number) => {
+                        if (units >= prog.tierThresholds.platinum) return "Platinum";
+                        if (units >= prog.tierThresholds.gold) return "Gold";
+                        if (units >= prog.tierThresholds.silver) return "Silver";
+                        if (units >= prog.tierThresholds.bronze) return "Bronze";
+                        return "None";
+                      };
+
+                      const currentTier = getTier(unitsOwned);
+
+                      const totalRaised = prog.unitsSold * prog.unitPrice;
+                      const percent = Math.min(100, Math.round((totalRaised / prog.fundingGoal) * 100));
+
+                      return (
+                        <div className="card" key={prog.id} style={{ border: '1px solid var(--border-color)' }}>
+                          <span className="badge badge-success" style={{ position: 'absolute', top: '20px', right: '20px', fontWeight: 600 }}>
+                            {currentTier} Tier
+                          </span>
+                          <h3 style={{ fontSize: '1.25rem', marginBottom: '8px', fontWeight: 500 }}>{prog.title}</h3>
+                          
+                          <div style={{ fontSize: '0.82rem', color: 'var(--text-tertiary)', display: 'flex', flexDirection: 'column', gap: '4px', margin: '10px 0' }}>
+                            <span>Units Owned: <strong>{unitsOwned} units</strong></span>
+                            <span>Total Invested: <strong>₹{amtInvested.toLocaleString()}</strong></span>
+                          </div>
+
+                          <div style={{ marginTop: '20px', borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '6px' }}>
+                              <span>Program Progress</span>
+                              <strong>{percent}%</strong>
+                            </div>
+                            <div className="progress-track" style={{ height: '6px' }}>
+                              <div className="progress-fill" style={{ width: `${percent}%` }}></div>
+                            </div>
+                          </div>
+
+                          <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+                            <Link href={`/investment-programs/${prog.id}`} className="btn btn-primary" style={{ flex: 1, padding: '8px', fontSize: '0.82rem' }}>
+                              🔓 View Transparency Portal
+                            </Link>
+                            <button onClick={() => alert("Loading legal investment certificate...")} className="btn btn-outline" style={{ flex: 1, padding: '8px', fontSize: '0.82rem' }}>
+                              📄 Unit Certificate
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p style={{ fontStyle: 'italic', color: 'var(--text-tertiary)' }}>You do not own units in any investment programs yet.</p>
+                );
+              })()}
             </div>
           )}
 

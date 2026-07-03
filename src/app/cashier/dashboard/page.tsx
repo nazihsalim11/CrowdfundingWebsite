@@ -16,13 +16,16 @@ export default function CashierDashboard() {
     rejectWithdrawal,
     expenses,
     disburseExpense,
-    hasPermission
+    hasPermission,
+    programInvestments,
+    verifyOfflineProgramInvestment
   } = useApp();
 
   const [activeTab, setActiveTab] = useState<"deposits" | "withdrawals" | "payouts" | "reserve">("deposits");
 
   // Filter cashier tasks
   const pendingDeposits = investments.filter(inv => inv.status === 'pending');
+  const pendingProgramDeposits = programInvestments.filter(inv => inv.paymentStatus === 'pending');
   const pendingWithdrawals = withdrawals.filter(w => w.status === 'pending');
   const pendingDisbursements = expenses.filter(exp => exp.status === 'approved'); // approved by admin/auditor but not yet disbursed (paid out to vendor)
 
@@ -82,11 +85,12 @@ export default function CashierDashboard() {
             <div>
               <div style={{ marginBottom: '30px' }}>
                 <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Verify Pending Deposits</h1>
-                <p style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>Verify investor bank deposits and wire receipts to credit project campaigns.</p>
+                <p style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>Verify investor bank deposits and wire receipts to credit campaigns and investment programs.</p>
               </div>
 
+              <h2 style={{ fontSize: '1.3rem', fontWeight: 500, marginBottom: '16px' }}>📢 Campaign Deposits</h2>
               {pendingDeposits.length > 0 ? (
-                <div className="table-container" style={{ marginTop: 0 }}>
+                <div className="table-container" style={{ marginTop: 0, marginBottom: '40px' }}>
                   <table>
                     <thead>
                       <tr>
@@ -131,10 +135,65 @@ export default function CashierDashboard() {
                   </table>
                 </div>
               ) : (
-                <div className="card" style={{ padding: '40px', textAlign: 'center', border: '1px solid var(--border-color)' }}>
-                  <span style={{ fontSize: '2rem' }}>✓</span>
-                  <h4 style={{ marginTop: '12px' }}>No Pending Deposits</h4>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', marginTop: '6px' }}>All investor deposit transactions are completed and reconciled.</p>
+                <div className="card" style={{ padding: '30px', textAlign: 'center', border: '1px solid var(--border-color)', marginBottom: '40px' }}>
+                  <span style={{ fontSize: '1.5rem' }}>✓</span>
+                  <h4 style={{ marginTop: '8px', fontWeight: 500 }}>No Pending Campaign Deposits</h4>
+                </div>
+              )}
+
+              <h2 style={{ fontSize: '1.3rem', fontWeight: 500, marginBottom: '16px' }}>💼 Investment Program Deposits</h2>
+              {pendingProgramDeposits.length > 0 ? (
+                <div className="table-container" style={{ marginTop: 0 }}>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Program / Supporter</th>
+                        <th>Units & Amount</th>
+                        <th>Payment Method</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pendingProgramDeposits.map((inv) => (
+                        <tr key={inv.id}>
+                          <td>
+                            <div style={{ fontWeight: 600 }}>{inv.programTitle}</div>
+                            <span style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)' }}>Backer: {inv.investorName} ({inv.investorEmail}) on {inv.date}</span>
+                          </td>
+                          <td>
+                            <div style={{ fontWeight: 700 }}>{inv.unitsPurchased} unit{inv.unitsPurchased !== 1 ? 's' : ''}</div>
+                            <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Total: ₹{inv.amountInvested.toLocaleString()}</span>
+                          </td>
+                          <td>
+                            <span className="badge badge-info" style={{ fontSize: '0.78rem' }}>{inv.paymentMethod}</span>
+                          </td>
+                          <td>
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                              <button 
+                                onClick={() => verifyOfflineProgramInvestment(inv.id)} 
+                                className="btn btn-primary"
+                                style={{ padding: '6px 12px', fontSize: '0.8rem' }}
+                              >
+                                Confirm Receipt
+                              </button>
+                              <button 
+                                onClick={() => alert("Marked transaction as failed. Notifying investor.")} 
+                                className="btn btn-outline"
+                                style={{ padding: '6px 12px', fontSize: '0.8rem', borderColor: 'var(--danger)', color: 'var(--danger)' }}
+                              >
+                                Flag Error
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="card" style={{ padding: '30px', textAlign: 'center', border: '1px solid var(--border-color)' }}>
+                  <span style={{ fontSize: '1.5rem' }}>✓</span>
+                  <h4 style={{ marginTop: '8px', fontWeight: 500 }}>No Pending Program Deposits</h4>
                 </div>
               )}
             </div>

@@ -134,6 +134,47 @@ export interface ImpactReport {
   photoUrl?: string;
 }
 
+export interface TierThresholds {
+  bronze: number;
+  silver: number;
+  gold: number;
+  platinum: number;
+}
+
+export interface TransparencyContent {
+  bronze: string;
+  silver: string;
+  gold: string;
+  platinum: string;
+}
+
+export interface InvestmentProgram {
+  id: string;
+  title: string;
+  description: string;
+  schoolName: string;
+  schoolId: string;
+  unitPrice: number;
+  fundingGoal: number;
+  unitsSold: number;
+  status: 'active' | 'completed' | 'suspended';
+  tierThresholds: TierThresholds;
+  transparencyContent: TransparencyContent;
+}
+
+export interface ProgramInvestment {
+  id: string;
+  programId: string;
+  programTitle: string;
+  investorEmail: string;
+  investorName: string;
+  unitsPurchased: number;
+  amountInvested: number;
+  date: string;
+  paymentStatus: 'pending' | 'completed' | 'failed';
+  paymentMethod: string;
+}
+
 interface AppContextType {
   role: UserRole;
   isLoggedIn: boolean;
@@ -213,6 +254,15 @@ interface AppContextType {
   rolePermissions: Record<UserRole, string[]>;
   updateRolePermissions: (role: UserRole, permissions: string[]) => void;
   hasPermission: (permission: string) => boolean;
+
+  // Investment Program Actions
+  investmentPrograms: InvestmentProgram[];
+  programInvestments: ProgramInvestment[];
+  createInvestmentProgram: (program: Omit<InvestmentProgram, 'id' | 'unitsSold'>) => void;
+  updateInvestmentProgram: (id: string, program: Partial<InvestmentProgram>) => void;
+  deleteInvestmentProgram: (id: string) => void;
+  investInProgram: (programId: string, unitsCount: number, paymentMethod: string, proof?: any) => void;
+  verifyOfflineProgramInvestment: (investmentId: string) => void;
 }
 
 const initialCampaigns: Campaign[] = [
@@ -541,6 +591,106 @@ const initialImpactReports: ImpactReport[] = [
   }
 ];
 
+const initialInvestmentPrograms: InvestmentProgram[] = [
+  {
+    id: "ip1",
+    title: "Seed Global School Expansion & Infrastructure Program",
+    description: "A comprehensive initiative to upgrade laboratories, classrooms, and cafeteria infrastructure across three main campuses. High safety and performance records.",
+    schoolName: "Seed Global",
+    schoolId: "s1",
+    unitPrice: 10000,
+    fundingGoal: 5000000,
+    unitsSold: 120,
+    status: 'active',
+    tierThresholds: {
+      bronze: 1,
+      silver: 10,
+      gold: 25,
+      platinum: 50
+    },
+    transparencyContent: {
+      bronze: "Investment summary dashboard & monthly building development reports.",
+      silver: "Detailed balance sheets & quarterly construction milestone assessments.",
+      gold: "Itemized project budget reports & contractor fee schedules.",
+      platinum: "Unrestricted invoice audit ledger, weekly executive updates, and direct QA with administrators."
+    }
+  },
+  {
+    id: "ip2",
+    title: "Green Energy & Solar Microgrid Program",
+    description: "Installing hybrid rooftop solar configurations and backup battery systems to secure sustainable, cost-efficient, and off-grid electricity for 48 class wings.",
+    schoolName: "Seed Global",
+    schoolId: "s1",
+    unitPrice: 5000,
+    fundingGoal: 3000000,
+    unitsSold: 450,
+    status: 'active',
+    tierThresholds: {
+      bronze: 1,
+      silver: 15,
+      gold: 30,
+      platinum: 60
+    },
+    transparencyContent: {
+      bronze: "Monthly clean energy yield charts & carbon mitigation summaries.",
+      silver: "Comprehensive engineering inspection audits & component efficiency data.",
+      gold: "Capital deployment ledgers & battery capacity test reports.",
+      platinum: "Complete hardware supplier receipts, quarterly ROI audit panels, and direct technical briefings."
+    }
+  }
+];
+
+const initialProgramInvestments: ProgramInvestment[] = [
+  {
+    id: "pinv1",
+    programId: "ip1",
+    programTitle: "Seed Global School Expansion & Infrastructure Program",
+    investorEmail: "investor@seedglobal.com",
+    investorName: "Investor User",
+    unitsPurchased: 15,
+    amountInvested: 150000,
+    date: "2026-06-15",
+    paymentStatus: "completed",
+    paymentMethod: "UPI (Razorpay)"
+  },
+  {
+    id: "pinv2",
+    programId: "ip2",
+    programTitle: "Green Energy & Solar Microgrid Program",
+    investorEmail: "investor@seedglobal.com",
+    investorName: "Investor User",
+    unitsPurchased: 40,
+    amountInvested: 200000,
+    date: "2026-06-18",
+    paymentStatus: "completed",
+    paymentMethod: "UPI (Razorpay)"
+  },
+  {
+    id: "pinv3",
+    programId: "ip1",
+    programTitle: "Seed Global School Expansion & Infrastructure Program",
+    investorEmail: "john@example.com",
+    investorName: "John Mathew",
+    unitsPurchased: 5,
+    amountInvested: 50000,
+    date: "2026-06-10",
+    paymentStatus: "completed",
+    paymentMethod: "UPI (Razorpay)"
+  },
+  {
+    id: "pinv4",
+    programId: "ip2",
+    programTitle: "Green Energy & Solar Microgrid Program",
+    investorEmail: "john@example.com",
+    investorName: "John Mathew",
+    unitsPurchased: 50,
+    amountInvested: 250000,
+    date: "2026-06-20",
+    paymentStatus: "pending",
+    paymentMethod: "Offline Payout / Wire"
+  }
+];
+
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
@@ -580,6 +730,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   // Investor Registry state
   const [investorRegistry] = useState<InvestorProfile[]>(initialInvestorRegistry);
+
+  // Investment Program State
+  const [investmentPrograms, setInvestmentPrograms] = useState<InvestmentProgram[]>(initialInvestmentPrograms);
+  const [programInvestments, setProgramInvestments] = useState<ProgramInvestment[]>(initialProgramInvestments);
 
   // Permissions State
   const [rolePermissions, setRolePermissions] = useState<Record<UserRole, string[]>>({
@@ -1122,6 +1276,90 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     addNotification(`💰 ROI Payout Distributed: School logged ₹${revenueAmount.toLocaleString()} revenue for "${target.title}". Paid ₹${distributedSum.toLocaleString()} total dividends across ${distributedCount} active investments.`);
   };
 
+  const createInvestmentProgram = (newProg: Omit<InvestmentProgram, 'id' | 'unitsSold'>) => {
+    const program: InvestmentProgram = {
+      ...newProg,
+      id: `ip${investmentPrograms.length + 1}`,
+      unitsSold: 0
+    };
+    setInvestmentPrograms(prev => [program, ...prev]);
+    addNotification(`New Investment Program launched: "${newProg.title}".`);
+  };
+
+  const updateInvestmentProgram = (id: string, updatedFields: Partial<InvestmentProgram>) => {
+    setInvestmentPrograms(prev => prev.map(p => {
+      if (p.id === id) {
+        addNotification(`Investment Program updated: "${p.title}".`);
+        return { ...p, ...updatedFields };
+      }
+      return p;
+    }));
+  };
+
+  const deleteInvestmentProgram = (id: string) => {
+    const target = investmentPrograms.find(p => p.id === id);
+    setInvestmentPrograms(prev => prev.filter(p => p.id !== id));
+    addNotification(`Investment Program deleted: "${target?.title || id}".`);
+  };
+
+  const investInProgram = (programId: string, unitsCount: number, paymentMethod: string, proof?: any) => {
+    const target = investmentPrograms.find(p => p.id === programId);
+    if (!target) return;
+
+    const amount = unitsCount * target.unitPrice;
+    const isUPI = paymentMethod === 'UPI (Razorpay)' || paymentMethod === 'Card (Razorpay)';
+
+    const newInvestment: ProgramInvestment = {
+      id: `pinv_${Date.now()}`,
+      programId,
+      programTitle: target.title,
+      investorEmail: userEmail || "investor@seedglobal.com",
+      investorName: username || "Investor User",
+      unitsPurchased: unitsCount,
+      amountInvested: amount,
+      date: new Date().toISOString().split('T')[0],
+      paymentStatus: isUPI ? 'completed' : 'pending',
+      paymentMethod
+    };
+
+    setProgramInvestments(prev => [newInvestment, ...prev]);
+
+    if (isUPI) {
+      setInvestmentPrograms(prev => prev.map(p => {
+        if (p.id === programId) {
+          return {
+            ...p,
+            unitsSold: p.unitsSold + unitsCount
+          };
+        }
+        return p;
+      }));
+      setWalletBalance(prev => prev - amount);
+      addNotification(`Purchased ${unitsCount} units (₹${amount.toLocaleString()}) for "${target.title}".`);
+    } else {
+      addNotification(`Offline unit purchase request (${unitsCount} units, ₹${amount.toLocaleString()}) logged for "${target.title}". Pending cashier check.`);
+    }
+  };
+
+  const verifyOfflineProgramInvestment = (investmentId: string) => {
+    setProgramInvestments(prev => prev.map(inv => {
+      if (inv.id === investmentId) {
+        setInvestmentPrograms(progs => progs.map(p => {
+          if (p.id === inv.programId) {
+            return {
+              ...p,
+              unitsSold: p.unitsSold + inv.unitsPurchased
+            };
+          }
+          return p;
+        }));
+        addNotification(`Cashier verified offline units purchase: ${inv.unitsPurchased} units (₹${inv.amountInvested.toLocaleString()}) for "${inv.programTitle}".`);
+        return { ...inv, paymentStatus: 'completed' };
+      }
+      return inv;
+    }));
+  };
+
   return (
     <AppContext.Provider value={{
       role,
@@ -1183,7 +1421,15 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       investorRegistry,
       rolePermissions,
       updateRolePermissions,
-      hasPermission
+      hasPermission,
+
+      investmentPrograms,
+      programInvestments,
+      createInvestmentProgram,
+      updateInvestmentProgram,
+      deleteInvestmentProgram,
+      investInProgram,
+      verifyOfflineProgramInvestment
     }}>
       {children}
     </AppContext.Provider>

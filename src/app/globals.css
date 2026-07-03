@@ -97,9 +97,10 @@ html, body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  font-weight: 800;
-  line-height: 1.25;
+  font-weight: 500;
+  line-height: 1.4;
   color: var(--text-primary);
+  letter-spacing: -0.015em;
 }
 
 a {
@@ -130,7 +131,7 @@ a {
   justify-content: center;
   padding: 10px 20px;
   font-family: var(--font-primary);
-  font-weight: 700;
+  font-weight: 500;
   font-size: 0.95rem;
   border-radius: var(--radius-md);
   cursor: pointer;
@@ -139,6 +140,7 @@ a {
   border: 1.5px solid transparent;
   will-change: transform, box-shadow;
   transform-gpu: translate3d(0, 0, 0);
+  letter-spacing: 0.01em;
 }
 
 .btn:hover:not(:disabled) {
@@ -318,12 +320,13 @@ a {
 }
 
 .nav-link {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 0.9rem;
   color: var(--text-primary);
   padding: 8px 16px;
   border-radius: var(--radius-full);
   transition: var(--transition);
+  letter-spacing: 0.01em;
 }
 
 .nav-link:hover {
@@ -334,12 +337,12 @@ a {
 .nav-link.active {
   background-color: var(--primary-light);
   color: var(--text-secondary);
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .logo {
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 600;
   font-size: 1.5rem;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
   -webkit-background-clip: text;
@@ -418,8 +421,9 @@ a {
 
 .card-title {
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 
 .card-subtitle {
@@ -543,8 +547,9 @@ a {
 .stat-val {
   font-size: 1.8rem;
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 600;
   color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 
 .stat-lbl {

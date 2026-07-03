@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useApp, type UserRole } from "@/context/AppContext";
 import SupportChat from "@/components/SupportChat";
+import CustomSelect from "@/components/ui/select";
 
 export default function AdminDashboard() {
   const { 
@@ -27,12 +28,37 @@ export default function AdminDashboard() {
     investorRegistry,
     impactReports,
     rolePermissions,
-    updateRolePermissions
+    updateRolePermissions,
+
+    investmentPrograms,
+    programInvestments,
+    createInvestmentProgram,
+    updateInvestmentProgram,
+    deleteInvestmentProgram
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<"overview" | "campaigns" | "expenses" | "users" | "messages" | "calculator" | "passwordResets" | "investors" | "impact" | "permissions">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "campaigns" | "expenses" | "users" | "messages" | "calculator" | "passwordResets" | "investors" | "impact" | "permissions" | "investmentPrograms">("overview");
   const [expandedInvestor, setExpandedInvestor] = useState<string | null>(null);
   const [investorSearch, setInvestorSearch] = useState('');
+  
+  // Program Form state
+  const [showProgramForm, setShowProgramForm] = useState(false);
+  const [editingProgramId, setEditingProgramId] = useState<string | null>(null);
+  const [programTitle, setProgramTitle] = useState("");
+  const [programDesc, setProgramDesc] = useState("");
+  const [programSchool, setProgramSchool] = useState("Seed Global");
+  const [programUnitPrice, setProgramUnitPrice] = useState(10000);
+  const [programGoal, setProgramGoal] = useState(5000000);
+  const [programStatus, setProgramStatus] = useState<'active' | 'completed' | 'suspended'>('active');
+  const [bronzeThreshold, setBronzeThreshold] = useState(1);
+  const [silverThreshold, setSilverThreshold] = useState(10);
+  const [goldThreshold, setGoldThreshold] = useState(25);
+  const [platinumThreshold, setPlatinumThreshold] = useState(50);
+  const [bronzeContent, setBronzeContent] = useState("");
+  const [silverContent, setSilverContent] = useState("");
+  const [goldContent, setGoldContent] = useState("");
+  const [platinumContent, setPlatinumContent] = useState("");
+  const [expandedProgramInvestors, setExpandedProgramInvestors] = useState<string | null>(null);
   const [investorFilter, setInvestorFilter] = useState<'all' | 'verified' | 'pending'>('all');
   const [expandedCampaignInvestors, setExpandedCampaignInvestors] = useState<string | null>(null);
 
@@ -54,6 +80,82 @@ export default function AdminDashboard() {
       </>
     );
   }
+  const handleSaveProgram = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!programTitle || !programDesc || programUnitPrice <= 0 || programGoal <= 0) {
+      alert("Please fill in all fields correctly.");
+      return;
+    }
+
+    const programData = {
+      title: programTitle,
+      description: programDesc,
+      schoolName: programSchool,
+      schoolId: "s1",
+      unitPrice: programUnitPrice,
+      fundingGoal: programGoal,
+      status: programStatus,
+      tierThresholds: {
+        bronze: bronzeThreshold,
+        silver: silverThreshold,
+        gold: goldThreshold,
+        platinum: platinumThreshold
+      },
+      transparencyContent: {
+        bronze: bronzeContent,
+        silver: silverContent,
+        gold: goldContent,
+        platinum: platinumContent
+      }
+    };
+
+    if (editingProgramId) {
+      updateInvestmentProgram(editingProgramId, programData);
+      alert("Investment Program updated successfully!");
+    } else {
+      createInvestmentProgram(programData);
+      alert("Investment Program created successfully!");
+    }
+
+    resetProgramForm();
+  };
+
+  const resetProgramForm = () => {
+    setShowProgramForm(false);
+    setEditingProgramId(null);
+    setProgramTitle("");
+    setProgramDesc("");
+    setProgramUnitPrice(10000);
+    setProgramGoal(5000000);
+    setProgramStatus("active");
+    setBronzeThreshold(1);
+    setSilverThreshold(10);
+    setGoldThreshold(25);
+    setPlatinumThreshold(50);
+    setBronzeContent("");
+    setSilverContent("");
+    setGoldContent("");
+    setPlatinumContent("");
+  };
+
+  const handleEditClick = (p: any) => {
+    setEditingProgramId(p.id);
+    setProgramTitle(p.title);
+    setProgramDesc(p.description);
+    setProgramSchool(p.schoolName);
+    setProgramUnitPrice(p.unitPrice);
+    setProgramGoal(p.fundingGoal);
+    setProgramStatus(p.status);
+    setBronzeThreshold(p.tierThresholds.bronze);
+    setSilverThreshold(p.tierThresholds.silver);
+    setGoldThreshold(p.tierThresholds.gold);
+    setPlatinumThreshold(p.tierThresholds.platinum);
+    setBronzeContent(p.transparencyContent.bronze);
+    setSilverContent(p.transparencyContent.silver);
+    setGoldContent(p.transparencyContent.gold);
+    setPlatinumContent(p.transparencyContent.platinum);
+    setShowProgramForm(true);
+  };
 
   const handleSaveCalculatorConfig = (e: React.FormEvent) => {
     e.preventDefault();
@@ -131,6 +233,10 @@ export default function AdminDashboard() {
                 {pendingCampaigns.length}
               </span>
             )}
+          </button>
+
+          <button onClick={() => setActiveTab("investmentPrograms")} className={`sidebar-link ${activeTab === "investmentPrograms" ? "active" : ""}`}>
+            💼 Investment Programs
           </button>
 
           <button onClick={() => setActiveTab("expenses")} className={`sidebar-link ${activeTab === "expenses" ? "active" : ""}`}>
@@ -1025,6 +1131,362 @@ export default function AdminDashboard() {
                             </div>
                           );
                         })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {activeTab === "investmentPrograms" && (
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', flexWrap: 'wrap', gap: '16px' }}>
+                <div>
+                  <h1 style={{ fontSize: '2rem', fontWeight: 500 }}>Investment Programs Manager</h1>
+                  <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>
+                    Create, edit, delete, and monitor fractional investment programs and thresholds.
+                  </p>
+                </div>
+                {!showProgramForm && (
+                  <button onClick={() => setShowProgramForm(true)} className="btn btn-primary">
+                    + Create Investment Program
+                  </button>
+                )}
+              </div>
+
+              {/* Creation / Editing Form */}
+              {showProgramForm && (
+                <div className="card" style={{ marginBottom: '30px', border: '1.5px solid var(--primary)' }}>
+                  <h3 style={{ marginBottom: '20px', fontWeight: 500 }}>
+                    {editingProgramId ? "✏️ Edit Investment Program" : "💼 Create New Investment Program"}
+                  </h3>
+                  
+                  <form onSubmit={handleSaveProgram}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
+                      <div className="form-group">
+                        <label className="label">Program Title</label>
+                        <input 
+                          type="text" 
+                          value={programTitle}
+                          onChange={(e) => setProgramTitle(e.target.value)}
+                          className="input"
+                          placeholder="e.g. Seed Global Campus Expansion"
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="label">School Partner</label>
+                        <input 
+                          type="text" 
+                          value={programSchool}
+                          onChange={(e) => setProgramSchool(e.target.value)}
+                          className="input"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-group" style={{ marginBottom: '20px' }}>
+                      <label className="label">Description</label>
+                      <textarea 
+                        value={programDesc}
+                        onChange={(e) => setProgramDesc(e.target.value)}
+                        className="input"
+                        rows={4}
+                        placeholder="Detail the purpose and structure of the investment program..."
+                        required
+                      />
+                    </div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px', marginBottom: '30px' }}>
+                      <div className="form-group">
+                        <label className="label">Price Per Unit (₹)</label>
+                        <input 
+                          type="number" 
+                          value={programUnitPrice}
+                          onChange={(e) => setProgramUnitPrice(Number(e.target.value))}
+                          className="input"
+                          min="1"
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="label">Funding Goal (₹)</label>
+                        <input 
+                          type="number" 
+                          value={programGoal}
+                          onChange={(e) => setProgramGoal(Number(e.target.value))}
+                          className="input"
+                          min="1000"
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="label">Program Status</label>
+                        <CustomSelect 
+                          value={programStatus}
+                          onChange={(val) => setProgramStatus(val as any)}
+                          options={[
+                            { label: "Active", value: "active" },
+                            { label: "Completed", value: "completed" },
+                            { label: "Suspended", value: "suspended" }
+                          ]}
+                          id="edit-program-status"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Tier Thresholds */}
+                    <h4 style={{ marginBottom: '16px', borderBottom: '1px solid var(--border-color)', paddingBottom: '8px', fontWeight: 500 }}>
+                      📈 Investor Tier Thresholds (Units Owned)
+                    </h4>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '20px', marginBottom: '30px' }}>
+                      <div className="form-group">
+                        <label className="label">Bronze Units</label>
+                        <input 
+                          type="number" 
+                          value={bronzeThreshold}
+                          onChange={(e) => setBronzeThreshold(Number(e.target.value))}
+                          className="input"
+                          min="1"
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="label">Silver Units</label>
+                        <input 
+                          type="number" 
+                          value={silverThreshold}
+                          onChange={(e) => setSilverThreshold(Number(e.target.value))}
+                          className="input"
+                          min="1"
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="label">Gold Units</label>
+                        <input 
+                          type="number" 
+                          value={goldThreshold}
+                          onChange={(e) => setGoldThreshold(Number(e.target.value))}
+                          className="input"
+                          min="1"
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="label">Platinum Units</label>
+                        <input 
+                          type="number" 
+                          value={platinumThreshold}
+                          onChange={(e) => setPlatinumThreshold(Number(e.target.value))}
+                          className="input"
+                          min="1"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Transparency Content */}
+                    <h4 style={{ marginBottom: '16px', borderBottom: '1px solid var(--border-color)', paddingBottom: '8px', fontWeight: 500 }}>
+                      🔓 Transparency Content by Tier
+                    </h4>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '30px' }}>
+                      <div className="form-group">
+                        <label className="label">Bronze Content</label>
+                        <textarea 
+                          value={bronzeContent}
+                          onChange={(e) => setBronzeContent(e.target.value)}
+                          className="input"
+                          rows={3}
+                          placeholder="Content visible to Bronze-tier investors..."
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="label">Silver Content</label>
+                        <textarea 
+                          value={silverContent}
+                          onChange={(e) => setSilverContent(e.target.value)}
+                          className="input"
+                          rows={3}
+                          placeholder="Content visible to Silver-tier investors..."
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="label">Gold Content</label>
+                        <textarea 
+                          value={goldContent}
+                          onChange={(e) => setGoldContent(e.target.value)}
+                          className="input"
+                          rows={3}
+                          placeholder="Content visible to Gold-tier investors..."
+                          required
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label className="label">Platinum Content</label>
+                        <textarea 
+                          value={platinumContent}
+                          onChange={(e) => setPlatinumContent(e.target.value)}
+                          className="input"
+                          rows={3}
+                          placeholder="Content visible to Platinum-tier investors..."
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '15px', justifyContent: 'flex-end' }}>
+                      <button type="button" onClick={resetProgramForm} className="btn btn-outline">
+                        Cancel
+                      </button>
+                      <button type="submit" className="btn btn-primary">
+                        {editingProgramId ? "Update Program" : "Create Program"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              )}
+
+              {/* List of Programs */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                {investmentPrograms.map((prog) => {
+                  const raisedVal = prog.unitsSold * prog.unitPrice;
+                  const totalUnits = prog.fundingGoal / prog.unitPrice;
+                  
+                  // Filter program investments
+                  const programBackers = programInvestments.filter(inv => inv.programId === prog.id);
+                  
+                  // Group by investor email to sum units owned and trace tier
+                  const investorMap: Record<string, { email: string; name: string; units: number; amount: number; paymentStatus: string }> = {};
+                  programBackers.forEach(inv => {
+                    if (!investorMap[inv.investorEmail]) {
+                      investorMap[inv.investorEmail] = {
+                        email: inv.investorEmail,
+                        name: inv.investorName,
+                        units: 0,
+                        amount: 0,
+                        paymentStatus: inv.paymentStatus
+                      };
+                    }
+                    if (inv.paymentStatus === 'completed') {
+                      investorMap[inv.investorEmail].units += inv.unitsPurchased;
+                      investorMap[inv.investorEmail].amount += inv.amountInvested;
+                    }
+                  });
+
+                  const uniqueBackers = Object.values(investorMap);
+
+                  return (
+                    <div className="card" key={prog.id} style={{ display: 'flex', flexDirection: 'column', gap: '20px', padding: '32px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div>
+                          <span className={`badge ${prog.status === 'active' ? 'badge-info' : prog.status === 'completed' ? 'badge-success' : 'badge-danger'}`}>
+                            {prog.status.toUpperCase()}
+                          </span>
+                          <span style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)', marginLeft: '10px' }}>School: <strong>{prog.schoolName}</strong></span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                          <button onClick={() => handleEditClick(prog)} className="btn btn-outline" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
+                            ✏️ Edit Config
+                          </button>
+                          <button onClick={() => { if(confirm("Are you sure?")) deleteInvestmentProgram(prog.id); }} className="btn btn-outline" style={{ padding: '6px 12px', fontSize: '0.8rem', color: 'var(--danger)', borderColor: 'var(--danger)' }}>
+                            🗑️ Delete
+                          </button>
+                        </div>
+                      </div>
+
+                      <div>
+                        <h2 style={{ fontSize: '1.4rem', fontWeight: 500 }}>{prog.title}</h2>
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '6px', lineHeight: '1.5' }}>
+                          {prog.description}
+                        </p>
+                      </div>
+
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '16px', backgroundColor: 'var(--bg-tertiary)', padding: '16px', borderRadius: 'var(--radius-md)', fontSize: '0.88rem' }}>
+                        <div>
+                          <span style={{ color: 'var(--text-tertiary)', display: 'block', fontSize: '0.75rem', fontWeight: 600 }}>UNIT PRICE</span>
+                          <strong>₹{prog.unitPrice.toLocaleString()}</strong>
+                        </div>
+                        <div>
+                          <span style={{ color: 'var(--text-tertiary)', display: 'block', fontSize: '0.75rem', fontWeight: 600 }}>FUNDING GOAL</span>
+                          <strong>₹{prog.fundingGoal.toLocaleString()}</strong>
+                        </div>
+                        <div>
+                          <span style={{ color: 'var(--text-tertiary)', display: 'block', fontSize: '0.75rem', fontWeight: 600 }}>UNITS SOLD / TOTAL</span>
+                          <strong>{prog.unitsSold} / {totalUnits} units</strong>
+                        </div>
+                        <div>
+                          <span style={{ color: 'var(--text-tertiary)', display: 'block', fontSize: '0.75rem', fontWeight: 600 }}>TOTAL FUNDS RAISED</span>
+                          <strong style={{ color: 'var(--success)' }}>₹{raisedVal.toLocaleString()}</strong>
+                        </div>
+                      </div>
+
+                      {/* Configured Thresholds preview */}
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                        <strong>Thresholds:</strong> Bronze: {prog.tierThresholds.bronze}u • Silver: {prog.tierThresholds.silver}u • Gold: {prog.tierThresholds.gold}u • Platinum: {prog.tierThresholds.platinum}u
+                      </div>
+
+                      {/* Expandable Backers List */}
+                      <div>
+                        <button 
+                          onClick={() => setExpandedProgramInvestors(expandedProgramInvestors === prog.id ? null : prog.id)}
+                          className="btn btn-outline"
+                          style={{ width: '100%', justifyContent: 'space-between', padding: '10px' }}
+                        >
+                          <span>👥 View Program Investors ({uniqueBackers.length})</span>
+                          <span>{expandedProgramInvestors === prog.id ? "▲" : "▼"}</span>
+                        </button>
+
+                        {expandedProgramInvestors === prog.id && (
+                          <div style={{ marginTop: '16px', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', overflow: 'hidden', animation: 'fadeIn 0.3s ease-out' }}>
+                            {uniqueBackers.length > 0 ? (
+                              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem' }}>
+                                <thead style={{ backgroundColor: 'var(--bg-tertiary)' }}>
+                                  <tr>
+                                    <th style={{ padding: '12px' }}>Investor Name</th>
+                                    <th style={{ padding: '12px' }}>Email</th>
+                                    <th style={{ padding: '12px' }}>Units Owned</th>
+                                    <th style={{ padding: '12px' }}>Amount Invested</th>
+                                    <th style={{ padding: '12px' }}>Calculated Tier</th>
+                                    <th style={{ padding: '12px' }}>Payment Status</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {uniqueBackers.map(backer => {
+                                    const calcTier = backer.units >= prog.tierThresholds.platinum ? "Platinum" :
+                                                     backer.units >= prog.tierThresholds.gold ? "Gold" :
+                                                     backer.units >= prog.tierThresholds.silver ? "Silver" :
+                                                     backer.units >= prog.tierThresholds.bronze ? "Bronze" : "None";
+                                    return (
+                                      <tr key={backer.email} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                                        <td style={{ padding: '12px', fontWeight: 600 }}>{backer.name}</td>
+                                        <td style={{ padding: '12px' }}>{backer.email}</td>
+                                        <td style={{ padding: '12px', fontWeight: 600 }}>{backer.units} unit{backer.units !== 1 ? 's' : ''}</td>
+                                        <td style={{ padding: '12px', fontWeight: 600 }}>₹{backer.amount.toLocaleString()}</td>
+                                        <td style={{ padding: '12px' }}>
+                                          <span className="badge badge-success" style={{ fontWeight: 600 }}>
+                                            {calcTier}
+                                          </span>
+                                        </td>
+                                        <td style={{ padding: '12px' }}>
+                                          <span className="badge badge-success">Completed</span>
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
+                            ) : (
+                              <div style={{ padding: '20px', textAlign: 'center', color: 'var(--text-tertiary)' }}>
+                                No completed investments recorded for this program yet.
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
                   );
