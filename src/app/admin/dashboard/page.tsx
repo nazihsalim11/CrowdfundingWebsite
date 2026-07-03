@@ -225,6 +225,10 @@ export default function AdminDashboard() {
           <button onClick={() => setActiveTab("overview")} className={`sidebar-link ${activeTab === "overview" ? "active" : ""}`}>
             📊 Platform Overview
           </button>
+
+          <button onClick={() => setActiveTab("investmentPrograms")} className={`sidebar-link ${activeTab === "investmentPrograms" ? "active" : ""}`}>
+            💼 Investment Programs
+          </button>
           
           <button onClick={() => setActiveTab("campaigns")} className={`sidebar-link ${activeTab === "campaigns" ? "active" : ""}`}>
             📢 Campaign Approvals 
@@ -233,10 +237,6 @@ export default function AdminDashboard() {
                 {pendingCampaigns.length}
               </span>
             )}
-          </button>
-
-          <button onClick={() => setActiveTab("investmentPrograms")} className={`sidebar-link ${activeTab === "investmentPrograms" ? "active" : ""}`}>
-            💼 Investment Programs
           </button>
 
           <button onClick={() => setActiveTab("expenses")} className={`sidebar-link ${activeTab === "expenses" ? "active" : ""}`}>

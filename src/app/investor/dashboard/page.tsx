@@ -325,7 +325,10 @@ export default function InvestorDashboard() {
     requestWithdrawal(withdrawAmount);
   };
 
-  const totalInvested = investments.reduce((acc, inv) => acc + (inv.status === 'completed' ? inv.amount : 0), 0);
+  const totalCampaignInvested = investments.reduce((acc, inv) => acc + (inv.status === 'completed' ? inv.amount : 0), 0);
+  const totalProgramInvested = programInvestments ? programInvestments.filter(inv => inv.investorEmail === userEmail && inv.paymentStatus === 'completed').reduce((acc, inv) => acc + inv.amountInvested, 0) : 0;
+  const totalInvested = totalCampaignInvested + totalProgramInvested;
+  const totalUnitsOwned = programInvestments ? programInvestments.filter(inv => inv.investorEmail === userEmail && inv.paymentStatus === 'completed').reduce((acc, inv) => acc + inv.unitsPurchased, 0) : 0;
 
   return (
     <>
@@ -432,9 +435,20 @@ export default function InvestorDashboard() {
           
           {activeTab === "overview" && (
             <div>
-              <div style={{ marginBottom: '30px' }}>
-                <h1 style={{ fontSize: '2rem' }}>Investor Dashboard</h1>
-                <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Real-time statistics of your crowdfunding investments.</p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', flexWrap: 'wrap', gap: '15px' }}>
+                <div>
+                  <h1 style={{ fontSize: '2rem' }}>Investor Dashboard</h1>
+                  <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Real-time statistics of your school investments.</p>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>KYC Status:</span>
+                  <span className={`badge ${
+                    kycStatus === 'verified' ? 'badge-success' : 
+                    kycStatus === 'pending' ? 'badge-warning' : 'badge-danger'
+                  }`} style={{ fontSize: '0.82rem', padding: '5px 10px', textTransform: 'capitalize' }}>
+                    {kycStatus}
+                  </span>
+                </div>
               </div>
 
               {/* Stats Widgets */}
@@ -444,23 +458,16 @@ export default function InvestorDashboard() {
                   <span className="stat-val" style={{ color: 'var(--primary)' }}>₹{totalInvested.toLocaleString()}</span>
                 </div>
                 <div className="stat-card">
+                  <span className="stat-lbl">Program Units Owned</span>
+                  <span className="stat-val" style={{ color: 'var(--secondary)' }}>{totalUnitsOwned} unit{totalUnitsOwned !== 1 ? 's' : ''}</span>
+                </div>
+                <div className="stat-card">
                   <span className="stat-lbl">Total Profits Distributed</span>
                   <span className="stat-val" style={{ color: 'var(--success)' }}>₹{totalEarnings.toLocaleString()}</span>
                 </div>
                 <div className="stat-card">
                   <span className="stat-lbl">Simulated Bank Wallet</span>
                   <span className="stat-val" style={{ color: 'var(--secondary)' }}>₹{walletBalance.toLocaleString()}</span>
-                </div>
-                <div className="stat-card">
-                  <span className="stat-lbl">KYC Status</span>
-                  <div>
-                    <span className={`badge ${
-                      kycStatus === 'verified' ? 'badge-success' : 
-                      kycStatus === 'pending' ? 'badge-warning' : 'badge-danger'
-                    }`} style={{ fontSize: '0.85rem', padding: '6px 12px', marginTop: '4px' }}>
-                      {kycStatus}
-                    </span>
-                  </div>
                 </div>
               </div>
 
@@ -657,9 +664,50 @@ export default function InvestorDashboard() {
                 </div>
               </div>
 
-              {/* Recent Investments */}
-              <div className="card" style={{ border: '1.5px solid var(--border-color)' }}>
-                <h3 style={{ marginBottom: '16px' }}>Recent Investments</h3>
+              {/* Recent Investments & Purchases */}
+              <div className="card" style={{ border: '1.5px solid var(--border-color)', marginBottom: '30px' }}>
+                <h3 style={{ marginBottom: '20px', fontWeight: 200 }}>💼 Program Unit Purchases</h3>
+                {(() => {
+                  const myProgramInvs = programInvestments ? programInvestments.filter(inv => inv.investorEmail === userEmail) : [];
+                  return myProgramInvs.length > 0 ? (
+                    <div className="table-container" style={{ marginTop: 0, marginBottom: '30px' }}>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Program Title</th>
+                            <th>Units Purchased</th>
+                            <th>Amount Invested</th>
+                            <th>Date</th>
+                            <th>Payment Method</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {myProgramInvs.map((inv) => (
+                            <tr key={inv.id}>
+                              <td style={{ fontWeight: 200 }}>{inv.programTitle}</td>
+                              <td style={{ fontWeight: 200 }}>{inv.unitsPurchased} unit{inv.unitsPurchased !== 1 ? 's' : ''}</td>
+                              <td style={{ fontWeight: 200 }}>₹{inv.amountInvested.toLocaleString()}</td>
+                              <td>{inv.date}</td>
+                              <td>{inv.paymentMethod}</td>
+                              <td>
+                                <span className={`badge ${inv.paymentStatus === 'completed' ? 'badge-success' : 'badge-warning'}`}>
+                                  {inv.paymentStatus}
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <p style={{ fontStyle: 'italic', color: 'var(--text-tertiary)', padding: '10px 0 30px 0' }}>
+                      You have not purchased any program units yet.
+                    </p>
+                  );
+                })()}
+
+                <h3 style={{ marginBottom: '20px', fontWeight: 200, borderTop: '1px solid var(--border-color)', paddingTop: '20px' }}>📢 Campaign Donation History</h3>
                 {investments.length > 0 ? (
                   <div className="table-container" style={{ marginTop: 0 }}>
                     <table>
@@ -694,8 +742,8 @@ export default function InvestorDashboard() {
                     </table>
                   </div>
                 ) : (
-                  <p style={{ fontStyle: 'italic', color: 'var(--text-tertiary)', textAlign: 'center', padding: '20px' }}>
-                    You have not made any investments yet.
+                  <p style={{ fontStyle: 'italic', color: 'var(--text-tertiary)', padding: '10px 0' }}>
+                    You have not made any campaign donations yet.
                   </p>
                 )}
               </div>

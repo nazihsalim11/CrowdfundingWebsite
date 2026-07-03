@@ -8,8 +8,8 @@ export default function Footer() {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-brand">
-            <Link href="/" className="logo">
-              <span className="logo-icon">🏫</span>
+            <Link href="/" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <img src="/images/School_Logo.png" alt="School Logo" style={{ height: '36px', width: 'auto', borderRadius: 'var(--radius-sm)' }} />
               <span>SCMS</span>
             </Link>
             <p className="footer-brand-desc">

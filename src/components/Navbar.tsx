@@ -66,11 +66,11 @@ export default function Navbar() {
     if (role === 'investor') {
       return (
         <>
-          <Link href="/campaigns" className={`nav-link ${pathname.startsWith("/campaigns") ? "active" : ""}`}>
-            🔍 Browse Campaigns
-          </Link>
           <Link href="/investment-programs" className={`nav-link ${pathname.startsWith("/investment-programs") ? "active" : ""}`}>
             💼 Investment Programs
+          </Link>
+          <Link href="/campaigns" className={`nav-link ${pathname.startsWith("/campaigns") ? "active" : ""}`}>
+            🔍 Browse Campaigns (Donations)
           </Link>
           <Link href="/investor/dashboard" className={`nav-link ${pathname.includes("/investor/dashboard") ? "active" : ""}`}>
             📊 Investor Dashboard
@@ -116,8 +116,8 @@ export default function Navbar() {
 
   return (
     <header className="navbar glass">
-      <Link href="/" className="logo">
-        <span className="logo-icon">🏫</span>
+      <Link href="/" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <img src="/images/School_Logo.png" alt="School Logo" style={{ height: '36px', width: 'auto', borderRadius: 'var(--radius-sm)' }} />
         <span>SCMS</span>
       </Link>
 
