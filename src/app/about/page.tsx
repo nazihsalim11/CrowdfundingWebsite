@@ -40,7 +40,7 @@ export default function About() {
       
       <main className="container animate-fade-in" style={{ padding: '80px 24px' }}>
         <section style={{ textAlign: 'center', marginBottom: '80px', maxWidth: '800px', margin: '0 auto 80px auto' }}>
-          <h1 style={{ fontSize: '3rem', marginBottom: '24px', fontWeight: 800, letterSpacing: '-0.02em' }}>Success Stories</h1>
+          <h1 style={{ fontSize: '3rem', marginBottom: '24px', fontWeight: 200, letterSpacing: '-0.02em' }}>Success Stories</h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1.15rem', lineHeight: '1.6' }}>
             Vetted projects successfully completed, delivering academic improvements and direct financial returns to our community.
           </p>
@@ -63,7 +63,7 @@ export default function About() {
                 {story.emoji}
               </div>
 
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '12px', lineHeight: '1.3' }}>{story.title}</h3>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 200, marginBottom: '12px', lineHeight: '1.3' }}>{story.title}</h3>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.5', flexGrow: 1, marginBottom: '24px' }}>
                 {story.desc}
               </p>
@@ -77,11 +77,11 @@ export default function About() {
                 fontSize: '0.82rem'
               }}>
                 <div>
-                  <span style={{ color: 'var(--text-tertiary)', display: 'block', fontSize: '0.72rem', fontWeight: 600 }}>CAPITAL RAISED</span>
+                  <span style={{ color: 'var(--text-tertiary)', display: 'block', fontSize: '0.72rem', fontWeight: 200 }}>CAPITAL RAISED</span>
                   <strong style={{ color: 'var(--text-primary)' }}>{story.raised}</strong>
                 </div>
                 <div>
-                  <span style={{ color: 'var(--text-tertiary)', display: 'block', fontSize: '0.72rem', fontWeight: 600 }}>RETURNS PAID</span>
+                  <span style={{ color: 'var(--text-tertiary)', display: 'block', fontSize: '0.72rem', fontWeight: 200 }}>RETURNS PAID</span>
                   <strong style={{ color: 'var(--success)' }}>{story.roi}</strong>
                 </div>
               </div>
@@ -99,7 +99,7 @@ export default function About() {
           maxWidth: '800px',
           margin: '0 auto'
         }}>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 800, marginBottom: '16px', letterSpacing: '-0.01em' }}>Our Mission</h2>
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 200, marginBottom: '16px', letterSpacing: '-0.01em' }}>Our Mission</h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.6' }}>
             We bridge the gap in digital and physical education. By funding tangible school assets and tracking expenses transparently in a public ledger, we create sustainable growth models for our students and community.
           </p>

@@ -246,7 +246,7 @@ export default function SchoolDashboard() {
         {/* Sidebar */}
         <aside className="sidebar">
           <div style={{ padding: '0 16px 20px 16px', borderBottom: '1px solid var(--border-color)', marginBottom: '16px' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>School Portal</span>
+            <span style={{ fontSize: '0.75rem', fontWeight: 200, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>School Portal</span>
             <h4 style={{ fontSize: '0.98rem', marginTop: '4px' }}>Seed Global</h4>
           </div>
 
@@ -325,9 +325,9 @@ export default function SchoolDashboard() {
                     <tbody>
                       {schoolCampaigns.map((camp) => (
                         <tr key={camp.id}>
-                          <td style={{ fontWeight: 600 }}>{camp.title}</td>
-                          <td style={{ fontWeight: 700 }}>₹{camp.goalAmount.toLocaleString()}</td>
-                          <td style={{ color: 'var(--primary)', fontWeight: 700 }}>₹{camp.raisedAmount.toLocaleString()}</td>
+                          <td style={{ fontWeight: 200 }}>{camp.title}</td>
+                          <td style={{ fontWeight: 200 }}>₹{camp.goalAmount.toLocaleString()}</td>
+                          <td style={{ color: 'var(--primary)', fontWeight: 200 }}>₹{camp.raisedAmount.toLocaleString()}</td>
                           <td>{camp.deadline}</td>
                           <td>
                             <span className={`badge ${
@@ -339,7 +339,7 @@ export default function SchoolDashboard() {
                             </span>
                           </td>
                           <td>
-                            <Link href={`/campaigns/${camp.id}`} style={{ color: 'var(--primary)', fontWeight: 600 }}>
+                            <Link href={`/campaigns/${camp.id}`} style={{ color: 'var(--primary)', fontWeight: 200 }}>
                               View
                             </Link>
                           </td>
@@ -540,12 +540,12 @@ export default function SchoolDashboard() {
                         {schoolExpenses.map(exp => (
                           <tr key={exp.id}>
                             <td>
-                              <div style={{ fontWeight: 600 }}>{exp.description}</div>
+                              <div style={{ fontWeight: 200 }}>{exp.description}</div>
                               <span style={{ fontSize: '0.78rem', color: 'var(--text-tertiary)' }}>
                                 Campaign ID: {exp.campaignId} ({exp.date})
                               </span>
                             </td>
-                            <td style={{ fontWeight: 700 }}>₹{exp.amount.toLocaleString()}</td>
+                            <td style={{ fontWeight: 200 }}>₹{exp.amount.toLocaleString()}</td>
                             <td>
                               <span className={`badge ${
                                 exp.status === 'approved' ? 'badge-success' : 
@@ -609,7 +609,7 @@ export default function SchoolDashboard() {
                     </h3>
                     
                     <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.88rem', fontWeight: 600, marginBottom: '8px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.88rem', fontWeight: 200, marginBottom: '8px' }}>
                         <span>Progress</span>
                         <span>{broadcastProgress}%</span>
                       </div>
@@ -764,7 +764,7 @@ export default function SchoolDashboard() {
                         onChange={(e) => setAnnBroadcastEmail(e.target.checked)}
                         style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: 'var(--primary)' }}
                       />
-                      <label htmlFor="broadcast-email" style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', cursor: 'pointer', fontWeight: 600 }}>
+                      <label htmlFor="broadcast-email" style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', cursor: 'pointer', fontWeight: 200 }}>
                         📢 Broadcast via Email to all backer investors
                       </label>
                     </div>
@@ -793,7 +793,7 @@ export default function SchoolDashboard() {
                             <span style={{ fontSize: '0.78rem', color: 'var(--text-tertiary)' }}>{ann.date}</span>
                           </div>
                           
-                          <h4 style={{ fontSize: '1rem', fontWeight: 800, marginBottom: '6px' }}>{ann.title}</h4>
+                          <h4 style={{ fontSize: '1rem', fontWeight: 200, marginBottom: '6px' }}>{ann.title}</h4>
                           <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.4', marginBottom: '12px' }}>
                             {ann.content}
                           </p>
@@ -801,7 +801,7 @@ export default function SchoolDashboard() {
                           <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid var(--border-color)', paddingTop: '10px', fontSize: '0.8rem', color: 'var(--text-tertiary)' }}>
                             <span>Backers: <strong>{ann.investorsCount}</strong> (Raised: ₹{ann.totalContributions.toLocaleString()})</span>
                             {ann.broadcastEmail ? (
-                              <span style={{ color: 'var(--primary)', fontWeight: 600 }}>📧 Email Broadcasted</span>
+                              <span style={{ color: 'var(--primary)', fontWeight: 200 }}>📧 Email Broadcasted</span>
                             ) : (
                               <span>Dashboard Only</span>
                             )}
@@ -904,15 +904,15 @@ export default function SchoolDashboard() {
                         <p style={{ fontSize: '0.82rem', color: 'var(--text-tertiary)', marginBottom: '10px' }}>{report.reportDate}</p>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
                           <div style={{ textAlign: 'center', padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '6px' }}>
-                            <div style={{ fontWeight: 800, color: 'var(--primary)' }}>{report.studentsImpacted}</div>
+                            <div style={{ fontWeight: 200, color: 'var(--primary)' }}>{report.studentsImpacted}</div>
                             <div style={{ fontSize: '0.65rem', color: 'var(--text-tertiary)' }}>STUDENTS</div>
                           </div>
                           <div style={{ textAlign: 'center', padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '6px' }}>
-                            <div style={{ fontWeight: 800, color: 'var(--secondary)' }}>{report.teachersTrained}</div>
+                            <div style={{ fontWeight: 200, color: 'var(--secondary)' }}>{report.teachersTrained}</div>
                             <div style={{ fontSize: '0.65rem', color: 'var(--text-tertiary)' }}>TEACHERS</div>
                           </div>
                           <div style={{ textAlign: 'center', padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '6px' }}>
-                            <div style={{ fontWeight: 800, color: 'var(--accent)' }}>{report.classroomsUpgraded}</div>
+                            <div style={{ fontWeight: 200, color: 'var(--accent)' }}>{report.classroomsUpgraded}</div>
                             <div style={{ fontSize: '0.65rem', color: 'var(--text-tertiary)' }}>ROOMS</div>
                           </div>
                         </div>
@@ -948,11 +948,11 @@ export default function SchoolDashboard() {
                       <div key={camp.id} style={{ padding: '16px', backgroundColor: 'var(--bg-tertiary)', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                           <div>
-                            <div style={{ fontWeight: 700 }}>{camp.title}</div>
+                            <div style={{ fontWeight: 200 }}>{camp.title}</div>
                             <div style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)' }}>{daysLeft} days remaining • {investorCount} investors • ₹{totalCampInvested.toLocaleString()} raised</div>
                           </div>
                           <div style={{ textAlign: 'right' }}>
-                            <div style={{ fontWeight: 800, color: progress >= 80 ? 'var(--success)' : progress >= 50 ? 'var(--warning)' : 'var(--danger)', fontSize: '1.2rem' }}>{progress}%</div>
+                            <div style={{ fontWeight: 200, color: progress >= 80 ? 'var(--success)' : progress >= 50 ? 'var(--warning)' : 'var(--danger)', fontSize: '1.2rem' }}>{progress}%</div>
                           </div>
                         </div>
                         <div style={{ height: '8px', background: 'var(--bg-secondary)', borderRadius: '99px', overflow: 'hidden' }}>
@@ -988,7 +988,7 @@ export default function SchoolDashboard() {
                 ].map((template, ti) => (
                   <div key={ti} style={{ marginBottom: '16px', padding: '16px', backgroundColor: 'var(--bg-tertiary)', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                      <h4 style={{ fontSize: '0.95rem', fontWeight: 700 }}>{template.label}</h4>
+                      <h4 style={{ fontSize: '0.95rem', fontWeight: 200 }}>{template.label}</h4>
                       <button
                         onClick={() => {
                           navigator.clipboard.writeText(`Subject: ${template.subject}\n\n${template.body}`);
@@ -1000,7 +1000,7 @@ export default function SchoolDashboard() {
                         📋 Copy Template
                       </button>
                     </div>
-                    <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', fontWeight: 600, marginBottom: '4px' }}>Subject: {template.subject}</div>
+                    <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', fontWeight: 200, marginBottom: '4px' }}>Subject: {template.subject}</div>
                     <pre style={{ fontSize: '0.78rem', color: 'var(--text-tertiary)', whiteSpace: 'pre-wrap', fontFamily: 'inherit', margin: 0, maxHeight: '80px', overflow: 'hidden' }}>{template.body.substring(0, 200)}...</pre>
                   </div>
                 ))}

@@ -54,7 +54,7 @@ export default function AuditorDashboard() {
         {/* Sidebar */}
         <aside className="sidebar">
           <div style={{ padding: '0 16px 20px 16px', borderBottom: '1px solid var(--border-color)', marginBottom: '16px' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Auditor Portal</span>
+            <span style={{ fontSize: '0.75rem', fontWeight: 200, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Auditor Portal</span>
             <h4 style={{ fontSize: '0.98rem', marginTop: '4px' }}>Seed Global Auditor</h4>
           </div>
 
@@ -76,18 +76,18 @@ export default function AuditorDashboard() {
           {activeTab === "expenses" && (
             <div>
               <div style={{ marginBottom: '30px' }}>
-                <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Audit School Expenditures</h1>
+                <h1 style={{ fontSize: '1.8rem', fontWeight: 200 }}>Audit School Expenditures</h1>
                 <p style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>Verify official merchant invoices uploaded by Seed Global administrators before disburse approvals.</p>
               </div>
 
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '16px', fontWeight: 700 }}>Pending Review</h3>
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '16px', fontWeight: 200 }}>Pending Review</h3>
               {pendingExpenses.length > 0 ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '40px' }}>
                   {pendingExpenses.map((exp) => (
                     <div className="card" key={exp.id} style={{ border: '1px solid var(--border-color)', padding: '24px' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
                         <div>
-                          <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{exp.campaignTitle}</span>
+                          <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 200 }}>{exp.campaignTitle}</span>
                           <h4 style={{ fontSize: '1.15rem', marginTop: '4px' }}>{exp.description}</h4>
                         </div>
                         <div style={{ textAlign: 'right' }}>
@@ -98,7 +98,7 @@ export default function AuditorDashboard() {
 
                       <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '30px', alignItems: 'center', backgroundColor: 'var(--bg-tertiary)', padding: '16px', borderRadius: 'var(--radius-md)', marginBottom: '20px' }}>
                         <span style={{ fontSize: '0.85rem' }}>Merchant Bill File: <strong>{exp.invoiceUrl}</strong></span>
-                        <a href="#" onClick={(e) => {e.preventDefault(); alert(`Reconciling invoice ${exp.invoiceUrl}`);}} style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '0.88rem', textAlign: 'right' }}>
+                        <a href="#" onClick={(e) => {e.preventDefault(); alert(`Reconciling invoice ${exp.invoiceUrl}`);}} style={{ color: 'var(--primary)', fontWeight: 200, fontSize: '0.88rem', textAlign: 'right' }}>
                           🔍 Inspect PDF Document
                         </a>
                       </div>
@@ -139,7 +139,7 @@ export default function AuditorDashboard() {
                 </div>
               )}
 
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '16px', fontWeight: 700 }}>Recently Audited</h3>
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '16px', fontWeight: 200 }}>Recently Audited</h3>
               <div className="table-container" style={{ marginTop: 0 }}>
                 <table>
                   <thead>
@@ -154,10 +154,10 @@ export default function AuditorDashboard() {
                     {auditedExpenses.map((exp) => (
                       <tr key={exp.id}>
                         <td>
-                          <div style={{ fontWeight: 600 }}>{exp.description}</div>
+                          <div style={{ fontWeight: 200 }}>{exp.description}</div>
                           <span style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)' }}>{exp.campaignTitle}</span>
                         </td>
-                        <td style={{ fontWeight: 700 }}>₹{exp.amount.toLocaleString()}</td>
+                        <td style={{ fontWeight: 200 }}>₹{exp.amount.toLocaleString()}</td>
                         <td>
                           <span className={`badge ${
                             exp.status === 'disbursed' ? 'badge-success' :
@@ -180,7 +180,7 @@ export default function AuditorDashboard() {
           {activeTab === "contracts" && (
             <div>
               <div style={{ marginBottom: '30px' }}>
-                <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Audit Investment Agreements</h1>
+                <h1 style={{ fontSize: '1.8rem', fontWeight: 200 }}>Audit Investment Agreements</h1>
                 <p style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>Review digitally-signed legally binding investment contracts for active campaigns.</p>
               </div>
 
@@ -196,21 +196,21 @@ export default function AuditorDashboard() {
                   </thead>
                   <tbody>
                     <tr>
-                      <td style={{ fontWeight: 600 }}>AGR-2026-0091</td>
+                      <td style={{ fontWeight: 200 }}>AGR-2026-0091</td>
                       <td>Smart Digital Classrooms for Excellence</td>
                       <td><span className="badge badge-success">80G Deductible</span></td>
                       <td>
-                        <a href="#" onClick={(e) => {e.preventDefault(); alert("Opening Digitally Signed Contract...");}} style={{ color: 'var(--primary)', fontWeight: 600 }}>
+                        <a href="#" onClick={(e) => {e.preventDefault(); alert("Opening Digitally Signed Contract...");}} style={{ color: 'var(--primary)', fontWeight: 200 }}>
                           📄 View PDF Contract
                         </a>
                       </td>
                     </tr>
                     <tr>
-                      <td style={{ fontWeight: 600 }}>AGR-2026-0042</td>
+                      <td style={{ fontWeight: 200 }}>AGR-2026-0042</td>
                       <td>Modern Computer Lab & Coding Center</td>
                       <td><span className="badge badge-success">80G Deductible</span></td>
                       <td>
-                        <a href="#" onClick={(e) => {e.preventDefault(); alert("Opening Digitally Signed Contract...");}} style={{ color: 'var(--primary)', fontWeight: 600 }}>
+                        <a href="#" onClick={(e) => {e.preventDefault(); alert("Opening Digitally Signed Contract...");}} style={{ color: 'var(--primary)', fontWeight: 200 }}>
                           📄 View PDF Contract
                         </a>
                       </td>
@@ -224,7 +224,7 @@ export default function AuditorDashboard() {
           {activeTab === "schools" && (
             <div>
               <div style={{ marginBottom: '30px' }}>
-                <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>School Compliance Auditing</h1>
+                <h1 style={{ fontSize: '1.8rem', fontWeight: 200 }}>School Compliance Auditing</h1>
                 <p style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>Review the compliance status of Seed Global Trust registry certificates.</p>
               </div>
 

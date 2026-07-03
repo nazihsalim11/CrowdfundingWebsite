@@ -99,15 +99,15 @@ function DashboardCalculator() {
         <h4 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px' }}>PROJECTED PAYOUTS</h4>
         
         <div style={{ marginBottom: '20px' }}>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 600 }}>MONTHLY RETURN</span>
+          <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 200 }}>MONTHLY RETURN</span>
           <strong style={{ fontSize: '1.6rem', color: 'var(--text-primary)' }}>₹{Math.round(monthlyReturn).toLocaleString()}</strong>
         </div>
         <div style={{ marginBottom: '20px' }}>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 600 }}>ANNUAL YIELD</span>
+          <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 200 }}>ANNUAL YIELD</span>
           <strong style={{ fontSize: '1.6rem', color: 'var(--text-primary)' }}>₹{Math.round(annualReturn).toLocaleString()}</strong>
         </div>
         <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 600 }}>5-YEAR TOTAL PAYOUT</span>
+          <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 200 }}>5-YEAR TOTAL PAYOUT</span>
           <strong style={{ fontSize: '1.8rem', color: 'var(--success)' }}>₹{Math.round(fiveYearReturn).toLocaleString()}</strong>
         </div>
       </div>
@@ -157,18 +157,18 @@ function TaxCalculator({ investments, campaigns }: { investments: any[], campaig
         <div style={{ backgroundColor: 'var(--bg-tertiary)', padding: '24px', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-color)' }}>
           <h4 style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px' }}>SAVINGS BREAKDOWN</h4>
           <div style={{ marginBottom: '12px' }}>
-            <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 600 }}>DONATION AMOUNT</span>
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 200 }}>DONATION AMOUNT</span>
             <strong style={{ fontSize: '1.4rem' }}>₹{donationAmt.toLocaleString()}</strong>
           </div>
           <div style={{ marginBottom: '12px' }}>
-            <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 600 }}>80G DEDUCTIBLE (50%)</span>
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 200 }}>80G DEDUCTIBLE (50%)</span>
             <strong style={{ fontSize: '1.4rem' }}>₹{Math.round(donationAmt * 0.5).toLocaleString()}</strong>
           </div>
           <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '12px' }}>
-            <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 600 }}>TAX SAVED</span>
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 200 }}>TAX SAVED</span>
             <strong style={{ fontSize: '1.8rem', color: 'var(--success)' }}>₹{taxSaved.toLocaleString()}</strong>
           </div>
-          <div style={{ marginTop: '12px', padding: '10px', background: 'rgba(16,185,129,0.1)', borderRadius: '8px', fontSize: '0.82rem', color: 'var(--success)', fontWeight: 600 }}>
+          <div style={{ marginTop: '12px', padding: '10px', background: 'rgba(16,185,129,0.1)', borderRadius: '8px', fontSize: '0.82rem', color: 'var(--success)', fontWeight: 200 }}>
             Effective cost after tax: ₹{effectiveCost.toLocaleString()}
           </div>
         </div>
@@ -335,8 +335,8 @@ export default function InvestorDashboard() {
         {/* Sidebar */}
         <aside className="sidebar">
           <div style={{ padding: '0 16px 20px 16px', borderBottom: '1px solid var(--border-color)', marginBottom: '16px' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Investor Portal</span>
-            <h4 style={{ fontSize: '1.05rem', fontWeight: 700, marginTop: '4px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{username}</h4>
+            <span style={{ fontSize: '0.75rem', fontWeight: 200, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Investor Portal</span>
+            <h4 style={{ fontSize: '1.05rem', fontWeight: 200, marginTop: '4px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{username}</h4>
             <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis' }}>{userEmail || "investor@seedglobal.com"}</span>
           </div>
 
@@ -468,7 +468,7 @@ export default function InvestorDashboard() {
               <div className="card" style={{ border: '1.5px solid var(--border-color)', marginBottom: '30px', padding: '30px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '15px' }}>
                   <div>
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Portfolio Yield Performance</h3>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 200 }}>Portfolio Yield Performance</h3>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '2px' }}>
                       {chartType === "line" ? "Cumulative ROI Growth trend line" : "Monthly payouts distribution history"}
                     </p>
@@ -487,7 +487,7 @@ export default function InvestorDashboard() {
                         background: chartType === "line" ? '#ffffff' : 'transparent',
                         color: chartType === "line" ? 'var(--primary)' : 'var(--text-primary)',
                         boxShadow: chartType === "line" ? 'var(--shadow-sm)' : 'none',
-                        fontWeight: 700
+                        fontWeight: 200
                       }}
                     >
                       Line Trend
@@ -503,7 +503,7 @@ export default function InvestorDashboard() {
                         background: chartType === "bar" ? '#ffffff' : 'transparent',
                         color: chartType === "bar" ? 'var(--primary)' : 'var(--text-primary)',
                         boxShadow: chartType === "bar" ? 'var(--shadow-sm)' : 'none',
-                        fontWeight: 700
+                        fontWeight: 200
                       }}
                     >
                       Bar Columns
@@ -529,8 +529,8 @@ export default function InvestorDashboard() {
                       animation: 'fadeIn 0.15s ease-out',
                       zIndex: 10
                     }}>
-                      <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 700, display: 'block' }}>{hoveredData.label}</span>
-                      <span style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--primary)' }}>{hoveredData.value}</span>
+                      <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', textTransform: 'uppercase', fontWeight: 200, display: 'block' }}>{hoveredData.label}</span>
+                      <span style={{ fontSize: '0.95rem', fontWeight: 200, color: 'var(--primary)' }}>{hoveredData.value}</span>
                     </div>
                   )}
 
@@ -563,10 +563,10 @@ export default function InvestorDashboard() {
                       <line x1="50" y1="180" x2="570" y2="180" stroke="#cbd5e1" strokeWidth="1.5" />
 
                       {/* Y-Axis scale label */}
-                      <text x="40" y="35" textAnchor="end" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 600 }}>₹40,000</text>
-                      <text x="40" y="85" textAnchor="end" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 600 }}>₹25,000</text>
-                      <text x="40" y="135" textAnchor="end" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 600 }}>₹10,000</text>
-                      <text x="40" y="185" textAnchor="end" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 600 }}>₹0</text>
+                      <text x="40" y="35" textAnchor="end" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 200 }}>₹40,000</text>
+                      <text x="40" y="85" textAnchor="end" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 200 }}>₹25,000</text>
+                      <text x="40" y="135" textAnchor="end" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 200 }}>₹10,000</text>
+                      <text x="40" y="185" textAnchor="end" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 200 }}>₹0</text>
 
                       {/* Cumulative yield line path */}
                       <path 
@@ -606,12 +606,12 @@ export default function InvestorDashboard() {
                       ))}
 
                       {/* X-axis Month Labels */}
-                      <text x="50" y="198" textAnchor="middle" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 600 }}>Start</text>
-                      <text x="154" y="198" textAnchor="middle" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 600 }}>Month 1</text>
-                      <text x="258" y="198" textAnchor="middle" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 600 }}>Month 2</text>
-                      <text x="362" y="198" textAnchor="middle" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 600 }}>Month 3</text>
-                      <text x="466" y="198" textAnchor="middle" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 600 }}>Month 4</text>
-                      <text x="570" y="198" textAnchor="middle" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 600 }}>Month 5</text>
+                      <text x="50" y="198" textAnchor="middle" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 200 }}>Start</text>
+                      <text x="154" y="198" textAnchor="middle" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 200 }}>Month 1</text>
+                      <text x="258" y="198" textAnchor="middle" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 200 }}>Month 2</text>
+                      <text x="362" y="198" textAnchor="middle" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 200 }}>Month 3</text>
+                      <text x="466" y="198" textAnchor="middle" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 200 }}>Month 4</text>
+                      <text x="570" y="198" textAnchor="middle" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 200 }}>Month 5</text>
                     </svg>
                   ) : (
                     <svg viewBox="0 0 600 200" width="100%" height="100%" style={{ overflow: 'visible' }}>
@@ -622,10 +622,10 @@ export default function InvestorDashboard() {
                       <line x1="50" y1="180" x2="570" y2="180" stroke="#cbd5e1" strokeWidth="1.5" />
 
                       {/* Y-Axis scale label */}
-                      <text x="40" y="35" textAnchor="end" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 600 }}>₹15,000</text>
-                      <text x="40" y="85" textAnchor="end" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 600 }}>₹10,000</text>
-                      <text x="40" y="135" textAnchor="end" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 600 }}>₹5,000</text>
-                      <text x="40" y="185" textAnchor="end" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 600 }}>₹0</text>
+                      <text x="40" y="35" textAnchor="end" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 200 }}>₹15,000</text>
+                      <text x="40" y="85" textAnchor="end" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 200 }}>₹10,000</text>
+                      <text x="40" y="135" textAnchor="end" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 200 }}>₹5,000</text>
+                      <text x="40" y="185" textAnchor="end" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 200 }}>₹0</text>
 
                       {/* Columns */}
                       {[
@@ -649,7 +649,7 @@ export default function InvestorDashboard() {
                             }}
                             onMouseEnter={() => setHoveredData({ label: col.label + " Distribution", value: col.val })}
                           />
-                          <text x={col.x + 20} y="198" textAnchor="middle" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 600 }}>{col.label.substring(0, 3)}</text>
+                          <text x={col.x + 20} y="198" textAnchor="middle" fill="var(--text-secondary)" style={{ fontSize: '0.72rem', fontWeight: 200 }}>{col.label.substring(0, 3)}</text>
                         </g>
                       ))}
                     </svg>
@@ -676,11 +676,11 @@ export default function InvestorDashboard() {
                       <tbody>
                         {investments.map((inv) => (
                           <tr key={inv.id}>
-                            <td style={{ fontWeight: 600 }}>{inv.campaignTitle}</td>
-                            <td style={{ fontWeight: 700 }}>₹{inv.amount.toLocaleString()}</td>
+                            <td style={{ fontWeight: 200 }}>{inv.campaignTitle}</td>
+                            <td style={{ fontWeight: 200 }}>₹{inv.amount.toLocaleString()}</td>
                             <td>{inv.date}</td>
                             <td>{inv.paymentMethod}</td>
-                            <td style={{ color: 'var(--success)', fontWeight: 600 }}>
+                            <td style={{ color: 'var(--success)', fontWeight: 200 }}>
                               +₹{inv.roiEarned.toLocaleString()}
                             </td>
                             <td>
@@ -709,7 +709,7 @@ export default function InvestorDashboard() {
                 <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>Check transparency utilization reports of the campaigns and investment programs you support.</p>
               </div>
 
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 500, marginBottom: '20px' }}>📢 Backed Campaigns</h2>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 200, marginBottom: '20px' }}>📢 Backed Campaigns</h2>
               {investments.length > 0 ? (
                 <div className="grid-2" style={{ marginTop: 0, marginBottom: '40px' }}>
                   {investments.map((inv) => {
@@ -720,7 +720,7 @@ export default function InvestorDashboard() {
                         <span className="badge badge-info" style={{ position: 'absolute', top: '20px', right: '20px' }}>
                           {camp ? camp.type : "Education"}
                         </span>
-                        <h3 style={{ fontSize: '1.25rem', marginBottom: '8px', fontWeight: 500 }}>{inv.campaignTitle}</h3>
+                        <h3 style={{ fontSize: '1.25rem', marginBottom: '8px', fontWeight: 200 }}>{inv.campaignTitle}</h3>
                         <span style={{ fontSize: '0.82rem', color: 'var(--text-tertiary)' }}>Invested: ₹{inv.amount.toLocaleString()} on {inv.date}</span>
 
                         <div style={{ marginTop: '20px', borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
@@ -749,7 +749,7 @@ export default function InvestorDashboard() {
                 <p style={{ fontStyle: 'italic', color: 'var(--text-tertiary)', marginBottom: '40px' }}>You have not backed any campaigns yet.</p>
               )}
 
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 500, marginBottom: '20px' }}>💼 Backed Investment Programs</h2>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 200, marginBottom: '20px' }}>💼 Backed Investment Programs</h2>
               {/* Filter programs where this investor has completed investments */}
               {(() => {
                 const backedProgs = investmentPrograms.filter(prog => 
@@ -778,10 +778,10 @@ export default function InvestorDashboard() {
 
                       return (
                         <div className="card" key={prog.id} style={{ border: '1px solid var(--border-color)' }}>
-                          <span className="badge badge-success" style={{ position: 'absolute', top: '20px', right: '20px', fontWeight: 600 }}>
+                          <span className="badge badge-success" style={{ position: 'absolute', top: '20px', right: '20px', fontWeight: 200 }}>
                             {currentTier} Tier
                           </span>
-                          <h3 style={{ fontSize: '1.25rem', marginBottom: '8px', fontWeight: 500 }}>{prog.title}</h3>
+                          <h3 style={{ fontSize: '1.25rem', marginBottom: '8px', fontWeight: 200 }}>{prog.title}</h3>
                           
                           <div style={{ fontSize: '0.82rem', color: 'var(--text-tertiary)', display: 'flex', flexDirection: 'column', gap: '4px', margin: '10px 0' }}>
                             <span>Units Owned: <strong>{unitsOwned} units</strong></span>
@@ -820,7 +820,7 @@ export default function InvestorDashboard() {
           {activeTab === "calculator" && (
             <div>
               <div style={{ marginBottom: '30px' }}>
-                <h1 style={{ fontSize: '2.5rem', fontWeight: 800 }}>Projected Return Estimator</h1>
+                <h1 style={{ fontSize: '2.5rem', fontWeight: 200 }}>Projected Return Estimator</h1>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginTop: '6px' }}>Select investment details to estimate your projected returns.</p>
               </div>
 
@@ -840,11 +840,11 @@ export default function InvestorDashboard() {
                 </p>
 
                 {kycStatus === 'verified' ? (
-                  <div style={{ backgroundColor: 'rgba(22, 163, 74, 0.08)', color: 'var(--success)', padding: '16px', borderRadius: 'var(--radius-md)', fontWeight: 600 }}>
+                  <div style={{ backgroundColor: 'rgba(22, 163, 74, 0.08)', color: 'var(--success)', padding: '16px', borderRadius: 'var(--radius-md)', fontWeight: 200 }}>
                     ✓ Your KYC has been approved and verified.
                   </div>
                 ) : kycStatus === 'pending' ? (
-                  <div style={{ backgroundColor: 'var(--bg-tertiary)', color: 'var(--text-secondary)', padding: '16px', borderRadius: 'var(--radius-md)', fontWeight: 600 }}>
+                  <div style={{ backgroundColor: 'var(--bg-tertiary)', color: 'var(--text-secondary)', padding: '16px', borderRadius: 'var(--radius-md)', fontWeight: 200 }}>
                     ⏳ Review is currently pending.
                   </div>
                 ) : (
@@ -899,7 +899,7 @@ export default function InvestorDashboard() {
 
                 {bankAdded ? (
                   <div style={{ backgroundColor: 'var(--bg-tertiary)', padding: '16px', borderRadius: 'var(--radius-md)' }}>
-                    <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '6px' }}>Account Linked Successfully</h4>
+                    <h4 style={{ fontSize: '0.95rem', fontWeight: 200, marginBottom: '6px' }}>Account Linked Successfully</h4>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Account Number: ************4821</p>
                     <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '4px' }}>Bank: {bankName}</p>
                     <button onClick={() => setBankAdded(false)} className="btn btn-outline" style={{ width: '100%', marginTop: '16px', padding: '6px' }}>
@@ -997,7 +997,7 @@ export default function InvestorDashboard() {
                     <tbody>
                       {withdrawals.map(wd => (
                         <tr key={wd.id}>
-                          <td style={{ fontWeight: 700 }}>₹{wd.amount.toLocaleString()}</td>
+                          <td style={{ fontWeight: 200 }}>₹{wd.amount.toLocaleString()}</td>
                           <td>{wd.date}</td>
                           <td>
                             <span className={`badge ${
@@ -1051,7 +1051,7 @@ export default function InvestorDashboard() {
                           </span>
                         )}
                         <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '12px' }}>
-                          <span style={{ fontSize: '0.78rem', color: 'var(--text-tertiary)', backgroundColor: 'var(--bg-tertiary)', padding: '4px 8px', borderRadius: '4px', fontWeight: 700 }}>
+                          <span style={{ fontSize: '0.78rem', color: 'var(--text-tertiary)', backgroundColor: 'var(--bg-tertiary)', padding: '4px 8px', borderRadius: '4px', fontWeight: 200 }}>
                             {ann.schoolName}
                           </span>
                           <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
@@ -1059,7 +1059,7 @@ export default function InvestorDashboard() {
                           </span>
                         </div>
 
-                        <h3 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: '8px', color: 'var(--text-primary)' }}>
+                        <h3 style={{ fontSize: '1.25rem', fontWeight: 200, marginBottom: '8px', color: 'var(--text-primary)' }}>
                           {ann.title}
                         </h3>
 
@@ -1080,7 +1080,7 @@ export default function InvestorDashboard() {
                           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                             <span>Backers: <strong>{ann.investorsCount}</strong> (Raised: ₹{ann.totalContributions.toLocaleString()})</span>
                             {ann.broadcastEmail && (
-                              <span style={{ color: 'var(--primary)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <span style={{ color: 'var(--primary)', fontWeight: 200, display: 'flex', alignItems: 'center', gap: '4px' }}>
                                 📧 Broadcasted to Inbox
                               </span>
                             )}
@@ -1131,12 +1131,12 @@ export default function InvestorDashboard() {
                             <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)' }}>⏰ {daysLeft} days left</span>
                             {camp.csrMatchingEnabled && <span className="badge badge-success" style={{ fontSize: '0.7rem' }}>2x CSR Match</span>}
                           </div>
-                          <div style={{ fontWeight: 700, fontSize: '0.95rem', marginBottom: '6px' }}>{camp.title}</div>
+                          <div style={{ fontWeight: 200, fontSize: '0.95rem', marginBottom: '6px' }}>{camp.title}</div>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                             <div style={{ flex: 1, height: '5px', background: 'var(--bg-secondary)', borderRadius: '99px', overflow: 'hidden' }}>
                               <div style={{ height: '100%', width: `${progress}%`, background: 'linear-gradient(90deg, var(--primary), var(--secondary))', borderRadius: '99px' }} />
                             </div>
-                            <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--primary)', whiteSpace: 'nowrap' }}>{progress}% funded</span>
+                            <span style={{ fontSize: '0.78rem', fontWeight: 200, color: 'var(--primary)', whiteSpace: 'nowrap' }}>{progress}% funded</span>
                           </div>
                           <div style={{ fontSize: '0.78rem', color: 'var(--text-tertiary)', marginTop: '4px' }}>
                             ₹{camp.raisedAmount.toLocaleString()} raised of ₹{camp.goalAmount.toLocaleString()}
@@ -1190,26 +1190,26 @@ export default function InvestorDashboard() {
 
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '12px' }}>
                               <div style={{ textAlign: 'center', padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px' }}>
-                                <div style={{ fontWeight: 700, color: 'var(--primary)' }}>₹{camp.raisedAmount.toLocaleString()}</div>
+                                <div style={{ fontWeight: 200, color: 'var(--primary)' }}>₹{camp.raisedAmount.toLocaleString()}</div>
                                 <div style={{ fontSize: '0.68rem', color: 'var(--text-tertiary)' }}>RAISED</div>
                               </div>
                               <div style={{ textAlign: 'center', padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px' }}>
-                                <div style={{ fontWeight: 700 }}>₹{camp.goalAmount.toLocaleString()}</div>
+                                <div style={{ fontWeight: 200 }}>₹{camp.goalAmount.toLocaleString()}</div>
                                 <div style={{ fontSize: '0.68rem', color: 'var(--text-tertiary)' }}>GOAL</div>
                               </div>
                               <div style={{ textAlign: 'center', padding: '8px', background: 'var(--bg-tertiary)', borderRadius: '8px' }}>
-                                <div style={{ fontWeight: 700, color: 'var(--secondary)' }}>{camp.roiEstimate.split(' ')[0]}</div>
+                                <div style={{ fontWeight: 200, color: 'var(--secondary)' }}>{camp.roiEstimate.split(' ')[0]}</div>
                                 <div style={{ fontSize: '0.68rem', color: 'var(--text-tertiary)' }}>PROJECTED ROI</div>
                               </div>
                             </div>
 
                             {isExpanded && (
                               <div style={{ marginTop: '12px', borderTop: '1px solid var(--border-color)', paddingTop: '14px' }}>
-                                <h4 style={{ fontSize: '0.88rem', fontWeight: 700, marginBottom: '10px' }}>Milestone Progress</h4>
+                                <h4 style={{ fontSize: '0.88rem', fontWeight: 200, marginBottom: '10px' }}>Milestone Progress</h4>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                   {camp.milestones.map((ms, mi) => (
                                     <div key={mi} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.88rem' }}>
-                                      <span style={{ color: ms.completed ? 'var(--success)' : 'var(--text-tertiary)', fontWeight: 700, fontSize: '1rem' }}>
+                                      <span style={{ color: ms.completed ? 'var(--success)' : 'var(--text-tertiary)', fontWeight: 200, fontSize: '1rem' }}>
                                         {ms.completed ? '✓' : '○'}
                                       </span>
                                       <span style={{ color: ms.completed ? 'var(--text-primary)' : 'var(--text-tertiary)' }}>{ms.title}</span>
@@ -1272,11 +1272,11 @@ export default function InvestorDashboard() {
                   }).map(inv => (
                     <div key={inv.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', backgroundColor: 'var(--bg-tertiary)', borderRadius: '8px', marginBottom: '8px' }}>
                       <div>
-                        <div style={{ fontWeight: 600 }}>{inv.campaignTitle}</div>
+                        <div style={{ fontWeight: 200 }}>{inv.campaignTitle}</div>
                         <div style={{ fontSize: '0.82rem', color: 'var(--text-tertiary)' }}>Invested: {inv.date}</div>
                       </div>
                       <div style={{ textAlign: 'right' }}>
-                        <div style={{ fontWeight: 700, color: 'var(--primary)' }}>₹{inv.amount.toLocaleString()}</div>
+                        <div style={{ fontWeight: 200, color: 'var(--primary)' }}>₹{inv.amount.toLocaleString()}</div>
                         <div style={{ fontSize: '0.78rem', color: 'var(--success)' }}>Tax saving: ₹{Math.round(inv.amount * 0.3).toLocaleString()}</div>
                       </div>
                     </div>
@@ -1326,8 +1326,8 @@ export default function InvestorDashboard() {
                     🏅
                   </div>
                   <div>
-                    <div style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Education Impact Badge</div>
-                    <h3 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '4px' }}>Community Champion</h3>
+                    <div style={{ fontSize: '0.78rem', fontWeight: 200, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Education Impact Badge</div>
+                    <h3 style={{ fontSize: '1.5rem', fontWeight: 200, marginBottom: '4px' }}>Community Champion</h3>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Awarded for supporting 3+ campaigns and impacting 500+ students</p>
                     <button 
                       onClick={() => {
@@ -1364,16 +1364,16 @@ Date: ${new Date().toLocaleDateString()}`;
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginBottom: '16px' }}>
                       <div style={{ textAlign: 'center', padding: '12px', background: 'var(--bg-tertiary)', borderRadius: '8px' }}>
-                        <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--primary)' }}>{report.studentsImpacted}</div>
-                        <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 600 }}>STUDENTS</div>
+                        <div style={{ fontSize: '1.6rem', fontWeight: 200, color: 'var(--primary)' }}>{report.studentsImpacted}</div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 200 }}>STUDENTS</div>
                       </div>
                       <div style={{ textAlign: 'center', padding: '12px', background: 'var(--bg-tertiary)', borderRadius: '8px' }}>
-                        <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--secondary)' }}>{report.teachersTrained}</div>
-                        <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 600 }}>TEACHERS</div>
+                        <div style={{ fontSize: '1.6rem', fontWeight: 200, color: 'var(--secondary)' }}>{report.teachersTrained}</div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 200 }}>TEACHERS</div>
                       </div>
                       <div style={{ textAlign: 'center', padding: '12px', background: 'var(--bg-tertiary)', borderRadius: '8px' }}>
-                        <div style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--accent)' }}>{report.classroomsUpgraded}</div>
-                        <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 600 }}>CLASSROOMS</div>
+                        <div style={{ fontSize: '1.6rem', fontWeight: 200, color: 'var(--accent)' }}>{report.classroomsUpgraded}</div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 200 }}>CLASSROOMS</div>
                       </div>
                     </div>
 
@@ -1434,7 +1434,7 @@ Date: ${new Date().toLocaleDateString()}`;
                 <div style={{ marginTop: '20px', borderTop: '1px dashed var(--border-color)', paddingTop: '20px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
-                      <h4 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 600 }}>Account Security</h4>
+                      <h4 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 200 }}>Account Security</h4>
                       <p style={{ margin: '4px 0 0 0', fontSize: '0.82rem', color: 'var(--text-secondary)' }}>Update your password to secure your account.</p>
                     </div>
                     <button 

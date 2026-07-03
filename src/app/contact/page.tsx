@@ -114,7 +114,7 @@ export default function Contact() {
                       borderLeft: t.status === 'open' ? '4px solid var(--warning)' : '4px solid var(--success)'
                     }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                        <span style={{ fontWeight: 700, fontSize: '0.95rem' }}>{t.title}</span>
+                        <span style={{ fontWeight: 200, fontSize: '0.95rem' }}>{t.title}</span>
                         <span className={`badge ${t.status === 'resolved' ? 'badge-success' : 'badge-warning'}`}>
                           {t.status}
                         </span>

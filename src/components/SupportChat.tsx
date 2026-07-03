@@ -200,7 +200,7 @@ export default function SupportChat({ mode }: SupportChatProps) {
                       borderLeft: isActive ? '4px solid var(--primary)' : '4px solid transparent'
                     }}
                   >
-                    <div style={{ fontWeight: 700, fontSize: '0.88rem', color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <div style={{ fontWeight: 200, fontSize: '0.88rem', color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {email}
                     </div>
                     {lastMsg && (
@@ -241,7 +241,7 @@ export default function SupportChat({ mode }: SupportChatProps) {
           <div style={{ marginBottom: '24px' }}>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
               <span className="pulse-dot"></span>
-              <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--success)' }}>Online Helpdesk</span>
+              <span style={{ fontSize: '0.85rem', fontWeight: 200, color: 'var(--success)' }}>Online Helpdesk</span>
             </div>
             <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
               Our admin compliance team typically replies in minutes.
@@ -285,7 +285,7 @@ export default function SupportChat({ mode }: SupportChatProps) {
             backgroundColor: 'var(--bg-secondary)'
           }}>
             <div>
-              <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>
+              <div style={{ fontSize: '0.75rem', fontWeight: 200, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>
                 {mode === 'investor' ? 'SUPPORT TICKET CHAT' : 'INVESTOR COMPLIANCE INQUIRY'}
               </div>
               <h4 style={{ fontSize: '1rem', marginTop: '2px' }}>
@@ -293,7 +293,7 @@ export default function SupportChat({ mode }: SupportChatProps) {
               </h4>
             </div>
             {mode === 'investor' && (
-              <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', backgroundColor: 'var(--primary-light)', padding: '4px 8px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', fontWeight: 600 }}>
+              <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', backgroundColor: 'var(--primary-light)', padding: '4px 8px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)', fontWeight: 200 }}>
                 🔒 Encrypted Support Channel
               </span>
             )}

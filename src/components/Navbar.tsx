@@ -81,7 +81,7 @@ export default function Navbar() {
 
     if (role === 'school') {
       return (
-        <span style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--primary)' }}>
+        <span style={{ fontSize: '0.92rem', fontWeight: 200, color: 'var(--primary)' }}>
           🏫 School Administrator Portal
         </span>
       );
@@ -89,7 +89,7 @@ export default function Navbar() {
 
     if (role === 'admin') {
       return (
-        <span style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--primary)' }}>
+        <span style={{ fontSize: '0.92rem', fontWeight: 200, color: 'var(--primary)' }}>
           🛡️ Super Admin compliance Portal
         </span>
       );
@@ -97,7 +97,7 @@ export default function Navbar() {
 
     if (role === 'cashier') {
       return (
-        <span style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--primary)' }}>
+        <span style={{ fontSize: '0.92rem', fontWeight: 200, color: 'var(--primary)' }}>
           🏦 Central Escrow Cashier Portal
         </span>
       );
@@ -105,7 +105,7 @@ export default function Navbar() {
 
     if (role === 'auditor') {
       return (
-        <span style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--primary)' }}>
+        <span style={{ fontSize: '0.92rem', fontWeight: 200, color: 'var(--primary)' }}>
           🧾 Legal Compliance Auditor Portal
         </span>
       );
@@ -151,7 +151,7 @@ export default function Navbar() {
                 backgroundColor: 'var(--danger)',
                 color: 'white',
                 fontSize: '0.68rem',
-                fontWeight: 800,
+                fontWeight: 200,
                 width: '16px',
                 height: '16px',
                 borderRadius: '50%',
@@ -180,7 +180,7 @@ export default function Navbar() {
             border: '1px solid var(--border-color)',
             textAlign: 'left'
           }}>
-            <h4 style={{ fontSize: '0.9rem', fontWeight: 800, marginBottom: '12px', borderBottom: '1px solid var(--border-color)', paddingBottom: '8px' }}>
+            <h4 style={{ fontSize: '0.9rem', fontWeight: 200, marginBottom: '12px', borderBottom: '1px solid var(--border-color)', paddingBottom: '8px' }}>
               Activity Notifications
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -200,7 +200,7 @@ export default function Navbar() {
 
         {/* Role Switcher Sandbox Tool */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', borderRight: '1px solid var(--border-color)', paddingRight: '16px', minWidth: '180px' }}>
-          <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-tertiary)', whiteSpace: 'nowrap' }}>Sandbox:</span>
+          <span style={{ fontSize: '0.75rem', fontWeight: 200, textTransform: 'uppercase', color: 'var(--text-tertiary)', whiteSpace: 'nowrap' }}>Sandbox:</span>
           <CustomSelect 
             value={role} 
             onChange={(val) => {

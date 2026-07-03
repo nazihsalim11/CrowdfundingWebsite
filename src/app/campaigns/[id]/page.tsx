@@ -76,7 +76,7 @@ export default function CampaignDetailsPage() {
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px' }}>
             <span className="badge badge-info">{campaign.type}</span>
           </div>
-          <h1 style={{ fontSize: '2.5rem', marginBottom: '8px', fontWeight: 800 }}>{campaign.title}</h1>
+          <h1 style={{ fontSize: '2.5rem', marginBottom: '8px', fontWeight: 200 }}>{campaign.title}</h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1rem' }}>Verified Project by Seed Global Board of Trustees</p>
         </section>
 
@@ -92,7 +92,7 @@ export default function CampaignDetailsPage() {
                 style={{ 
                   padding: '12px 8px', 
                   fontSize: '1rem', 
-                  fontWeight: 700, 
+                  fontWeight: 200, 
                   border: 'none', 
                   background: 'none',
                   borderBottom: activeTab === "about" ? "3px solid var(--primary)" : "3px solid transparent",
@@ -107,7 +107,7 @@ export default function CampaignDetailsPage() {
                 style={{ 
                   padding: '12px 8px', 
                   fontSize: '1rem', 
-                  fontWeight: 700, 
+                  fontWeight: 200, 
                   border: 'none', 
                   background: 'none',
                   borderBottom: activeTab === "transparency" ? "3px solid var(--primary)" : "3px solid transparent",
@@ -122,7 +122,7 @@ export default function CampaignDetailsPage() {
                 style={{ 
                   padding: '12px 8px', 
                   fontSize: '1rem', 
-                  fontWeight: 700, 
+                  fontWeight: 200, 
                   border: 'none', 
                   background: 'none',
                   borderBottom: activeTab === "updates" ? "3px solid var(--primary)" : "3px solid transparent",
@@ -143,18 +143,18 @@ export default function CampaignDetailsPage() {
                   
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', borderTop: '1px solid var(--border-color)', paddingTop: '20px' }}>
                     <div>
-                      <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-tertiary)' }}>EXPECTED INVESTMENT ROI</span>
-                      <p style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '4px' }}>{campaign.roiEstimate}</p>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 200, color: 'var(--text-tertiary)' }}>EXPECTED INVESTMENT ROI</span>
+                      <p style={{ fontSize: '1.05rem', fontWeight: 200, color: 'var(--text-primary)', marginTop: '4px' }}>{campaign.roiEstimate}</p>
                     </div>
                     <div>
-                      <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-tertiary)' }}>CAMPAIGN COMPLIANCE</span>
-                      <p style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--success)', marginTop: '4px' }}>✓ Approved by Super Admin</p>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 200, color: 'var(--text-tertiary)' }}>CAMPAIGN COMPLIANCE</span>
+                      <p style={{ fontSize: '1.05rem', fontWeight: 200, color: 'var(--success)', marginTop: '4px' }}>✓ Approved by Super Admin</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="card" style={{ padding: '36px' }}>
-                  <h3 style={{ marginBottom: '24px', fontWeight: 800 }}>Project Milestone Development Timeline</h3>
+                  <h3 style={{ marginBottom: '24px', fontWeight: 200 }}>Project Milestone Development Timeline</h3>
                   <div style={{ position: 'relative', paddingLeft: '32px', borderLeft: '2px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '32px', marginLeft: '12px', marginTop: '10px' }}>
                     {campaign.milestones.map((m, idx) => (
                       <div key={idx} style={{ position: 'relative' }}>
@@ -171,10 +171,10 @@ export default function CampaignDetailsPage() {
                           boxShadow: m.completed ? '0 0 10px rgba(22, 163, 74, 0.3)' : 'none',
                           transition: 'var(--transition)'
                         }} />
-                        <h4 style={{ fontSize: '1rem', fontWeight: 700, color: m.completed ? 'var(--text-primary)' : 'var(--text-secondary)' }}>
+                        <h4 style={{ fontSize: '1rem', fontWeight: 200, color: m.completed ? 'var(--text-primary)' : 'var(--text-secondary)' }}>
                           {m.title}
                         </h4>
-                        <span style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)', fontWeight: 600, display: 'block', marginTop: '4px' }}>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)', fontWeight: 200, display: 'block', marginTop: '4px' }}>
                           {m.completed ? "✓ Reconciled & Audited Completed" : "⏳ Planned Development Stage"}
                         </span>
                       </div>
@@ -189,8 +189,8 @@ export default function CampaignDetailsPage() {
                 <div className="card" style={{ marginBottom: '30px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '16px' }}>
                     <div>
-                      <h3 style={{ fontWeight: 800 }}>Expense Ledger</h3>
-                      <p style={{ color: 'var(--text-tertiary)', fontSize: '0.82rem', marginTop: '4px', fontWeight: 600 }}>Audited Ledger</p>
+                      <h3 style={{ fontWeight: 200 }}>Expense Ledger</h3>
+                      <p style={{ color: 'var(--text-tertiary)', fontSize: '0.82rem', marginTop: '4px', fontWeight: 200 }}>Audited Ledger</p>
                     </div>
                     <button 
                       onClick={() => window.print()} 
@@ -220,10 +220,10 @@ export default function CampaignDetailsPage() {
                           {campaignExpenses.map((exp) => (
                             <tr key={exp.id}>
                               <td>{exp.description}</td>
-                              <td style={{ fontWeight: 700 }}>₹{exp.amount.toLocaleString()}</td>
+                              <td style={{ fontWeight: 200 }}>₹{exp.amount.toLocaleString()}</td>
                               <td>{exp.date}</td>
                               <td>
-                                <a href="#" onClick={(e) => {e.preventDefault(); alert(`Downloading invoice ${exp.invoiceUrl}`);}} style={{ color: 'var(--primary)', fontWeight: 600 }}>
+                                <a href="#" onClick={(e) => {e.preventDefault(); alert(`Downloading invoice ${exp.invoiceUrl}`);}} style={{ color: 'var(--primary)', fontWeight: 200 }}>
                                   📄 Invoice
                                 </a>
                               </td>
@@ -251,7 +251,7 @@ export default function CampaignDetailsPage() {
                 {campaign.updates.length > 0 ? (
                   campaign.updates.map((upd, idx) => (
                     <div className="card" key={idx}>
-                      <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-tertiary)' }}>{upd.date}</span>
+                      <span style={{ fontSize: '0.78rem', fontWeight: 200, color: 'var(--text-tertiary)' }}>{upd.date}</span>
                       <h4 style={{ fontSize: '1.15rem', marginTop: '6px', marginBottom: '12px' }}>{upd.title}</h4>
                       <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.6' }}>{upd.content}</p>
                     </div>
@@ -278,7 +278,7 @@ export default function CampaignDetailsPage() {
 
               <div className="progress-container" style={{ margin: '20px 0' }}>
                 <div className="progress-info">
-                  <span style={{ fontSize: '1.1rem', fontWeight: 800 }}>{percent}%</span>
+                  <span style={{ fontSize: '1.1rem', fontWeight: 200 }}>{percent}%</span>
                   <span>₹{campaign.raisedAmount.toLocaleString()} Raised</span>
                 </div>
                 <div className="progress-track" style={{ height: '10px' }}>
@@ -351,7 +351,7 @@ export default function CampaignDetailsPage() {
 
                       {paymentMethod !== "UPI (Razorpay)" && paymentMethod !== "Card (Razorpay)" && (
                         <div className="animate-fade-in" style={{ backgroundColor: 'var(--bg-tertiary)', padding: '16px', borderRadius: 'var(--radius-md)', marginBottom: '16px' }}>
-                          <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
+                          <span style={{ fontSize: '0.8rem', fontWeight: 200, color: 'var(--text-secondary)', display: 'block', marginBottom: '8px' }}>
                             OFFLINE TRANSACTION LOGS
                           </span>
                           
@@ -391,7 +391,7 @@ export default function CampaignDetailsPage() {
 
               {/* School Verification Details Badge */}
               <div style={{ marginTop: '24px', borderTop: '1px solid var(--border-color)', paddingTop: '16px', fontSize: '0.82rem' }}>
-                <div style={{ display: 'flex', gap: '6px', color: 'var(--success)', fontWeight: 600 }}>
+                <div style={{ display: 'flex', gap: '6px', color: 'var(--success)', fontWeight: 200 }}>
                   <span>🛡️</span>
                   <span>School credentials audited & verified</span>
                 </div>

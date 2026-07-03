@@ -106,7 +106,7 @@ export default function CampaignsPage() {
               return (
                 <div className="card" key={camp.id} style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '24px', border: '1px solid var(--border-color)', position: 'relative' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                    <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 200, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>
                       {camp.type}
                     </span>
                     <span className={`badge ${
@@ -118,7 +118,7 @@ export default function CampaignsPage() {
                     </span>
                   </div>
 
-                  <h3 className="card-title" style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '12px', lineHeight: '1.3' }}>{camp.title}</h3>
+                  <h3 className="card-title" style={{ fontSize: '1.25rem', fontWeight: 200, marginBottom: '12px', lineHeight: '1.3' }}>{camp.title}</h3>
 
                   <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', margin: '0 0 24px 0', flexGrow: 1, lineHeight: '1.5' }}>
                     {camp.description.substring(0, 105)}...
@@ -127,7 +127,7 @@ export default function CampaignsPage() {
                   <div className="progress-container" style={{ margin: 'auto 0 20px 0' }}>
                     <div className="progress-info" style={{ fontSize: '0.8rem', marginBottom: '6px' }}>
                       <span>{percent}% Funded</span>
-                      <span style={{ fontWeight: 700 }}>₹{camp.raisedAmount.toLocaleString()} / ₹{camp.goalAmount.toLocaleString()}</span>
+                      <span style={{ fontWeight: 200 }}>₹{camp.raisedAmount.toLocaleString()} / ₹{camp.goalAmount.toLocaleString()}</span>
                     </div>
                     <div className="progress-track" style={{ height: '4px' }}>
                       <div className="progress-fill" style={{ width: `${percent}%` }}></div>
@@ -136,8 +136,8 @@ export default function CampaignsPage() {
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
                     <div>
-                      <span style={{ fontSize: '0.72rem', display: 'block', color: 'var(--text-tertiary)', fontWeight: 600 }}>EXPECTED RETURN</span>
-                      <span style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '0.85rem' }}>{camp.roiEstimate.split(' ')[0]} {camp.roiEstimate.split(' ')[1] || ''}</span>
+                      <span style={{ fontSize: '0.72rem', display: 'block', color: 'var(--text-tertiary)', fontWeight: 200 }}>EXPECTED RETURN</span>
+                      <span style={{ fontWeight: 200, color: 'var(--text-primary)', fontSize: '0.85rem' }}>{camp.roiEstimate.split(' ')[0]} {camp.roiEstimate.split(' ')[1] || ''}</span>
                     </div>
                     <Link href={`/campaigns/${camp.id}`} className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '0.85rem' }}>
                       View Details

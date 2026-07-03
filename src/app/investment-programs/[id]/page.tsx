@@ -37,7 +37,7 @@ export default function InvestmentProgramDetailsPage() {
       <>
         <Navbar />
         <div className="container" style={{ padding: '80px 24px', textAlign: 'center' }}>
-          <h2 style={{ fontWeight: 500 }}>Investment Program Not Found</h2>
+          <h2 style={{ fontWeight: 200 }}>Investment Program Not Found</h2>
           <p style={{ margin: '16px 0 24px 0', color: 'var(--text-secondary)' }}>The requested investment program does not exist or has been removed.</p>
           <button onClick={() => router.push('/investment-programs')} className="btn btn-primary">Go to Programs</button>
         </div>
@@ -125,12 +125,12 @@ export default function InvestmentProgramDetailsPage() {
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px' }}>
             <span className="badge badge-info">{program.schoolName} Investment Program</span>
             {currentTier !== "None" && (
-              <span className="badge badge-success" style={{ fontWeight: 600 }}>
+              <span className="badge badge-success" style={{ fontWeight: 200 }}>
                 👑 Your Current Tier: {currentTier}
               </span>
             )}
           </div>
-          <h1 style={{ fontSize: '2.5rem', marginBottom: '8px', fontWeight: 500 }}>{program.title}</h1>
+          <h1 style={{ fontSize: '2.5rem', marginBottom: '8px', fontWeight: 200 }}>{program.title}</h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', lineHeight: '1.6' }}>
             Official School Investment Program • Protected by Central Escrow Vault Systems
           </p>
@@ -163,7 +163,7 @@ export default function InvestmentProgramDetailsPage() {
                 style={{ 
                   padding: '12px 8px', 
                   fontSize: '1rem', 
-                  fontWeight: 500, 
+                  fontWeight: 200, 
                   border: 'none', 
                   background: 'none',
                   borderBottom: activeTab === "about" ? "3px solid var(--primary)" : "3px solid transparent",
@@ -179,7 +179,7 @@ export default function InvestmentProgramDetailsPage() {
                 style={{ 
                   padding: '12px 8px', 
                   fontSize: '1rem', 
-                  fontWeight: 500, 
+                  fontWeight: 200, 
                   border: 'none', 
                   background: 'none',
                   borderBottom: activeTab === "tiers" ? "3px solid var(--primary)" : "3px solid transparent",
@@ -195,7 +195,7 @@ export default function InvestmentProgramDetailsPage() {
                 style={{ 
                   padding: '12px 8px', 
                   fontSize: '1rem', 
-                  fontWeight: 500, 
+                  fontWeight: 200, 
                   border: 'none', 
                   background: 'none',
                   borderBottom: activeTab === "transparency" ? "3px solid var(--primary)" : "3px solid transparent",
@@ -212,25 +212,25 @@ export default function InvestmentProgramDetailsPage() {
             {activeTab === "about" && (
               <div>
                 <div className="card" style={{ marginBottom: '30px', padding: '32px' }}>
-                  <h3 style={{ marginBottom: '16px', fontWeight: 500 }}>Program Summary</h3>
+                  <h3 style={{ marginBottom: '16px', fontWeight: 200 }}>Program Summary</h3>
                   <p style={{ color: 'var(--text-secondary)', lineHeight: '1.7', marginBottom: '24px', fontSize: '0.95rem' }}>
                     {program.description}
                   </p>
                   
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', borderTop: '1px solid var(--border-color)', paddingTop: '20px' }}>
                     <div>
-                      <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Price Per Unit</span>
-                      <p style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-primary)', marginTop: '4px' }}>₹{program.unitPrice.toLocaleString()}</p>
+                      <span style={{ fontSize: '0.72rem', fontWeight: 200, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Price Per Unit</span>
+                      <p style={{ fontSize: '1.1rem', fontWeight: 200, color: 'var(--text-primary)', marginTop: '4px' }}>₹{program.unitPrice.toLocaleString()}</p>
                     </div>
                     <div>
-                      <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Funding Goal</span>
-                      <p style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-primary)', marginTop: '4px' }}>₹{program.fundingGoal.toLocaleString()}</p>
+                      <span style={{ fontSize: '0.72rem', fontWeight: 200, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Funding Goal</span>
+                      <p style={{ fontSize: '1.1rem', fontWeight: 200, color: 'var(--text-primary)', marginTop: '4px' }}>₹{program.fundingGoal.toLocaleString()}</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="card" style={{ padding: '32px' }}>
-                  <h3 style={{ marginBottom: '16px', fontWeight: 500 }}>Investment Security & Escrow</h3>
+                  <h3 style={{ marginBottom: '16px', fontWeight: 200 }}>Investment Security & Escrow</h3>
                   <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6', fontSize: '0.9rem', marginBottom: '16px' }}>
                     This investment program operates strictly under the school board's financial compliance bylaws. All funds raised are initially held in a centralized escrow trust vault. School management cannot release funds without publishing itemized expenditure invoices, which must be verified by certified compliance auditors.
                   </p>
@@ -244,7 +244,7 @@ export default function InvestmentProgramDetailsPage() {
             {activeTab === "tiers" && (
               <div>
                 <div className="card" style={{ padding: '32px' }}>
-                  <h3 style={{ marginBottom: '8px', fontWeight: 500 }}>Investor Benefits & Tiers</h3>
+                  <h3 style={{ marginBottom: '8px', fontWeight: 200 }}>Investor Benefits & Tiers</h3>
                   <p style={{ color: 'var(--text-tertiary)', fontSize: '0.85rem', marginBottom: '24px' }}>Tiers are determined automatically by the sum of completed purchased units.</p>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -257,8 +257,8 @@ export default function InvestmentProgramDetailsPage() {
                       borderLeft: currentTier === "Bronze" ? "5px solid #b45309" : "1.5px solid var(--border-color)"
                     }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                        <span style={{ fontWeight: 600, color: '#b45309', fontSize: '1.05rem' }}>🟫 Bronze Supporter</span>
-                        <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-tertiary)' }}>Threshold: {program.tierThresholds.bronze} Unit{program.tierThresholds.bronze !== 1 ? 's' : ''}</span>
+                        <span style={{ fontWeight: 200, color: '#b45309', fontSize: '1.05rem' }}>🟫 Bronze Supporter</span>
+                        <span style={{ fontSize: '0.82rem', fontWeight: 200, color: 'var(--text-tertiary)' }}>Threshold: {program.tierThresholds.bronze} Unit{program.tierThresholds.bronze !== 1 ? 's' : ''}</span>
                       </div>
                       <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
                         Unlocks fundamental transparency features: <strong>Investment Summary</strong> and <strong>School Progress Updates</strong>. Keep track of construction phases, deliveries, and basic project status.
@@ -274,8 +274,8 @@ export default function InvestmentProgramDetailsPage() {
                       borderLeft: currentTier === "Silver" ? "5px solid #64748b" : "1.5px solid var(--border-color)"
                     }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                        <span style={{ fontWeight: 600, color: '#64748b', fontSize: '1.05rem' }}>⬜ Silver Partner</span>
-                        <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-tertiary)' }}>Threshold: {program.tierThresholds.silver} Units</span>
+                        <span style={{ fontWeight: 200, color: '#64748b', fontSize: '1.05rem' }}>⬜ Silver Partner</span>
+                        <span style={{ fontSize: '0.82rem', fontWeight: 200, color: 'var(--text-tertiary)' }}>Threshold: {program.tierThresholds.silver} Units</span>
                       </div>
                       <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
                         Unlocks standard visibility features: <strong>Financial Summaries</strong> and <strong>Project Milestones</strong>. See overall program performance reports and timeline reviews.
@@ -291,8 +291,8 @@ export default function InvestmentProgramDetailsPage() {
                       borderLeft: currentTier === "Gold" ? "5px solid #d97706" : "1.5px solid var(--border-color)"
                     }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                        <span style={{ fontWeight: 600, color: '#d97706', fontSize: '1.05rem' }}>🟨 Gold Trustee</span>
-                        <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-tertiary)' }}>Threshold: {program.tierThresholds.gold} Units</span>
+                        <span style={{ fontWeight: 200, color: '#d97706', fontSize: '1.05rem' }}>🟨 Gold Trustee</span>
+                        <span style={{ fontSize: '0.82rem', fontWeight: 200, color: 'var(--text-tertiary)' }}>Threshold: {program.tierThresholds.gold} Units</span>
                       </div>
                       <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
                         Unlocks detailed visibility: <strong>Budget Breakdowns</strong> and <strong>Fund Allocation Reports</strong>. Reconcile detailed accounts and trace capital deployments.
@@ -308,8 +308,8 @@ export default function InvestmentProgramDetailsPage() {
                       borderLeft: currentTier === "Platinum" ? "5px solid #0d9488" : "1.5px solid var(--border-color)"
                     }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                        <span style={{ fontWeight: 600, color: '#0d9488', fontSize: '1.05rem' }}>💎 Platinum Executive</span>
-                        <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-tertiary)' }}>Threshold: {program.tierThresholds.platinum} Units</span>
+                        <span style={{ fontWeight: 200, color: '#0d9488', fontSize: '1.05rem' }}>💎 Platinum Executive</span>
+                        <span style={{ fontSize: '0.82rem', fontWeight: 200, color: 'var(--text-tertiary)' }}>Threshold: {program.tierThresholds.platinum} Units</span>
                       </div>
                       <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
                         Unlocks maximum visibility: <strong>Detailed Expenditure Invoices</strong>, <strong>Quarterly Financial Reports</strong>, and <strong>Executive Board Updates</strong>. Full governance monitoring rights.
@@ -323,12 +323,12 @@ export default function InvestmentProgramDetailsPage() {
             {activeTab === "transparency" && (
               <div>
                 <div className="card" style={{ padding: '32px' }}>
-                  <h3 style={{ marginBottom: '16px', fontWeight: 500 }}>Unlocked Transparency Documents</h3>
+                  <h3 style={{ marginBottom: '16px', fontWeight: 200 }}>Unlocked Transparency Documents</h3>
 
                   {currentTier === "None" ? (
                     <div style={{ textAlign: 'center', padding: '40px 20px', backgroundColor: 'var(--bg-primary)', borderRadius: 'var(--radius-md)', border: '1px dashed var(--border-color)' }}>
                       <span style={{ fontSize: '2.5rem' }}>🔒</span>
-                      <h4 style={{ marginTop: '12px', fontWeight: 500 }}>All Transparency Documents Locked</h4>
+                      <h4 style={{ marginTop: '12px', fontWeight: 200 }}>All Transparency Documents Locked</h4>
                       <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', marginTop: '6px', marginBottom: '16px' }}>
                         Purchase at least <strong>{program.tierThresholds.bronze} unit</strong> to unlock Bronze-level transparency.
                       </p>
@@ -338,8 +338,8 @@ export default function InvestmentProgramDetailsPage() {
                       {/* Bronze Content */}
                       {hasBronze && (
                         <div style={{ padding: '20px', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)' }}>
-                          <span style={{ fontWeight: 600, color: '#b45309', fontSize: '0.82rem', display: 'block', marginBottom: '6px', textTransform: 'uppercase' }}>🟫 Unlocked Bronze Content</span>
-                          <h4 style={{ marginBottom: '8px', fontSize: '1.1rem', fontWeight: 500 }}>Investment Summary & Progress Updates</h4>
+                          <span style={{ fontWeight: 200, color: '#b45309', fontSize: '0.82rem', display: 'block', marginBottom: '6px', textTransform: 'uppercase' }}>🟫 Unlocked Bronze Content</span>
+                          <h4 style={{ marginBottom: '8px', fontSize: '1.1rem', fontWeight: 200 }}>Investment Summary & Progress Updates</h4>
                           <p style={{ color: 'var(--text-primary)', fontSize: '0.9rem', lineHeight: '1.6', backgroundColor: 'var(--bg-primary)', padding: '12px', borderRadius: '6px' }}>
                             {program.transparencyContent.bronze}
                           </p>
@@ -349,15 +349,15 @@ export default function InvestmentProgramDetailsPage() {
                       {/* Silver Content */}
                       {hasSilver ? (
                         <div style={{ padding: '20px', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)' }}>
-                          <span style={{ fontWeight: 600, color: '#64748b', fontSize: '0.82rem', display: 'block', marginBottom: '6px', textTransform: 'uppercase' }}>⬜ Unlocked Silver Content</span>
-                          <h4 style={{ marginBottom: '8px', fontSize: '1.1rem', fontWeight: 500 }}>Financial Summaries & Project Milestones</h4>
+                          <span style={{ fontWeight: 200, color: '#64748b', fontSize: '0.82rem', display: 'block', marginBottom: '6px', textTransform: 'uppercase' }}>⬜ Unlocked Silver Content</span>
+                          <h4 style={{ marginBottom: '8px', fontSize: '1.1rem', fontWeight: 200 }}>Financial Summaries & Project Milestones</h4>
                           <p style={{ color: 'var(--text-primary)', fontSize: '0.9rem', lineHeight: '1.6', backgroundColor: 'var(--bg-primary)', padding: '12px', borderRadius: '6px' }}>
                             {program.transparencyContent.silver}
                           </p>
                         </div>
                       ) : (
                         <div style={{ padding: '20px', border: '1px dashed var(--border-color)', borderRadius: 'var(--radius-md)', opacity: 0.6 }}>
-                          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>⬜ Silver Content Locked</span>
+                          <span style={{ fontSize: '0.8rem', fontWeight: 200, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>⬜ Silver Content Locked</span>
                           <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
                             Requires <strong>{program.tierThresholds.silver} total units</strong>. Purchase {program.tierThresholds.silver - ownedUnits} more unit{program.tierThresholds.silver - ownedUnits !== 1 ? 's' : ''} to unlock.
                           </p>
@@ -367,15 +367,15 @@ export default function InvestmentProgramDetailsPage() {
                       {/* Gold Content */}
                       {hasGold ? (
                         <div style={{ padding: '20px', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)' }}>
-                          <span style={{ fontWeight: 600, color: '#d97706', fontSize: '0.82rem', display: 'block', marginBottom: '6px', textTransform: 'uppercase' }}>🟨 Unlocked Gold Content</span>
-                          <h4 style={{ marginBottom: '8px', fontSize: '1.1rem', fontWeight: 500 }}>Budget Breakdowns & Fund Allocation Reports</h4>
+                          <span style={{ fontWeight: 200, color: '#d97706', fontSize: '0.82rem', display: 'block', marginBottom: '6px', textTransform: 'uppercase' }}>🟨 Unlocked Gold Content</span>
+                          <h4 style={{ marginBottom: '8px', fontSize: '1.1rem', fontWeight: 200 }}>Budget Breakdowns & Fund Allocation Reports</h4>
                           <p style={{ color: 'var(--text-primary)', fontSize: '0.9rem', lineHeight: '1.6', backgroundColor: 'var(--bg-primary)', padding: '12px', borderRadius: '6px' }}>
                             {program.transparencyContent.gold}
                           </p>
                         </div>
                       ) : (
                         <div style={{ padding: '20px', border: '1px dashed var(--border-color)', borderRadius: 'var(--radius-md)', opacity: 0.6 }}>
-                          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>🟨 Gold Content Locked</span>
+                          <span style={{ fontSize: '0.8rem', fontWeight: 200, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>🟨 Gold Content Locked</span>
                           <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
                             Requires <strong>{program.tierThresholds.gold} total units</strong>. Purchase {program.tierThresholds.gold - ownedUnits} more unit{program.tierThresholds.gold - ownedUnits !== 1 ? 's' : ''} to unlock.
                           </p>
@@ -385,15 +385,15 @@ export default function InvestmentProgramDetailsPage() {
                       {/* Platinum Content */}
                       {hasPlatinum ? (
                         <div style={{ padding: '20px', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)' }}>
-                          <span style={{ fontWeight: 600, color: '#0d9488', fontSize: '0.82rem', display: 'block', marginBottom: '6px', textTransform: 'uppercase' }}>💎 Unlocked Platinum Content</span>
-                          <h4 style={{ marginBottom: '8px', fontSize: '1.1rem', fontWeight: 500 }}>Detailed Expenditure Reports & Executive Updates</h4>
+                          <span style={{ fontWeight: 200, color: '#0d9488', fontSize: '0.82rem', display: 'block', marginBottom: '6px', textTransform: 'uppercase' }}>💎 Unlocked Platinum Content</span>
+                          <h4 style={{ marginBottom: '8px', fontSize: '1.1rem', fontWeight: 200 }}>Detailed Expenditure Reports & Executive Updates</h4>
                           <p style={{ color: 'var(--text-primary)', fontSize: '0.9rem', lineHeight: '1.6', backgroundColor: 'var(--bg-primary)', padding: '12px', borderRadius: '6px' }}>
                             {program.transparencyContent.platinum}
                           </p>
                         </div>
                       ) : (
                         <div style={{ padding: '20px', border: '1px dashed var(--border-color)', borderRadius: 'var(--radius-md)', opacity: 0.6 }}>
-                          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>💎 Platinum Content Locked</span>
+                          <span style={{ fontSize: '0.8rem', fontWeight: 200, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>💎 Platinum Content Locked</span>
                           <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
                             Requires <strong>{program.tierThresholds.platinum} total units</strong>. Purchase {program.tierThresholds.platinum - ownedUnits} more unit{program.tierThresholds.platinum - ownedUnits !== 1 ? 's' : ''} to unlock.
                           </p>
@@ -417,7 +417,7 @@ export default function InvestmentProgramDetailsPage() {
               <div className="progress-container" style={{ margin: '0 0 20px 0' }}>
                 <div className="progress-info" style={{ fontSize: '0.8rem', marginBottom: '6px' }}>
                   <span>{percent}% Funded</span>
-                  <span style={{ fontWeight: 600 }}>₹{totalRaised.toLocaleString()}</span>
+                  <span style={{ fontWeight: 200 }}>₹{totalRaised.toLocaleString()}</span>
                 </div>
                 <div className="progress-track" style={{ height: '6px' }}>
                   <div className="progress-fill" style={{ width: `${percent}%` }}></div>
@@ -440,7 +440,7 @@ export default function InvestmentProgramDetailsPage() {
                 {isLoggedIn && (
                   <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '12px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>Your Owned Units:</span>
+                      <span style={{ color: 'var(--text-secondary)', fontWeight: 200 }}>Your Owned Units:</span>
                       <strong style={{ color: 'var(--success)' }}>{ownedUnits} unit{ownedUnits !== 1 ? 's' : ''}</strong>
                     </div>
                     {pendingUnits > 0 && (
@@ -457,7 +457,7 @@ export default function InvestmentProgramDetailsPage() {
             {/* Purchase Form */}
             {program.status === 'active' && isLoggedIn && role === 'investor' && (
               <div className="card" style={{ padding: '28px', border: '1px solid var(--border-color)' }}>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '16px', fontWeight: 500 }}>Purchase Units</h3>
+                <h3 style={{ fontSize: '1.25rem', marginBottom: '16px', fontWeight: 200 }}>Purchase Units</h3>
                 
                 <form onSubmit={handlePurchase}>
                   <div className="form-group" style={{ marginBottom: '16px' }}>

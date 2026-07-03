@@ -97,15 +97,15 @@ function CalculatorWidget() {
         <h4 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px' }}>PROJECTED PAYOUTS</h4>
         
         <div style={{ marginBottom: '20px' }}>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 600 }}>MONTHLY RETURN</span>
+          <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 200 }}>MONTHLY RETURN</span>
           <strong style={{ fontSize: '1.6rem', color: 'var(--text-primary)' }}>₹{Math.round(monthlyReturn).toLocaleString()}</strong>
         </div>
         <div style={{ marginBottom: '20px' }}>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 600 }}>ANNUAL YIELD</span>
+          <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 200 }}>ANNUAL YIELD</span>
           <strong style={{ fontSize: '1.6rem', color: 'var(--text-primary)' }}>₹{Math.round(annualReturn).toLocaleString()}</strong>
         </div>
         <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 600 }}>5-YEAR TOTAL PAYOUT</span>
+          <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', display: 'block', fontWeight: 200 }}>5-YEAR TOTAL PAYOUT</span>
           <strong style={{ fontSize: '1.8rem', color: 'var(--success)' }}>₹{Math.round(fiveYearReturn).toLocaleString()}</strong>
         </div>
       </div>
@@ -120,7 +120,7 @@ export default function InvestorBenefits() {
       
       <main className="container animate-slide-up" style={{ padding: '120px 24px 140px 24px' }}>
         <section style={{ textAlign: 'center', marginBottom: '100px', maxWidth: '800px', margin: '0 auto 100px auto' }}>
-          <h1 style={{ fontSize: '3.2rem', marginBottom: '24px', fontWeight: 800, letterSpacing: '-0.02em' }}>Returns & ROI Model</h1>
+          <h1 style={{ fontSize: '3.2rem', marginBottom: '24px', fontWeight: 200, letterSpacing: '-0.02em' }}>Returns & ROI Model</h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', lineHeight: '1.7' }}>
             Supporting projects at Seed Global creates micro-investments that yield real financial returns.
           </p>
@@ -130,7 +130,7 @@ export default function InvestorBenefits() {
         <section className="grid-3" style={{ marginBottom: '120px', gap: '40px' }}>
           <div className="card" style={{ padding: '30px', border: '1px solid var(--border-color)' }}>
             <span style={{ fontSize: '2rem', display: 'block', marginBottom: '16px' }}>💰</span>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '12px' }}>Micro-Revenue Sharing</h3>
+            <h3 style={{ fontSize: '1.2rem', fontWeight: 200, marginBottom: '12px' }}>Micro-Revenue Sharing</h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.5' }}>
               We generate income from coding bootcamps, EV school bus fares, and weekend lab rentals, sharing profits directly back with supporters.
             </p>
@@ -138,7 +138,7 @@ export default function InvestorBenefits() {
 
           <div className="card" style={{ padding: '30px', border: '1px solid var(--border-color)' }}>
             <span style={{ fontSize: '2rem', display: 'block', marginBottom: '16px' }}>📝</span>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '12px' }}>Legally Binding Contracts</h3>
+            <h3 style={{ fontSize: '1.2rem', fontWeight: 200, marginBottom: '12px' }}>Legally Binding Contracts</h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.5' }}>
               Every contribution triggers an automated, digitally-signed investment agreement between the school board and the investor.
             </p>
@@ -146,7 +146,7 @@ export default function InvestorBenefits() {
 
           <div className="card" style={{ padding: '30px', border: '1px solid var(--border-color)' }}>
             <span style={{ fontSize: '2rem', display: 'block', marginBottom: '16px' }}>🎫</span>
-            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '12px' }}>Tax Exemption (80G Status)</h3>
+            <h3 style={{ fontSize: '1.2rem', fontWeight: 200, marginBottom: '12px' }}>Tax Exemption (80G Status)</h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.5' }}>
               Our trust is government-certified, allowing contributors to claim direct tax exemptions on funding disbursements.
             </p>
@@ -156,8 +156,8 @@ export default function InvestorBenefits() {
         {/* Dynamic ROI Calculator Widget */}
         <section className="card" style={{ marginBottom: '80px', padding: '40px', border: '1px solid var(--border-color)' }}>
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-            <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>CALCULATOR</span>
-            <h2 style={{ fontSize: '2rem', fontWeight: 800, marginTop: '8px', letterSpacing: '-0.02em' }}>Projected Return Estimator</h2>
+            <span style={{ fontSize: '0.78rem', fontWeight: 200, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>CALCULATOR</span>
+            <h2 style={{ fontSize: '2rem', fontWeight: 200, marginTop: '8px', letterSpacing: '-0.02em' }}>Projected Return Estimator</h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginTop: '6px' }}>Select investment details to estimate your projected returns.</p>
           </div>
 
@@ -182,15 +182,15 @@ export default function InvestorBenefits() {
               Unlike standard donations, school administrators cannot withdraw raised capital directly to external accounts. All funds are secured in a designated platform Escrow Wallet. The school must upload audited merchant invoices for Super Admin verification to disburse capital.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <div style={{ display: 'flex', gap: '8px', fontWeight: 600 }}>
+              <div style={{ display: 'flex', gap: '8px', fontWeight: 200 }}>
                 <span style={{ color: 'var(--success)' }}>✓</span>
                 <span>Audit-proof ledger tracking visible to all investors</span>
               </div>
-              <div style={{ display: 'flex', gap: '8px', fontWeight: 600 }}>
+              <div style={{ display: 'flex', gap: '8px', fontWeight: 200 }}>
                 <span style={{ color: 'var(--success)' }}>✓</span>
                 <span>Aadhaar/PAN verified school administrator credentials</span>
               </div>
-              <div style={{ display: 'flex', gap: '8px', fontWeight: 600 }}>
+              <div style={{ display: 'flex', gap: '8px', fontWeight: 200 }}>
                 <span style={{ color: 'var(--success)' }}>✓</span>
                 <span>Immediate alerts upon expense log uploads</span>
               </div>

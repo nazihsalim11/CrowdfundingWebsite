@@ -31,7 +31,7 @@ export default function InvestmentProgramsPage() {
       
       <main className="container animate-slide-up" style={{ padding: '80px 24px 120px 24px' }}>
         <section style={{ marginBottom: '60px' }}>
-          <h1 style={{ fontSize: '2.8rem', marginBottom: '16px', letterSpacing: '-0.02em', fontWeight: 500 }}>Investment Programs</h1>
+          <h1 style={{ fontSize: '2.8rem', marginBottom: '16px', letterSpacing: '-0.02em', fontWeight: 200 }}>Investment Programs</h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.6' }}>
             Participate in modern educational development. Purchase Investment Units in long-term school initiatives, configure your investment size, and unlock progressive transparency tiers.
           </p>
@@ -103,7 +103,7 @@ export default function InvestmentProgramsPage() {
               return (
                 <div className="card" key={prog.id} style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '32px', border: '1px solid var(--border-color)', position: 'relative' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                    <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 200, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                       {prog.schoolName}
                     </span>
                     <span className={`badge ${
@@ -114,7 +114,7 @@ export default function InvestmentProgramsPage() {
                     </span>
                   </div>
 
-                  <h3 className="card-title" style={{ fontSize: '1.4rem', fontWeight: 600, marginBottom: '12px', lineHeight: '1.3' }}>{prog.title}</h3>
+                  <h3 className="card-title" style={{ fontSize: '1.4rem', fontWeight: 200, marginBottom: '12px', lineHeight: '1.3' }}>{prog.title}</h3>
 
                   <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', margin: '0 0 24px 0', flexGrow: 1, lineHeight: '1.6' }}>
                     {prog.description.substring(0, 140)}...
@@ -122,20 +122,20 @@ export default function InvestmentProgramsPage() {
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px', backgroundColor: 'var(--bg-tertiary)', padding: '16px', borderRadius: 'var(--radius-md)' }}>
                     <div>
-                      <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>Unit Price</span>
-                      <p style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '1rem', marginTop: '2px' }}>₹{prog.unitPrice.toLocaleString()}</p>
+                      <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', fontWeight: 200, textTransform: 'uppercase' }}>Unit Price</span>
+                      <p style={{ fontWeight: 200, color: 'var(--text-primary)', fontSize: '1rem', marginTop: '2px' }}>₹{prog.unitPrice.toLocaleString()}</p>
                     </div>
                     <div>
-                      <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>Units Sold / Total</span>
-                      <p style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '1rem', marginTop: '2px' }}>{prog.unitsSold} / {unitsTotal}</p>
+                      <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', fontWeight: 200, textTransform: 'uppercase' }}>Units Sold / Total</span>
+                      <p style={{ fontWeight: 200, color: 'var(--text-primary)', fontSize: '1rem', marginTop: '2px' }}>{prog.unitsSold} / {unitsTotal}</p>
                     </div>
                     <div>
-                      <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>Units Remaining</span>
-                      <p style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '1rem', marginTop: '2px' }}>{unitsRemaining} units</p>
+                      <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', fontWeight: 200, textTransform: 'uppercase' }}>Units Remaining</span>
+                      <p style={{ fontWeight: 200, color: 'var(--text-primary)', fontSize: '1rem', marginTop: '2px' }}>{unitsRemaining} units</p>
                     </div>
                     <div>
-                      <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>Your Owned Units</span>
-                      <p style={{ fontWeight: 600, color: ownedUnits > 0 ? 'var(--success)' : 'var(--text-primary)', fontSize: '1rem', marginTop: '2px' }}>
+                      <span style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', fontWeight: 200, textTransform: 'uppercase' }}>Your Owned Units</span>
+                      <p style={{ fontWeight: 200, color: ownedUnits > 0 ? 'var(--success)' : 'var(--text-primary)', fontSize: '1rem', marginTop: '2px' }}>
                         {ownedUnits} unit{ownedUnits !== 1 ? 's' : ''}
                       </p>
                     </div>
@@ -144,7 +144,7 @@ export default function InvestmentProgramsPage() {
                   <div className="progress-container" style={{ margin: 'auto 0 24px 0' }}>
                     <div className="progress-info" style={{ fontSize: '0.85rem', marginBottom: '6px' }}>
                       <span>{percent}% Funded</span>
-                      <span style={{ fontWeight: 600 }}>₹{totalRaised.toLocaleString()} / ₹{prog.fundingGoal.toLocaleString()}</span>
+                      <span style={{ fontWeight: 200 }}>₹{totalRaised.toLocaleString()} / ₹{prog.fundingGoal.toLocaleString()}</span>
                     </div>
                     <div className="progress-track" style={{ height: '6px' }}>
                       <div className="progress-fill" style={{ width: `${percent}%` }}></div>
@@ -153,8 +153,8 @@ export default function InvestmentProgramsPage() {
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-color)', paddingTop: '20px' }}>
                     <div>
-                      <span style={{ fontSize: '0.72rem', display: 'block', color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>Bronze Threshold</span>
-                      <span style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.88rem' }}>{prog.tierThresholds.bronze} unit{prog.tierThresholds.bronze !== 1 ? 's' : ''}</span>
+                      <span style={{ fontSize: '0.72rem', display: 'block', color: 'var(--text-tertiary)', fontWeight: 200, textTransform: 'uppercase' }}>Bronze Threshold</span>
+                      <span style={{ fontWeight: 200, color: 'var(--text-primary)', fontSize: '0.88rem' }}>{prog.tierThresholds.bronze} unit{prog.tierThresholds.bronze !== 1 ? 's' : ''}</span>
                     </div>
                     <Link href={`/investment-programs/${prog.id}`} className="btn btn-primary" style={{ padding: '8px 20px', fontSize: '0.88rem' }}>
                       View Program
@@ -173,7 +173,7 @@ export default function InvestmentProgramsPage() {
             borderRadius: 'var(--radius-lg)' 
           }}>
             <span style={{ fontSize: '3rem' }}>🔍</span>
-            <h3 style={{ marginTop: '16px', fontSize: '1.4rem', fontWeight: 500 }}>No Investment Programs Found</h3>
+            <h3 style={{ marginTop: '16px', fontSize: '1.4rem', fontWeight: 200 }}>No Investment Programs Found</h3>
             <p style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>Try modifying your search query.</p>
           </div>
         )}

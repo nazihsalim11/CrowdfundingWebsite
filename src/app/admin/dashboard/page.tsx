@@ -218,7 +218,7 @@ export default function AdminDashboard() {
         {/* Sidebar */}
         <aside className="sidebar" style={{ width: '280px' }}>
           <div style={{ padding: '0 16px 20px 16px', borderBottom: '1px solid var(--border-color)', marginBottom: '16px' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Super Admin Portal</span>
+            <span style={{ fontSize: '0.75rem', fontWeight: 200, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Super Admin Portal</span>
             <h4 style={{ fontSize: '0.98rem', marginTop: '4px' }}>Compliance & Risk Auditor</h4>
           </div>
 
@@ -376,8 +376,8 @@ export default function AdminDashboard() {
                               <span style={{ fontSize: '0.82rem', color: 'var(--text-tertiary)' }}>{campaign.type} • {campaign.schoolName}</span>
                             </div>
                             <div style={{ textAlign: 'right', minWidth: '140px' }}>
-                              <div style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Raised / Goal</div>
-                              <div style={{ fontWeight: 800, fontSize: '1.05rem' }}>
+                              <div style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', fontWeight: 200, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Raised / Goal</div>
+                              <div style={{ fontWeight: 200, fontSize: '1.05rem' }}>
                                 <span style={{ color: 'var(--primary)' }}>₹{campaign.raisedAmount.toLocaleString()}</span>
                                 <span style={{ color: 'var(--text-tertiary)', fontWeight: 400, fontSize: '0.88rem' }}> / ₹{campaign.goalAmount.toLocaleString()}</span>
                               </div>
@@ -413,7 +413,7 @@ export default function AdminDashboard() {
                                     width: '32px', height: '32px', borderRadius: '50%',
                                     background: `hsl(${(inv.name.charCodeAt(0) * 40) % 360}, 65%, 55%)`,
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    color: 'white', fontWeight: 800, fontSize: '0.72rem',
+                                    color: 'white', fontWeight: 200, fontSize: '0.72rem',
                                     border: '2px solid var(--bg-secondary)',
                                     marginLeft: i > 0 ? '-10px' : '0',
                                     zIndex: 10 - i,
@@ -427,7 +427,7 @@ export default function AdminDashboard() {
                                     width: '32px', height: '32px', borderRadius: '50%',
                                     background: 'var(--bg-tertiary)',
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    fontWeight: 700, fontSize: '0.68rem', color: 'var(--text-secondary)',
+                                    fontWeight: 200, fontSize: '0.68rem', color: 'var(--text-secondary)',
                                     border: '2px solid var(--bg-secondary)',
                                     marginLeft: '-10px',
                                     zIndex: 5,
@@ -438,14 +438,14 @@ export default function AdminDashboard() {
                                 )}
                               </div>
                               <div>
-                                <span style={{ fontWeight: 700, fontSize: '0.95rem' }}>{investorCount}</span>
+                                <span style={{ fontWeight: 200, fontSize: '0.95rem' }}>{investorCount}</span>
                                 <span style={{ color: 'var(--text-tertiary)', fontSize: '0.85rem', marginLeft: '4px' }}>{investorCount === 1 ? 'investor' : 'investors'}</span>
                               </div>
                             </div>
                             <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
                               <div style={{ textAlign: 'right' }}>
-                                <div style={{ fontSize: '0.7rem', color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>Total Contributed</div>
-                                <div style={{ fontWeight: 800, color: 'var(--primary)' }}>₹{totalContributed.toLocaleString()}</div>
+                                <div style={{ fontSize: '0.7rem', color: 'var(--text-tertiary)', fontWeight: 200, textTransform: 'uppercase' }}>Total Contributed</div>
+                                <div style={{ fontWeight: 200, color: 'var(--primary)' }}>₹{totalContributed.toLocaleString()}</div>
                               </div>
                               <span style={{ color: 'var(--text-tertiary)', fontSize: '0.85rem', transition: 'transform 0.2s', transform: expandedCampaignInvestors === campaign.id ? 'rotate(180deg)' : 'rotate(0deg)' }}>▼</span>
                             </div>
@@ -458,7 +458,7 @@ export default function AdminDashboard() {
                               paddingTop: '16px',
                               borderTop: '1px dashed var(--border-color)'
                             }}>
-                              <div style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '10px' }}>
+                              <div style={{ fontSize: '0.78rem', fontWeight: 200, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '10px' }}>
                                 Individual Contributions
                               </div>
                               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -482,17 +482,17 @@ export default function AdminDashboard() {
                                           width: '28px', height: '28px', borderRadius: '50%',
                                           background: `hsl(${(inv.name.charCodeAt(0) * 40) % 360}, 65%, 55%)`,
                                           display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                          color: 'white', fontWeight: 800, fontSize: '0.7rem', flexShrink: 0
+                                          color: 'white', fontWeight: 200, fontSize: '0.7rem', flexShrink: 0
                                         }}>
                                           {inv.name.charAt(0)}
                                         </div>
                                         <div>
-                                          <div style={{ fontWeight: 600 }}>{inv.name}</div>
+                                          <div style={{ fontWeight: 200 }}>{inv.name}</div>
                                           <div style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)' }}>{inv.email}</div>
                                         </div>
                                       </div>
                                       <div style={{ textAlign: 'right' }}>
-                                        <span style={{ fontWeight: 800, color: 'var(--primary)' }}>₹{(campInv?.amount || 0).toLocaleString()}</span>
+                                        <span style={{ fontWeight: 200, color: 'var(--primary)' }}>₹{(campInv?.amount || 0).toLocaleString()}</span>
                                       </div>
                                       <div style={{ textAlign: 'right' }}>
                                         <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>{campInv?.date}</span>
@@ -520,15 +520,15 @@ export default function AdminDashboard() {
                 <h3 style={{ marginBottom: '16px' }}>Fraud & Auditing Alerts</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px', backgroundColor: 'var(--bg-tertiary)', borderRadius: 'var(--radius-md)', fontSize: '0.88rem' }}>
-                    <span style={{ color: 'var(--success)', fontWeight: 600 }}>✓ Zero suspicious IP logins detected</span>
+                    <span style={{ color: 'var(--success)', fontWeight: 200 }}>✓ Zero suspicious IP logins detected</span>
                     <span style={{ color: 'var(--text-tertiary)' }}>Just now</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px', backgroundColor: 'var(--bg-tertiary)', borderRadius: 'var(--radius-md)', fontSize: '0.88rem' }}>
-                    <span style={{ color: 'var(--success)', fontWeight: 600 }}>✓ Razorpay transaction reconciliation status: 100% Matching</span>
+                    <span style={{ color: 'var(--success)', fontWeight: 200 }}>✓ Razorpay transaction reconciliation status: 100% Matching</span>
                     <span style={{ color: 'var(--text-tertiary)' }}>5 mins ago</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px', backgroundColor: 'var(--bg-tertiary)', borderRadius: 'var(--radius-md)', fontSize: '0.88rem' }}>
-                    <span style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>ℹ️ Automatic data audit snapshot: backup generated successfully</span>
+                    <span style={{ color: 'var(--text-secondary)', fontWeight: 200 }}>ℹ️ Automatic data audit snapshot: backup generated successfully</span>
                     <span style={{ color: 'var(--text-tertiary)' }}>1 hour ago</span>
                   </div>
                 </div>
@@ -555,7 +555,7 @@ export default function AdminDashboard() {
                         </div>
                         <div style={{ textAlign: 'right' }}>
                           <span style={{ fontSize: '0.78rem', color: 'var(--text-tertiary)', display: 'block' }}>TARGET GOAL</span>
-                          <span style={{ fontSize: '1.25rem', fontWeight: 800 }}>₹{camp.goalAmount.toLocaleString()}</span>
+                          <span style={{ fontSize: '1.25rem', fontWeight: 200 }}>₹{camp.goalAmount.toLocaleString()}</span>
                         </div>
                       </div>
 
@@ -566,7 +566,7 @@ export default function AdminDashboard() {
                       <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <div>
                           <span style={{ fontSize: '0.78rem', color: 'var(--text-tertiary)', display: 'block' }}>ROI SCHEDULING</span>
-                          <span style={{ fontWeight: 700, fontSize: '0.9rem' }}>{camp.roiEstimate}</span>
+                          <span style={{ fontWeight: 200, fontSize: '0.9rem' }}>{camp.roiEstimate}</span>
                         </div>
                         <div style={{ display: 'flex', gap: '10px' }}>
                           <button onClick={() => { approveCampaign(camp.id); alert("Campaign approved successfully!"); }} className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '0.85rem' }}>
@@ -614,12 +614,12 @@ export default function AdminDashboard() {
                         <tr key={exp.id}>
                           <td>{exp.campaignTitle}</td>
                           <td>
-                            <div style={{ fontWeight: 600 }}>{exp.description}</div>
+                            <div style={{ fontWeight: 200 }}>{exp.description}</div>
                             <span style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)' }}>Logged on {exp.date}</span>
                           </td>
-                          <td style={{ fontWeight: 800 }}>₹{exp.amount.toLocaleString()}</td>
+                          <td style={{ fontWeight: 200 }}>₹{exp.amount.toLocaleString()}</td>
                           <td>
-                            <a href="#" onClick={(e) => { e.preventDefault(); alert(`Reviewing invoice ${exp.invoiceUrl}`); }} style={{ color: 'var(--primary)', fontWeight: 600 }}>
+                            <a href="#" onClick={(e) => { e.preventDefault(); alert(`Reviewing invoice ${exp.invoiceUrl}`); }} style={{ color: 'var(--primary)', fontWeight: 200 }}>
                               📄 Review invoice
                             </a>
                           </td>
@@ -669,7 +669,7 @@ export default function AdminDashboard() {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <span>Scan File:</span>
-                      <a href="#" onClick={(e) => {e.preventDefault(); alert("Viewing aadhaar_scanned.jpg");}} style={{ color: 'var(--primary)', fontWeight: 600 }}>📄 View file</a>
+                      <a href="#" onClick={(e) => {e.preventDefault(); alert("Viewing aadhaar_scanned.jpg");}} style={{ color: 'var(--primary)', fontWeight: 200 }}>📄 View file</a>
                     </div>
                   </div>
 
@@ -876,13 +876,13 @@ export default function AdminDashboard() {
                   <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead>
                       <tr style={{ backgroundColor: 'var(--bg-tertiary)', borderBottom: '1.5px solid var(--border-color)' }}>
-                        <th style={{ padding: '14px 18px', textAlign: 'left', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-tertiary)' }}>Investor</th>
-                        <th style={{ padding: '14px 18px', textAlign: 'left', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-tertiary)' }}>Email</th>
-                        <th style={{ padding: '14px 18px', textAlign: 'left', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-tertiary)' }}>Total Contributed</th>
-                        <th style={{ padding: '14px 18px', textAlign: 'left', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-tertiary)' }}>Campaigns</th>
-                        <th style={{ padding: '14px 18px', textAlign: 'left', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-tertiary)' }}>Joined</th>
-                        <th style={{ padding: '14px 18px', textAlign: 'left', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-tertiary)' }}>KYC</th>
-                        <th style={{ padding: '14px 18px', textAlign: 'center', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-tertiary)' }}>Details</th>
+                        <th style={{ padding: '14px 18px', textAlign: 'left', fontSize: '0.78rem', fontWeight: 200, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-tertiary)' }}>Investor</th>
+                        <th style={{ padding: '14px 18px', textAlign: 'left', fontSize: '0.78rem', fontWeight: 200, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-tertiary)' }}>Email</th>
+                        <th style={{ padding: '14px 18px', textAlign: 'left', fontSize: '0.78rem', fontWeight: 200, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-tertiary)' }}>Total Contributed</th>
+                        <th style={{ padding: '14px 18px', textAlign: 'left', fontSize: '0.78rem', fontWeight: 200, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-tertiary)' }}>Campaigns</th>
+                        <th style={{ padding: '14px 18px', textAlign: 'left', fontSize: '0.78rem', fontWeight: 200, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-tertiary)' }}>Joined</th>
+                        <th style={{ padding: '14px 18px', textAlign: 'left', fontSize: '0.78rem', fontWeight: 200, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-tertiary)' }}>KYC</th>
+                        <th style={{ padding: '14px 18px', textAlign: 'center', fontSize: '0.78rem', fontWeight: 200, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-tertiary)' }}>Details</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -896,13 +896,13 @@ export default function AdminDashboard() {
                               transition: 'background 0.15s'
                             }}
                           >
-                            <td style={{ padding: '14px 18px', fontWeight: 700 }}>
+                            <td style={{ padding: '14px 18px', fontWeight: 200 }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                 <div style={{
                                   width: '36px', height: '36px', borderRadius: '50%',
                                   background: `hsl(${(investor.name.charCodeAt(0) * 40) % 360}, 65%, 55%)`,
                                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                  color: 'white', fontWeight: 800, fontSize: '0.88rem', flexShrink: 0
+                                  color: 'white', fontWeight: 200, fontSize: '0.88rem', flexShrink: 0
                                 }}>
                                   {investor.name.charAt(0)}
                                 </div>
@@ -911,13 +911,13 @@ export default function AdminDashboard() {
                             </td>
                             <td style={{ padding: '14px 18px', color: 'var(--text-secondary)', fontSize: '0.88rem' }}>{investor.email}</td>
                             <td style={{ padding: '14px 18px' }}>
-                              <span style={{ fontWeight: 800, color: 'var(--primary)', fontSize: '1.05rem' }}>₹{investor.totalInvested.toLocaleString()}</span>
+                              <span style={{ fontWeight: 200, color: 'var(--primary)', fontSize: '1.05rem' }}>₹{investor.totalInvested.toLocaleString()}</span>
                             </td>
                             <td style={{ padding: '14px 18px' }}>
                               <span style={{ 
                                 background: 'var(--bg-tertiary)', 
                                 padding: '4px 10px', borderRadius: '20px', 
-                                fontWeight: 700, fontSize: '0.88rem'
+                                fontWeight: 200, fontSize: '0.88rem'
                               }}>{investor.investmentCount} campaigns</span>
                             </td>
                             <td style={{ padding: '14px 18px', color: 'var(--text-tertiary)', fontSize: '0.85rem' }}>{investor.joinDate}</td>
@@ -944,7 +944,7 @@ export default function AdminDashboard() {
                                   padding: '20px 24px',
                                   borderTop: '1px dashed var(--border-color)'
                                 }}>
-                                  <h4 style={{ fontSize: '0.88rem', fontWeight: 700, marginBottom: '12px', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                                  <h4 style={{ fontSize: '0.88rem', fontWeight: 200, marginBottom: '12px', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                                     📋 Campaign Contribution Breakdown — {investor.name}
                                   </h4>
                                   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -963,7 +963,7 @@ export default function AdminDashboard() {
                                           border: '1px solid var(--border-color)'
                                         }}>
                                           <div>
-                                            <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{camp.title}</div>
+                                            <div style={{ fontWeight: 200, fontSize: '0.9rem' }}>{camp.title}</div>
                                             {campaignData && (
                                               <span className={`badge ${campaignData.status === 'active' ? 'badge-success' : campaignData.status === 'completed' ? 'badge-info' : 'badge-warning'}`} style={{ fontSize: '0.7rem', marginTop: '4px' }}>
                                                 {campaignData.status}
@@ -1034,16 +1034,16 @@ export default function AdminDashboard() {
 
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '20px' }}>
                       <div style={{ textAlign: 'center', padding: '16px', background: 'var(--bg-tertiary)', borderRadius: '10px' }}>
-                        <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--primary)' }}>{report.studentsImpacted}</div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600, marginTop: '4px' }}>STUDENTS IMPACTED</div>
+                        <div style={{ fontSize: '2rem', fontWeight: 200, color: 'var(--primary)' }}>{report.studentsImpacted}</div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 200, marginTop: '4px' }}>STUDENTS IMPACTED</div>
                       </div>
                       <div style={{ textAlign: 'center', padding: '16px', background: 'var(--bg-tertiary)', borderRadius: '10px' }}>
-                        <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--secondary)' }}>{report.teachersTrained}</div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600, marginTop: '4px' }}>TEACHERS TRAINED</div>
+                        <div style={{ fontSize: '2rem', fontWeight: 200, color: 'var(--secondary)' }}>{report.teachersTrained}</div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 200, marginTop: '4px' }}>TEACHERS TRAINED</div>
                       </div>
                       <div style={{ textAlign: 'center', padding: '16px', background: 'var(--bg-tertiary)', borderRadius: '10px' }}>
-                        <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--accent)' }}>{report.classroomsUpgraded}</div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600, marginTop: '4px' }}>CLASSROOMS UPGRADED</div>
+                        <div style={{ fontSize: '2rem', fontWeight: 200, color: 'var(--accent)' }}>{report.classroomsUpgraded}</div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 200, marginTop: '4px' }}>CLASSROOMS UPGRADED</div>
                       </div>
                     </div>
 
@@ -1125,7 +1125,7 @@ export default function AdminDashboard() {
                                 style={{ marginTop: '3px', cursor: 'pointer' }}
                               />
                               <label htmlFor={`perm-${r}-${p.id}`} style={{ cursor: 'pointer', display: 'block' }}>
-                                <span style={{ fontWeight: 600, display: 'block', fontSize: '0.9rem', color: hasIt ? 'var(--text-primary)' : 'var(--text-secondary)' }}>{p.label}</span>
+                                <span style={{ fontWeight: 200, display: 'block', fontSize: '0.9rem', color: hasIt ? 'var(--text-primary)' : 'var(--text-secondary)' }}>{p.label}</span>
                                 <span style={{ fontSize: '0.78rem', color: 'var(--text-tertiary)', display: 'block', marginTop: '2px' }}>{p.desc}</span>
                               </label>
                             </div>
@@ -1143,7 +1143,7 @@ export default function AdminDashboard() {
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', flexWrap: 'wrap', gap: '16px' }}>
                 <div>
-                  <h1 style={{ fontSize: '2rem', fontWeight: 500 }}>Investment Programs Manager</h1>
+                  <h1 style={{ fontSize: '2rem', fontWeight: 200 }}>Investment Programs Manager</h1>
                   <p style={{ color: 'var(--text-secondary)', marginTop: '6px' }}>
                     Create, edit, delete, and monitor fractional investment programs and thresholds.
                   </p>
@@ -1158,7 +1158,7 @@ export default function AdminDashboard() {
               {/* Creation / Editing Form */}
               {showProgramForm && (
                 <div className="card" style={{ marginBottom: '30px', border: '1.5px solid var(--primary)' }}>
-                  <h3 style={{ marginBottom: '20px', fontWeight: 500 }}>
+                  <h3 style={{ marginBottom: '20px', fontWeight: 200 }}>
                     {editingProgramId ? "✏️ Edit Investment Program" : "💼 Create New Investment Program"}
                   </h3>
                   
@@ -1238,7 +1238,7 @@ export default function AdminDashboard() {
                     </div>
 
                     {/* Tier Thresholds */}
-                    <h4 style={{ marginBottom: '16px', borderBottom: '1px solid var(--border-color)', paddingBottom: '8px', fontWeight: 500 }}>
+                    <h4 style={{ marginBottom: '16px', borderBottom: '1px solid var(--border-color)', paddingBottom: '8px', fontWeight: 200 }}>
                       📈 Investor Tier Thresholds (Units Owned)
                     </h4>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '20px', marginBottom: '30px' }}>
@@ -1289,7 +1289,7 @@ export default function AdminDashboard() {
                     </div>
 
                     {/* Transparency Content */}
-                    <h4 style={{ marginBottom: '16px', borderBottom: '1px solid var(--border-color)', paddingBottom: '8px', fontWeight: 500 }}>
+                    <h4 style={{ marginBottom: '16px', borderBottom: '1px solid var(--border-color)', paddingBottom: '8px', fontWeight: 200 }}>
                       🔓 Transparency Content by Tier
                     </h4>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '30px' }}>
@@ -1400,7 +1400,7 @@ export default function AdminDashboard() {
                       </div>
 
                       <div>
-                        <h2 style={{ fontSize: '1.4rem', fontWeight: 500 }}>{prog.title}</h2>
+                        <h2 style={{ fontSize: '1.4rem', fontWeight: 200 }}>{prog.title}</h2>
                         <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '6px', lineHeight: '1.5' }}>
                           {prog.description}
                         </p>
@@ -1408,19 +1408,19 @@ export default function AdminDashboard() {
 
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '16px', backgroundColor: 'var(--bg-tertiary)', padding: '16px', borderRadius: 'var(--radius-md)', fontSize: '0.88rem' }}>
                         <div>
-                          <span style={{ color: 'var(--text-tertiary)', display: 'block', fontSize: '0.75rem', fontWeight: 600 }}>UNIT PRICE</span>
+                          <span style={{ color: 'var(--text-tertiary)', display: 'block', fontSize: '0.75rem', fontWeight: 200 }}>UNIT PRICE</span>
                           <strong>₹{prog.unitPrice.toLocaleString()}</strong>
                         </div>
                         <div>
-                          <span style={{ color: 'var(--text-tertiary)', display: 'block', fontSize: '0.75rem', fontWeight: 600 }}>FUNDING GOAL</span>
+                          <span style={{ color: 'var(--text-tertiary)', display: 'block', fontSize: '0.75rem', fontWeight: 200 }}>FUNDING GOAL</span>
                           <strong>₹{prog.fundingGoal.toLocaleString()}</strong>
                         </div>
                         <div>
-                          <span style={{ color: 'var(--text-tertiary)', display: 'block', fontSize: '0.75rem', fontWeight: 600 }}>UNITS SOLD / TOTAL</span>
+                          <span style={{ color: 'var(--text-tertiary)', display: 'block', fontSize: '0.75rem', fontWeight: 200 }}>UNITS SOLD / TOTAL</span>
                           <strong>{prog.unitsSold} / {totalUnits} units</strong>
                         </div>
                         <div>
-                          <span style={{ color: 'var(--text-tertiary)', display: 'block', fontSize: '0.75rem', fontWeight: 600 }}>TOTAL FUNDS RAISED</span>
+                          <span style={{ color: 'var(--text-tertiary)', display: 'block', fontSize: '0.75rem', fontWeight: 200 }}>TOTAL FUNDS RAISED</span>
                           <strong style={{ color: 'var(--success)' }}>₹{raisedVal.toLocaleString()}</strong>
                         </div>
                       </div>
@@ -1463,12 +1463,12 @@ export default function AdminDashboard() {
                                                      backer.units >= prog.tierThresholds.bronze ? "Bronze" : "None";
                                     return (
                                       <tr key={backer.email} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                                        <td style={{ padding: '12px', fontWeight: 600 }}>{backer.name}</td>
+                                        <td style={{ padding: '12px', fontWeight: 200 }}>{backer.name}</td>
                                         <td style={{ padding: '12px' }}>{backer.email}</td>
-                                        <td style={{ padding: '12px', fontWeight: 600 }}>{backer.units} unit{backer.units !== 1 ? 's' : ''}</td>
-                                        <td style={{ padding: '12px', fontWeight: 600 }}>₹{backer.amount.toLocaleString()}</td>
+                                        <td style={{ padding: '12px', fontWeight: 200 }}>{backer.units} unit{backer.units !== 1 ? 's' : ''}</td>
+                                        <td style={{ padding: '12px', fontWeight: 200 }}>₹{backer.amount.toLocaleString()}</td>
                                         <td style={{ padding: '12px' }}>
-                                          <span className="badge badge-success" style={{ fontWeight: 600 }}>
+                                          <span className="badge badge-success" style={{ fontWeight: 200 }}>
                                             {calcTier}
                                           </span>
                                         </td>

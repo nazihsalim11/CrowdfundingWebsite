@@ -58,7 +58,7 @@ export default function CashierDashboard() {
         {/* Sidebar */}
         <aside className="sidebar">
           <div style={{ padding: '0 16px 20px 16px', borderBottom: '1px solid var(--border-color)', marginBottom: '16px' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Cashier Portal</span>
+            <span style={{ fontSize: '0.75rem', fontWeight: 200, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Cashier Portal</span>
             <h4 style={{ fontSize: '0.98rem', marginTop: '4px' }}>Seed Global Cashier</h4>
           </div>
 
@@ -84,11 +84,11 @@ export default function CashierDashboard() {
           {activeTab === "deposits" && (
             <div>
               <div style={{ marginBottom: '30px' }}>
-                <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Verify Pending Deposits</h1>
+                <h1 style={{ fontSize: '1.8rem', fontWeight: 200 }}>Verify Pending Deposits</h1>
                 <p style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>Verify investor bank deposits and wire receipts to credit campaigns and investment programs.</p>
               </div>
 
-              <h2 style={{ fontSize: '1.3rem', fontWeight: 500, marginBottom: '16px' }}>📢 Campaign Deposits</h2>
+              <h2 style={{ fontSize: '1.3rem', fontWeight: 200, marginBottom: '16px' }}>📢 Campaign Deposits</h2>
               {pendingDeposits.length > 0 ? (
                 <div className="table-container" style={{ marginTop: 0, marginBottom: '40px' }}>
                   <table>
@@ -104,10 +104,10 @@ export default function CashierDashboard() {
                       {pendingDeposits.map((inv) => (
                         <tr key={inv.id}>
                           <td>
-                            <div style={{ fontWeight: 600 }}>{inv.campaignTitle}</div>
+                            <div style={{ fontWeight: 200 }}>{inv.campaignTitle}</div>
                             <span style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)' }}>ID: {inv.id} on {inv.date}</span>
                           </td>
-                          <td style={{ fontWeight: 700 }}>₹{inv.amount.toLocaleString()}</td>
+                          <td style={{ fontWeight: 200 }}>₹{inv.amount.toLocaleString()}</td>
                           <td>
                             <span className="badge badge-info" style={{ fontSize: '0.78rem' }}>{inv.paymentMethod}</span>
                           </td>
@@ -137,11 +137,11 @@ export default function CashierDashboard() {
               ) : (
                 <div className="card" style={{ padding: '30px', textAlign: 'center', border: '1px solid var(--border-color)', marginBottom: '40px' }}>
                   <span style={{ fontSize: '1.5rem' }}>✓</span>
-                  <h4 style={{ marginTop: '8px', fontWeight: 500 }}>No Pending Campaign Deposits</h4>
+                  <h4 style={{ marginTop: '8px', fontWeight: 200 }}>No Pending Campaign Deposits</h4>
                 </div>
               )}
 
-              <h2 style={{ fontSize: '1.3rem', fontWeight: 500, marginBottom: '16px' }}>💼 Investment Program Deposits</h2>
+              <h2 style={{ fontSize: '1.3rem', fontWeight: 200, marginBottom: '16px' }}>💼 Investment Program Deposits</h2>
               {pendingProgramDeposits.length > 0 ? (
                 <div className="table-container" style={{ marginTop: 0 }}>
                   <table>
@@ -157,11 +157,11 @@ export default function CashierDashboard() {
                       {pendingProgramDeposits.map((inv) => (
                         <tr key={inv.id}>
                           <td>
-                            <div style={{ fontWeight: 600 }}>{inv.programTitle}</div>
+                            <div style={{ fontWeight: 200 }}>{inv.programTitle}</div>
                             <span style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)' }}>Backer: {inv.investorName} ({inv.investorEmail}) on {inv.date}</span>
                           </td>
                           <td>
-                            <div style={{ fontWeight: 700 }}>{inv.unitsPurchased} unit{inv.unitsPurchased !== 1 ? 's' : ''}</div>
+                            <div style={{ fontWeight: 200 }}>{inv.unitsPurchased} unit{inv.unitsPurchased !== 1 ? 's' : ''}</div>
                             <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Total: ₹{inv.amountInvested.toLocaleString()}</span>
                           </td>
                           <td>
@@ -193,7 +193,7 @@ export default function CashierDashboard() {
               ) : (
                 <div className="card" style={{ padding: '30px', textAlign: 'center', border: '1px solid var(--border-color)' }}>
                   <span style={{ fontSize: '1.5rem' }}>✓</span>
-                  <h4 style={{ marginTop: '8px', fontWeight: 500 }}>No Pending Program Deposits</h4>
+                  <h4 style={{ marginTop: '8px', fontWeight: 200 }}>No Pending Program Deposits</h4>
                 </div>
               )}
             </div>
@@ -202,7 +202,7 @@ export default function CashierDashboard() {
           {activeTab === "withdrawals" && (
             <div>
               <div style={{ marginBottom: '30px' }}>
-                <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Investor ROI Withdrawals</h1>
+                <h1 style={{ fontSize: '1.8rem', fontWeight: 200 }}>Investor ROI Withdrawals</h1>
                 <p style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>Approve and execute bank transfers for profit withdrawals requested by supporters.</p>
               </div>
 
@@ -221,10 +221,10 @@ export default function CashierDashboard() {
                       {pendingWithdrawals.map((wd) => (
                         <tr key={wd.id}>
                           <td>
-                            <div style={{ fontWeight: 600 }}>{wd.investorEmail}</div>
+                            <div style={{ fontWeight: 200 }}>{wd.investorEmail}</div>
                             <span style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)' }}>Reference ID: {wd.id}</span>
                           </td>
-                          <td style={{ fontWeight: 700 }}>₹{wd.amount.toLocaleString()}</td>
+                          <td style={{ fontWeight: 200 }}>₹{wd.amount.toLocaleString()}</td>
                           <td>{wd.date}</td>
                           <td>
                             <div style={{ display: 'flex', gap: '10px' }}>
@@ -262,7 +262,7 @@ export default function CashierDashboard() {
           {activeTab === "payouts" && (
             <div>
               <div style={{ marginBottom: '30px' }}>
-                <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Disburse Escrow to Vendors</h1>
+                <h1 style={{ fontSize: '1.8rem', fontWeight: 200 }}>Disburse Escrow to Vendors</h1>
                 <p style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>Disburse payment files directly to hardware/service merchants for audited invoices.</p>
               </div>
 
@@ -281,11 +281,11 @@ export default function CashierDashboard() {
                       {pendingDisbursements.map((exp) => (
                         <tr key={exp.id}>
                           <td>
-                            <div style={{ fontWeight: 600 }}>{exp.campaignTitle}</div>
+                            <div style={{ fontWeight: 200 }}>{exp.campaignTitle}</div>
                             <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>Invoice: {exp.description}</span>
                             <span style={{ fontSize: '0.78rem', display: 'block', color: 'var(--text-tertiary)', fontStyle: 'italic' }}>Notes: {exp.auditNotes}</span>
                           </td>
-                          <td style={{ fontWeight: 700 }}>₹{exp.amount.toLocaleString()}</td>
+                          <td style={{ fontWeight: 200 }}>₹{exp.amount.toLocaleString()}</td>
                           <td>
                             <span className="badge badge-success" style={{ fontSize: '0.78rem' }}>Approved by {exp.auditedBy || 'Board'}</span>
                           </td>
@@ -316,24 +316,24 @@ export default function CashierDashboard() {
           {activeTab === "reserve" && (
             <div>
               <div style={{ marginBottom: '30px' }}>
-                <h1 style={{ fontSize: '1.8rem', fontWeight: 800 }}>Escrow Trust Reserve</h1>
+                <h1 style={{ fontSize: '1.8rem', fontWeight: 200 }}>Escrow Trust Reserve</h1>
                 <p style={{ color: 'var(--text-secondary)', marginTop: '4px' }}>Real-time audit tracking of the centralized Seed Global Escrow Wallet.</p>
               </div>
 
               <div className="stats-grid">
                 <div className="stat-card">
                   <span className="stat-lbl">Central Vault Balance</span>
-                  <span className="stat-val" style={{ color: 'var(--primary)', fontSize: '2.2rem', fontWeight: 800 }}>₹{totalEscrowBalance.toLocaleString()}</span>
+                  <span className="stat-val" style={{ color: 'var(--primary)', fontSize: '2.2rem', fontWeight: 200 }}>₹{totalEscrowBalance.toLocaleString()}</span>
                 </div>
                 <div className="stat-card">
                   <span className="stat-lbl">Gross Receipts Inflow</span>
-                  <span className="stat-val" style={{ color: 'var(--text-primary)', fontSize: '2.2rem', fontWeight: 800 }}>
+                  <span className="stat-val" style={{ color: 'var(--text-primary)', fontSize: '2.2rem', fontWeight: 200 }}>
                     ₹{investments.filter(i => i.status === 'completed').reduce((s, i) => s + i.amount, 0).toLocaleString()}
                   </span>
                 </div>
                 <div className="stat-card">
                   <span className="stat-lbl">Gross Disbursements Outflow</span>
-                  <span className="stat-val" style={{ color: 'var(--danger)', fontSize: '2.2rem', fontWeight: 800 }}>
+                  <span className="stat-val" style={{ color: 'var(--danger)', fontSize: '2.2rem', fontWeight: 200 }}>
                     ₹{expenses.filter(e => e.status === 'disbursed').reduce((s, e) => s + e.amount, 0).toLocaleString()}
                   </span>
                 </div>
