@@ -45,7 +45,7 @@ export default function Home() {
               letterSpacing: '-0.03em', 
               lineHeight: '1.1' 
             }}>
-              Fractional <span style={{ background: 'linear-gradient(135deg, var(--primary), var(--secondary))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>School Investing</span> Portal
+              <span style={{ background: 'linear-gradient(135deg, var(--primary), var(--secondary))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>School Investing</span> Portal
             </h1>
             <p style={{ 
               fontSize: '1.25rem', 
